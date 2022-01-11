@@ -26,7 +26,7 @@ paths:
       tags:
       - integrators
       summary: Calculates shipping and tax for an order.
-      description: Calculates the shipping and tax charges for an order.
+      description: Calculates the shipping and tax charges for an order - kaz lives.
       operationId: calculateShippingAndTax
       requestBody:
         description: Shipping and tax request payload.
