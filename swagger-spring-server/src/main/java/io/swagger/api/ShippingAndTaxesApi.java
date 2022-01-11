@@ -33,11 +33,11 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-01-11T23:42:28.109Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-01-11T23:44:19.255Z[GMT]")
 @Validated
 public interface ShippingAndTaxesApi {
 
-    @Operation(summary = "Calculates shipping and tax for an order.", description = "Calculates the shipping and tax charges for an order.", tags={ "integrators" })
+    @Operation(summary = "Calculates shipping and tax for an order.", description = "Calculates the shipping and tax charges for an order - kaz lives.", tags={ "integrators" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Shipping and tax calculated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ShippingAndTaxResponse.class))),
         
