@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: GoCart Partner Callback API
+  description: "API callbacks that need to be implemented by GoCart partners to enable\
+    \ a complete integration with the GoCart checkout workflows. <p/> For instance,\
+    \ a callback method that calculates the shipping options and taxes for an order\
+    \ based on the passed in shipping address."
+  contact:
+    url: https://www.gocartpay.com/Docs
+    email: support@gocartpay.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-partner-callback-api/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: integrators
+  description: Calls used by GoCart integration partners
+paths:
+  /shipping-and-taxes:
+    post:
+      tags:
+      - integrators
+      summary: Calculates shipping and tax for an order.
+      description: Calculates the shipping and tax charges for an order.
+      operationId: calculateShippingAndTax
+      requestBody:
+        description: Shipping and tax request payload.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingAndTaxRequest'
+        required: true
+      responses:
+        "200":
+          description: Shipping and tax calculated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingAndTaxResponse'
+        "400":
+          description: "invalid input, object invalid"
+components:
+  schemas:
+    ShippingAndTaxRequest:
+      required:
+      - goCartOrderId
+      - merchantOrderId
+      - shippingAddress
+      type: object
+      properties:
+        merchantOrderId:
+          type: string
+          example: someMerchantOrderId
+        goCartOrderId:
+          type: string
+          format: uuid
+          example: 77a051d8-be26-11eb-8529-0242ac130003
+        shippingAddress:
+          $ref: '#/components/schemas/ShippingAddress'
+    ShippingAddress:
+      required:
+      - addressLocality
+      - addressRegion
+      - postalCode
+      - shippingAddressId
+      - streetAddress
+      type: object
+      properties:
+        shippingAddressId:
+          type: string
+          format: uuid
+          example: 53e2a852-be23-11eb-8529-0242ac130003
+        streetAddress:
+          type: string
+          example: 123 Main Street
+        addressLocality:
+          type: string
+          example: Denver
+        addressRegion:
+          type: string
+          example: CO
+        postalCode:
+          type: string
+          example: "80209"
+    ShippingAndTaxResponse:
+      required:
+      - currencyCode
+      - shippingAddressId
+      type: object
+      properties:
+        shippingAddressId:
+          type: string
+          description: Send back the value provided in the request. This value is
+            used for correlation and validation purposes.
+          format: uuid
+          example: 53e2a852-be23-11eb-8529-0242ac130003
+        currencyCode:
+          type: string
+          description: The ISO 4217 three character currency code.
+          format: iso4217
+          example: USD
+          default: USD
+        shippingOptions:
+          maxItems: 10
+          minItems: 0
+          uniqueItems: true
+          type: array
+          description: The collection of shipping options for the order can include
+            zero to 10 shipping options.
+          items:
+            $ref: '#/components/schemas/Shipping'
+        preferredShippingOptionId:
+          maximum: 10
+          minimum: 0
+          type: integer
+          description: The prefered pre-selected shipping option identifier ('id')
+            from the shippingOptions array.
+          example: 1
+        tax:
+          minimum: 0
+          type: number
+          description: The taxes for the order factoring in the shipping address.
+          format: double
+          example: 10.5
+    Shipping:
+      required:
+      - name
+      - price
+      type: object
+      properties:
+        id:
+          maximum: 10
+          minimum: 0
+          type: integer
+          description: A numeric identifier for this option. This id is used to demaracate
+            the default selected shipping option.
+          example: 1
+        name:
+          type: string
+          example: Ground Freight
+        price:
+          minimum: 0
+          type: number
+          format: double
+          example: 25.98
+      description: "Details for a single shipping option. For instance, shipping for\
+        \ 2 day versus next day versus ground freight."
