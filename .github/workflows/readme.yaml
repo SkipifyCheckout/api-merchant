@@ -11,4 +11,4 @@ jobs:
       - uses: readmeio/github-readme-sync@v2
         with:
           readme-oas-key: CUcHsPjdzCF4PUwpROfH8RubjASUdWib:61de07b7822b6c03504b39cb
-          oas-file-path: '.swagger/swagger.yaml'
+          oas-file-path: './swagger/swagger.yaml'
