@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  */
 @Schema(description = "Details for a single shipping option. For instance, shipping for 2 day versus next day versus ground freight.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-01-11T22:38:48.881Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-01-11T22:43:25.795Z[GMT]")
 
 
 public class Shipping   {
