@@ -29,7 +29,7 @@ import java.util.UUID;
  * ShippingAndTaxResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2022-01-11T22:42:00.748Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2022-01-11T22:43:24.886Z[GMT]")
 public class ShippingAndTaxResponse {
   @SerializedName("shippingAddressId")
   private UUID shippingAddressId = null;
