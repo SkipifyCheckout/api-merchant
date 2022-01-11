@@ -2,7 +2,7 @@
 
 GoCart Partner Callback API
 - API version: 1.0.0
-  - Build date: 2022-01-11T23:42:27.117Z[GMT]
+  - Build date: 2022-01-11T23:44:18.222Z[GMT]
 
 API callbacks that need to be implemented by GoCart partners to enable a complete integration with the GoCart checkout workflows. <p/> For instance, a callback method that calculates the shipping options and taxes for an order based on the passed in shipping address.
 

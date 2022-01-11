@@ -34,7 +34,7 @@ public class IntegratorsApiTest {
     /**
      * Calculates shipping and tax for an order.
      *
-     * Calculates the shipping and tax charges for an order.
+     * Calculates the shipping and tax charges for an order - kaz lives.
      *
      * @throws ApiException
      *          if the Api call fails

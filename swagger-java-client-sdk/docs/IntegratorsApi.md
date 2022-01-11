@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 Calculates shipping and tax for an order.
 
-Calculates the shipping and tax charges for an order.
+Calculates the shipping and tax charges for an order - kaz lives.
 
 ### Example
 ```java

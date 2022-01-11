@@ -27,7 +27,7 @@ import java.util.UUID;
  * ShippingAndTaxRequest
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2022-01-11T23:42:27.117Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2022-01-11T23:44:18.222Z[GMT]")
 public class ShippingAndTaxRequest {
   @SerializedName("merchantOrderId")
   private String merchantOrderId = null;

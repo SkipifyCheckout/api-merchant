@@ -121,7 +121,7 @@ public class IntegratorsApi {
 
     /**
      * Calculates shipping and tax for an order.
-     * Calculates the shipping and tax charges for an order.
+     * Calculates the shipping and tax charges for an order - kaz lives.
      * @param body Shipping and tax request payload. (required)
      * @return ShippingAndTaxResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -133,7 +133,7 @@ public class IntegratorsApi {
 
     /**
      * Calculates shipping and tax for an order.
-     * Calculates the shipping and tax charges for an order.
+     * Calculates the shipping and tax charges for an order - kaz lives.
      * @param body Shipping and tax request payload. (required)
      * @return ApiResponse&lt;ShippingAndTaxResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -146,7 +146,7 @@ public class IntegratorsApi {
 
     /**
      * Calculates shipping and tax for an order. (asynchronously)
-     * Calculates the shipping and tax charges for an order.
+     * Calculates the shipping and tax charges for an order - kaz lives.
      * @param body Shipping and tax request payload. (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
