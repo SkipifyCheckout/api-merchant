@@ -15,6 +15,8 @@ info:
 servers:
 - url: https://virtserver.swaggerhub.com/GoCartPay/gocart-partner-callback-api/1.0.0
   description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-partner-callback-api/1.0.0
+  description: SwaggerHub API Auto Mocking of Mock Server
 tags:
 - name: integrators
   description: Calls used by GoCart integration partners
