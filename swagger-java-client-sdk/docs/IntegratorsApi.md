@@ -17,8 +17,8 @@ Calculates the shipping and tax charges for an order.
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiException;
-//import io.swagger.client.api.IntegratorsApi;
+//import com.gocartpay.client.ApiException;
+//import com.gocartpay.client.shipping_and_tax.IntegratorsApi;
 
 
 IntegratorsApi apiInstance = new IntegratorsApi();

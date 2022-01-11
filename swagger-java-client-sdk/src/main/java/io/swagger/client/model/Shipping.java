@@ -25,7 +25,7 @@ import java.io.IOException;
  * Details for a single shipping option. For instance, shipping for 2 day versus next day versus ground freight.
  */
 @Schema(description = "Details for a single shipping option. For instance, shipping for 2 day versus next day versus ground freight.")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2022-01-11T22:43:24.886Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2022-01-11T23:42:27.117Z[GMT]")
 public class Shipping {
   @SerializedName("id")
   private Integer id = null;
