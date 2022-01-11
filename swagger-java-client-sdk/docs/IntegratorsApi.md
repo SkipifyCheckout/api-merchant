@@ -12,13 +12,13 @@ Method | HTTP request | Description
 
 Calculates shipping and tax for an order.
 
-Calculates the shipping and tax charges for an order.
+Calculates the shipping and tax charges for an order - kaz lives.
 
 ### Example
 ```java
 // Import classes:
-//import io.swagger.client.ApiException;
-//import io.swagger.client.api.IntegratorsApi;
+//import com.gocartpay.client.ApiException;
+//import com.gocartpay.client.shipping_and_tax.IntegratorsApi;
 
 
 IntegratorsApi apiInstance = new IntegratorsApi();

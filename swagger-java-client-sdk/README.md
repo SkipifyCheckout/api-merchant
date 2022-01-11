@@ -2,7 +2,7 @@
 
 GoCart Partner Callback API
 - API version: 1.0.0
-  - Build date: 2022-01-11T22:43:24.886Z[GMT]
+  - Build date: 2022-01-11T23:44:18.222Z[GMT]
 
 API callbacks that need to be implemented by GoCart partners to enable a complete integration with the GoCart checkout workflows. <p/> For instance, a callback method that calculates the shipping options and taxes for an order based on the passed in shipping address.
 
@@ -72,10 +72,10 @@ Then manually install the following JARs:
 Please follow the [installation](#installation) instruction and execute the following Java code:
 
 ```java
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
+import com.gocartpay.client.*;
+import com.gocartpay.client.auth.*;
 import io.swagger.client.model.*;
-import io.swagger.client.api.IntegratorsApi;
+import com.gocartpay.client.shipping_and_tax.IntegratorsApi;
 
 import java.io.File;
 import java.util.*;

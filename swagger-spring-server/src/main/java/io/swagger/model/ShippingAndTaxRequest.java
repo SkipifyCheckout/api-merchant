@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * ShippingAndTaxRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-01-11T22:43:25.795Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-01-11T23:44:19.255Z[GMT]")
 
 
 public class ShippingAndTaxRequest   {
