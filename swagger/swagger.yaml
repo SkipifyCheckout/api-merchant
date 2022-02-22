@@ -906,7 +906,8 @@ paths:
           example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "204":
-          description: Successfully deleted the user
+          description: "[204] Successfully processed the request. No content to return\
+            \ (typically related to the delete of a resource).\n"
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -954,7 +955,8 @@ paths:
               $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
       responses:
         "204":
-          description: Successfully changed password
+          description: "[204] Successfully processed the request. No content to return\
+            \ (typically related to the delete of a resource).\n"
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1075,9 +1077,10 @@ paths:
       tags:
       - Merchant Credential
       summary: Creates merchant credential
-      description: "<br>JWT Required: Merchant\r\n<br>Authorization Policy: IP Address\r\
-        \n<br>Roles: Merchant Partner/Merchant Admin/Developer\r\n<br>CORS Policy:\
-        \ Merchant Portal"
+      description: |
+        Creates a new merchant credential associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
@@ -1096,7 +1099,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MerchantCredential'
+              $ref: '#/components/schemas/MerchantCredentialRequestBody'
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
@@ -1114,9 +1117,10 @@ paths:
       tags:
       - Merchant Credential
       summary: Retrieves a merchant credential information
-      description: "<br>JWT Required: Merchant\r\n<br>Authorization Policy: IP Address\r\
-        \n<br>Roles: Merchant Partner/Merchant Admin/Developer\r\n<br>CORS Policy:\
-        \ Merchant Portal"
+      description: |
+        Retrieves a new merchant credential with the specified id.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
@@ -1143,11 +1147,101 @@ paths:
       responses:
         "200":
           description: |
-            Success
+            Successfully retrieved the specified merchant's credential.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MerchantCredential'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    put:
+      tags:
+      - Merchant Credential
+      summary: Updates a merchant credential
+      description: |
+        Updates an existing merchant credential associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: credentialId
+        in: path
+        description: |
+          The unique identifier for the merchant credential.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      requestBody:
+        description: Update merchant credential input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantCredentialRequestBody'
+      responses:
+        "200":
+          description: |
+            Successfully processed the request
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    delete:
+      tags:
+      - Merchant Credential
+      summary: Removes a merchant credential
+      description: |
+        Deletes a merchant credential associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: credentialId
+        in: path
+        description: |
+          The unique identifier for the merchant credential.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "204":
+          description: "[204] Successfully processed the request. No content to return\
+            \ (typically related to the delete of a resource).\n"
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1482,6 +1576,12 @@ components:
         \ key, etc.)\n"
       allOf:
       - $ref: '#/components/schemas/ResourceBase'
+      - $ref: '#/components/schemas/MerchantCredentialBase'
+    MerchantCredentialRequestBody:
+      type: object
+      description: "Object used to create and update a merchant credential of one\
+        \ of the supported types (e.g., API Key, Payment Gateway Credentials, etc.).\n"
+      allOf:
       - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialBase:
       type: object
