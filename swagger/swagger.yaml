@@ -1,152 +1,1553 @@
 openapi: 3.0.0
 info:
-  title: GoCart Partner Callback API
-  description: "API callbacks that need to be implemented by GoCart partners to enable\
-    \ a complete integration with the GoCart checkout workflows. <p/> For instance,\
-    \ a callback method that calculates the shipping options and taxes for an order\
-    \ based on the passed in shipping address."
-  contact:
-    url: https://www.gocartpay.com/Docs
-    email: support@gocartpay.com
+  title: Merchant API
+  description: |
+    Merchant API used to manage merchant configurations and to retrieve merchant details.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-partner-callback-api/1.0.0
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.0
   description: SwaggerHub API Auto Mocking
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-partner-callback-api/1.0.0
-  description: SwaggerHub API Auto Mocking of Mock Server
+- url: https://api-staging.gocartpay.com
+  description: GoCart Staging Environment
+- url: https://api.gocartpay.com/
+  description: GoCart Production Environment
 tags:
-- name: integrators
-  description: Calls used by GoCart integration partners
+- name: Merchant
+  description: |
+    Core merchant related API service methods - including CRUD operations and SDK retrieval.
+- name: Merchant Callback
+  description: |
+    Merchant callback related API service methods.
+- name: Merchant Domain
+  description: |
+    Merchant domain related API service methods.
+- name: Merchant Configurations
+  description: "Management of a merchant's overall configurations including: feature\
+    \ toggles,\ndomain registration, integration credentials, etc.\n"
+- name: Merchant User
+  description: |
+    Merchant users management related API service methods.
 paths:
-  /shipping-and-taxes:
-    post:
+  /merchants:
+    get:
       tags:
-      - integrators
-      summary: Calculates shipping and tax for an order.
-      description: Calculates the shipping and tax charges for an order - kaz lives.
-      operationId: calculateShippingAndTax
-      requestBody:
-        description: Shipping and tax request payload.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ShippingAndTaxRequest'
-        required: true
+      - Merchant
+      summary: Retrieves the paginated list of merchants
+      description: |
+        Retrieves the paginated list of merchants. A merchant will only see their child merchants (assuming they have any child merchants).
+
+        A valid **JWT** or **HMAC** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/HMAC is created under.
+      parameters:
+      - name: merchantId
+        in: query
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: pageSize
+        in: query
+        description: |
+          The number of items per page
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          example: 25
+          default: 25
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
       responses:
         "200":
-          description: Shipping and tax calculated
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShippingAndTaxResponse'
-        "400":
-          description: "invalid input, object invalid"
+                $ref: '#/components/schemas/MerchantSummariesPagedResponse'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    post:
+      tags:
+      - Merchant
+      summary: Creates a new merchant
+      description: "Creates a new merchant. On creation of a new merchant there is\
+        \ the opporunity to seed the merchant with configuration, domain, and callback\
+        \ details. There is also the opportunity to provision users with access to\
+        \ the merchant.\n\nIt is not required to provision resources like merchant\
+        \ domains, configurations, and callbacks under the context of the merchant\
+        \ during initial creations. There are individual APIs that enable one to manage\
+        \ the aforementioned resources.\n\nA valid **JWT** or **HMAC** is required\
+        \ to access this endpoint.\n"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantComplexRequestBody'
+      responses:
+        "201":
+          description: "[201] The request succeeded and a new resource was created.\
+            \ The identity for the resource should be included in the response payload\
+            \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}:
+    get:
+      tags:
+      - Merchant
+      summary: Retrieves a merchant's details
+      description: |
+        Gets the details for the specified merchant. Details are only returned if the caller has the authorization to fetch the merchant's details.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantDetails'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    put:
+      tags:
+      - Merchant
+      summary: Updates a merchant
+      description: |
+        Updates the base details for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantBase'
+      responses:
+        "200":
+          description: |
+            Successfully processed the request
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/industry:
+    get:
+      tags:
+      - Merchant
+      summary: Retrieves industry by merchant id
+      description: |
+        Helper service that retrieves the merchant's industry.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantIndustryResponse'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/sdk:
+    get:
+      tags:
+      - Merchant
+      summary: Retrieves the GoCart SDK for a merchant
+      description: |
+        Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
+
+        This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: |
+            Successful retrieval of the GoCart SDK for the specified merchant.
+          content:
+            application/javascript:
+              schema:
+                type: string
+                description: |
+                  The SDK JavaScript that makes integration with GoCart simple!
+                format: binary
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/callbacks:
+    get:
+      tags:
+      - Merchant Callback
+      summary: Retrieves list of registered callbacks for a merchant
+      description: |
+        Retrieves the list of callbacks associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MerchantCallback'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    post:
+      tags:
+      - Merchant Callback
+      summary: Creates a new merchant callback
+      description: |
+        Configures a callback of the specified type associated with the merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantCallbackRequestBody'
+      responses:
+        "201":
+          description: "[201] The request succeeded and a new resource was created.\
+            \ The identity for the resource should be included in the response payload\
+            \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/callbacks/{callbackId}:
+    get:
+      tags:
+      - Merchant Callback
+      summary: Retrieves a merchant callback
+      description: |
+        Retrieves a registered callback associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: callbackId
+        in: path
+        description: |
+          The unique identifier for the merchant callback in the context of a merchant.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "200":
+          $ref: '#/components/schemas/MerchantCallback'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    put:
+      tags:
+      - Merchant Callback
+      summary: Updates a merchant callback
+      description: |
+        Updates a previously a registered callback associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: callbackId
+        in: path
+        description: |
+          The unique identifier for the merchant callback in the context of a merchant.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantCallbackRequestBody'
+      responses:
+        "200":
+          description: |
+            Successfully processed the request
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    delete:
+      tags:
+      - Merchant Callback
+      summary: Deletes a merchant callback
+      description: |
+        Delete the specified callback associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: callbackId
+        in: path
+        description: |
+          The unique identifier for the merchant callback in the context of a merchant.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "204":
+          description: "[204] Successfully processed the request. No content to return\
+            \ (typically related to the delete of a resource).\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/domains:
+    get:
+      tags:
+      - Merchant Domain
+      summary: Retrieves list of valid domains for a merchant
+      description: |
+        Retrieves the list of domains associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MerchantDomain'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    post:
+      tags:
+      - Merchant Domain
+      summary: Creates a new merchant domain
+      description: |
+        Configures a domain for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantDomainRequestBody'
+      responses:
+        "201":
+          description: "[201] The request succeeded and a new resource was created.\
+            \ The identity for the resource should be included in the response payload\
+            \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/domains/{domainId}:
+    get:
+      tags:
+      - Merchant Domain
+      summary: Retrieves a merchant or partner merchant's domain information
+      description: |
+        Retrieves a registered domain associated with this merchant or it's partner merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: domainId
+        in: path
+        description: |
+          The unique identifier for the merchant domain in the context of a merchant.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "200":
+          $ref: '#/components/schemas/MerchantDomain'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    put:
+      tags:
+      - Merchant Domain
+      summary: Updates a merchant domain
+      description: |
+        Updates a previously a registered domain associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: domainId
+        in: path
+        description: |
+          The unique identifier for the merchant domain in the context of a merchant.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantDomainRequestBody'
+      responses:
+        "200":
+          description: |
+            Successfully processed the request
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    delete:
+      tags:
+      - Merchant Domain
+      summary: Removes a merchant domain
+      description: |
+        Delete the specified domain associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: domainId
+        in: path
+        description: |
+          The unique identifier for the merchant domain in the context of a merchant.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "204":
+          description: "[204] Successfully processed the request. No content to return\
+            \ (typically related to the delete of a resource).\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/users:
+    get:
+      tags:
+      - Merchant User
+      summary: Retrieves list of merchant users
+      description: |
+        Gets the users associated with the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MerchantUser'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    post:
+      tags:
+      - Merchant User
+      summary: Creates a new merchant user
+      description: |
+        Creates a new merchant user associated with the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantUserRequestBody'
+      responses:
+        "201":
+          description: "[201] The request succeeded and a new resource was created.\
+            \ The identity for the resource should be included in the response payload\
+            \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/users/{userId}:
+    get:
+      tags:
+      - Merchant User
+      summary: Retrieves a merchant user
+      description: |
+        Retrieves a merchant user associated with the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: userId
+        in: path
+        description: |
+          The unique identifier for the merchant user.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "200":
+          description: Successfully retrieved the requested user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantUser'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    put:
+      tags:
+      - Merchant User
+      summary: Updates a merchant User
+      description: |
+        Updates a merchant user associated with the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: userId
+        in: path
+        description: |
+          The unique identifier for the merchant user.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantUserRequestBody'
+      responses:
+        "200":
+          description: Successfully updated the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantUser'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    delete:
+      tags:
+      - Merchant User
+      summary: Removes a merchant User
+      description: |
+        Deletes a merchant user associated with the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: userId
+        in: path
+        description: |
+          The unique identifier for the merchant user.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "204":
+          description: Successfully deleted the user
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
 components:
   schemas:
-    ShippingAndTaxRequest:
-      required:
-      - goCartOrderId
-      - merchantOrderId
-      - shippingAddress
+    CallbackType:
+      type: string
+      description: |
+        Enum of callback types supported by the GoCart platform.
+      enum:
+      - ShippingAndTax
+    CredentialType:
+      type: string
+      enum:
+      - WPG
+      - EXPRESS
+      - VAP
+      - TMS
+      - API_KEY
+      - RAFT
+    ExceptionResponse:
       type: object
       properties:
-        merchantOrderId:
+        error:
           type: string
-          example: someMerchantOrderId
-        goCartOrderId:
-          type: string
-          format: uuid
-          example: 77a051d8-be26-11eb-8529-0242ac130003
-        shippingAddress:
-          $ref: '#/components/schemas/ShippingAddress'
-    ShippingAddress:
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    InheritableResourceBase:
       required:
-      - addressLocality
-      - addressRegion
-      - postalCode
-      - shippingAddressId
-      - streetAddress
+      - isInherited
       type: object
       properties:
-        shippingAddressId:
-          type: string
-          format: uuid
-          example: 53e2a852-be23-11eb-8529-0242ac130003
-        streetAddress:
-          type: string
-          example: 123 Main Street
-        addressLocality:
-          type: string
-          example: Denver
-        addressRegion:
-          type: string
-          example: CO
-        postalCode:
-          type: string
-          example: "80209"
-    ShippingAndTaxResponse:
-      required:
-      - currencyCode
-      - shippingAddressId
+        isInherited:
+          type: boolean
+          description: |
+            Set to true if the callback url is inherited from a partner merchant; false if explicitly managed under the context of this merchant.
+          example: false
+      allOf:
+      - $ref: '#/components/schemas/ResourceBase'
+    Links:
       type: object
       properties:
-        shippingAddressId:
+        previousPage:
           type: string
-          description: Send back the value provided in the request. This value is
-            used for correlation and validation purposes.
-          format: uuid
-          example: 53e2a852-be23-11eb-8529-0242ac130003
-        currencyCode:
+          nullable: true
+          readOnly: true
+        nextPage:
           type: string
-          description: The ISO 4217 three character currency code.
-          format: iso4217
-          example: USD
-          default: USD
-        shippingOptions:
-          maxItems: 10
-          minItems: 0
-          uniqueItems: true
+          nullable: true
+          readOnly: true
+        firstPage:
+          type: string
+          nullable: true
+          readOnly: true
+        lastPage:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    MerchantSummariesPagedResponse:
+      type: object
+      properties:
+        description:
+          $ref: '#/components/schemas/PaginatedDescription'
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
           type: array
-          description: The collection of shipping options for the order can include
-            zero to 10 shipping options.
+          readOnly: true
           items:
-            $ref: '#/components/schemas/Shipping'
-        preferredShippingOptionId:
-          maximum: 10
-          minimum: 0
-          type: integer
-          description: The prefered pre-selected shipping option identifier ('id')
-            from the shippingOptions array.
-          example: 1
-        tax:
-          minimum: 0
-          type: number
-          description: The taxes for the order factoring in the shipping address.
-          format: double
-          example: 10.5
-    Shipping:
-      required:
-      - name
-      - price
+            $ref: '#/components/schemas/MerchantSummary'
+      additionalProperties: false
+    MerchantDetails:
       type: object
       properties:
-        id:
-          maximum: 10
-          minimum: 0
-          type: integer
-          description: A numeric identifier for this option. This id is used to demaracate
-            the default selected shipping option.
-          example: 1
+        merchantCredentials:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantCredential'
+        merchantDomains:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantDomain'
+        merchantConfigs:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantConfig'
+        merchantCallbacks:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantCallback'
+        merchantUsers:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantUser'
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/MerchantBase'
+    MerchantBase:
+      required:
+      - industry
+      - name
+      type: object
+      properties:
         name:
           type: string
-          example: Ground Freight
-        price:
-          minimum: 0
-          type: number
-          format: double
-          example: 25.98
-      description: "Details for a single shipping option. For instance, shipping for\
-        \ 2 day versus next day versus ground freight."
+          description: The merchant's name
+        partnerMerchantId:
+          type: string
+          description: "The merchant this merchant rolls up to. This is common in\
+            \ an ISV setting where a merchant is onboarded into GoCart under the context\
+            \ of an ISV. Child merchants have the ability to inherit configuration\
+            \ details from the partner merchant, which can significantly simplify\
+            \ the management of merchant configurations across a large number of child\
+            \ merchants.\n"
+          format: uuid
+          nullable: true
+          example: dc6310e3-401a-4287-91f0-edb04aa21906
+        industry:
+          $ref: '#/components/schemas/MerchantIndustry'
+      additionalProperties: false
+    MerchantCredential:
+      required:
+      - credentialType
+      type: object
+      properties:
+        credentialType:
+          $ref: '#/components/schemas/CredentialType'
+        field1:
+          type: string
+          nullable: true
+        field2:
+          type: string
+          nullable: true
+        field3:
+          type: string
+          nullable: true
+        testMode:
+          type: boolean
+          nullable: true
+        externalId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    MerchantCallbackBase:
+      required:
+      - callbackType
+      - url
+      type: object
+      properties:
+        url:
+          type: string
+          description: |
+            The callback URL that GoCart will make a call to.
+          format: uri
+          example: https://www.mkfinewoodworking.com
+        callbackType:
+          $ref: '#/components/schemas/CallbackType'
+    MerchantCallback:
+      type: object
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/MerchantCallbackBase'
+      - $ref: '#/components/schemas/InheritableResourceBase'
+    MerchantCallbackRequestBody:
+      type: object
+      additionalProperties: false
+      description: |
+        Request body payload to create or update a merchant callback.
+      allOf:
+      - $ref: '#/components/schemas/MerchantCallbackBase'
+    MerchantDomainBase:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: |
+            The domain that GoCart will register with the merchant.
+          example: https://www.mkfinewoodworking.com
+      additionalProperties: false
+    MerchantDomain:
+      required:
+      - domain
+      type: object
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/MerchantDomainBase'
+      - $ref: '#/components/schemas/InheritableResourceBase'
+    MerchantDomainRequestBody:
+      type: object
+      additionalProperties: false
+      description: |
+        Request body payload to create or update a merchant domain.
+      allOf:
+      - $ref: '#/components/schemas/MerchantDomainBase'
+    MerchantIndustry:
+      type: string
+      enum:
+      - GoCart_Internal
+      - Department_Stores
+      - Electronics
+      - Fashion_Apparel
+      - Fitness_Equipment
+      - Furniture
+      - Hardware
+      - Home_Goods
+      - Jewelry
+      - Lawn_Garden
+      - Sporting_Goods
+      - Healthcare
+      - Personal_Services
+      - Professional_Services
+      - Transportation
+      - Hotel_Lodging
+      - Restaurant
+      - Food_Services
+      - Grocery_CPG
+      - B2B_Wholesale
+      - Bill_Pay
+    MerchantComplexRequestBody:
+      type: object
+      properties:
+        merchantDomains:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantDomainRequestBody'
+        merchantConfigs:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/CreateMerchantConfigInput'
+        merchantCallbacks:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantCallbackRequestBody'
+        merchantUsers:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantComplexRequestBody_merchantUsers'
+      allOf:
+      - $ref: '#/components/schemas/MerchantBase'
+    MerchantSummary:
+      type: object
+      additionalProperties: false
+      description: "Summary of merchant information (no lower level details such as\
+        \ merchant configurations, domains, or callbacks included). For this type\
+        \ of information, either use the lower level merchant APIs and/or use the\
+        \ GET merchants/{merchantId} service method.\n"
+      allOf:
+      - $ref: '#/components/schemas/MerchantBase'
+      - $ref: '#/components/schemas/ResourceBase'
+    MerchantConfig:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        isInherited:
+          type: boolean
+        externalId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    MerchantUser:
+      type: object
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/MerchantUserBase'
+      - $ref: '#/components/schemas/ResourceBase'
+    MerchantUserBase:
+      required:
+      - email
+      - role
+      type: object
+      properties:
+        email:
+          type: string
+          description: |
+            The user's email address. This email address must be unique within the GoCart platform.
+          format: email
+          example: kenney.powers@gmail.com
+        role:
+          $ref: '#/components/schemas/Role'
+      additionalProperties: false
+    MerchantUserRequestBody:
+      type: object
+      additionalProperties: false
+      description: |
+        Request body paylod to create or update a merchant user.
+      allOf:
+      - $ref: '#/components/schemas/MerchantUserBase'
+    MerchantIndustryResponse:
+      type: object
+      properties:
+        industry:
+          $ref: '#/components/schemas/MerchantIndustry'
+      additionalProperties: false
+    PaymentGatewayCredentials:
+      type: object
+      description: |
+        General schema container for payment gateway credentials.
+      oneOf:
+      - $ref: '#/components/schemas/PaymentGatewayExpressCredentials'
+      - $ref: '#/components/schemas/PaymentGatewayRaftCredentials'
+      - $ref: '#/components/schemas/PaymentGatewayVapCredentials'
+      - $ref: '#/components/schemas/PaymentGatewayWpgCredentials'
+    PaymentGatewayExpressCredentials:
+      required:
+      - acceptorId
+      - accountId
+      - accountToken
+      type: object
+      properties:
+        acceptorId:
+          type: string
+          example: "123456789"
+        accountId:
+          type: string
+          example: "1112222"
+        accountToken:
+          type: string
+          example: AAAC11165E88AEEE44DDD0A484FFF707C0D7EEE7053EBF8B8A3ABDBBB1DF456C3231111
+      additionalProperties: false
+      description: |
+        Credentials for connecting to the Express payment gateway.
+    PaymentGatewayRaftCredentials:
+      required:
+      - licenseId
+      - merchantId
+      type: object
+      properties:
+        licenseId:
+          type: string
+          example: abcdef1234567890abcdef1234567890
+        merchantId:
+          type: string
+          example: "1234567891234"
+      additionalProperties: false
+      description: |
+        Credentials for connecting to the RAFT payment gateway.
+    PaymentGatewayVapCredentials:
+      required:
+      - merchantId
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: kennypowers
+        password:
+          type: string
+          example: SuperStrongP@ssword!!
+        merchantId:
+          type: string
+          example: "123456789"
+      additionalProperties: false
+      description: |
+        Credentials for connecting to the VAP payment gateway.
+    PaymentGatewayWpgCredentials:
+      required:
+      - merchantCode
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: kennypowers
+        password:
+          type: string
+          example: SuperStrongP@ssword!!
+        merchantCode:
+          type: string
+          example: "123456789"
+      additionalProperties: false
+      description: |
+        Credentials for connecting to the WPG payment gateway.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    ResourceBase:
+      required:
+      - externalId
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: |
+            The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
+          format: uuid
+          example: dbde7ee4-a2bf-4b52-a14a-ac3b48bef9b4
+      additionalProperties: false
+    Role:
+      type: string
+      description: |
+        Roles that determine a user's permissions in the context of a merchant.
+      enum:
+      - DEVELOPER
+      - MERCHANTADMIN
+      - SUPERADMIN
+      - MERCHANTPARTNER
+    PaginatedDescription:
+      type: object
+      properties:
+        totalRecords:
+          type: integer
+          format: int32
+          readOnly: true
+          example: 1223
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+          example: 13
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+          example: 4
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+          example: 100
+      additionalProperties: false
+    CreateMerchantConfigInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        value:
+          type: string
+          nullable: true
+      additionalProperties: false
+    MerchantComplexRequestBody_merchantUsers:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+      additionalProperties: false
+  responses:
+    OK:
+      description: |
+        Successfully processed the request
+    Created:
+      description: "[201] The request succeeded and a new resource was created. The\
+        \ identity for the resource should be included in the response payload and/or\
+        \ header.\n"
+    NoContent:
+      description: "[204] Successfully processed the request. No content to return\
+        \ (typically related to the delete of a resource).\n"
+    BadRequest:
+      description: "[400] The server does not understand the request. This is generally\
+        \ due to bad syntax or because the Content-Type header was not correctly set\
+        \ to application/json.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: "[401] The necessary authentication credential were not submitted\
+        \ in the request or are incorrect. The client must be authenticated to view\
+        \ the response.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: "[403] The client does not have rights to access the resource or\
+        \ content. Unlike 401, the client's identity is known to the server.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: "[404] The server can't locate the requested resource. This could\
+        \ mean the requested resource doesn't exist yet, but may exist in the future.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Conflict:
+      description: "[409] This response is sent when a request conflicts with the\
+        \ current state of the target resource.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    UnprocessableEntity:
+      description: "[422] The request was well-formed but was unable to be processed\
+        \ due to semantic errors. \n\nIn the context of GoCart, a 422 could be returned\
+        \ for such cases as (non-exhaustive list):\n\nIncorrectly formatted input\
+        \ (e.g, email address, phone number, zip code, etc.)\n\nCreating a customer\
+        \ missing email address or phone number\n\nIn cases where a 422 response is\
+        \ returned, there should be a response body that contains secure error level\
+        \ details.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Locked:
+      description: "[423] The requested resource (e.g., customer or merchant) is currently\
+        \ locked. Resources can be locked if they repeatedly exceed their API request\
+        \ limit, or if there is an issue with the account, such as a detected compromise\
+        \ or fraud risk.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ToManyRequests:
+      description: "[429] The user has sent too many requests in a given amount of\
+        \ time (\"rate limiting\").\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    InternalServerError:
+      description: "[500] The server has encountered a situation it doesn't know how\
+        \ to handle.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotImplemented:
+      description: "[501] The request method is not supported by the server and cannot\
+        \ be handled. \n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ServiceNotAvailable:
+      description: "[503] The server is not ready to handle the request. These type\
+        \ of errors should be tracked and reported on GoCarts future status page.\
+        \ Ideally the response should contain details related to when the service\
+        \ could be expected to return (RETRY-AFTER header). This type of response\
+        \ SHOULD NOT be cached.\n"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  parameters:
+    PageNumber:
+      name: pageNumber
+      in: query
+      description: |
+        The page number to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        minimum: 1
+        type: integer
+        example: 1
+        default: 1
+    PageSize:
+      name: pageSize
+      in: query
+      description: |
+        The number of items per page
+      required: false
+      style: form
+      explode: true
+      schema:
+        maximum: 50
+        minimum: 1
+        type: integer
+        example: 25
+        default: 25
+    MerchantIdQueryParameter:
+      name: merchantId
+      in: query
+      description: |
+        The unique identifier for the merchant in the context of GoCart.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        format: uuid
+        example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+    MerchantIdPathParameter:
+      name: merchantId
+      in: path
+      description: |
+        The unique identifier for the merchant in the context of GoCart.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+    CallbackIdPathParameter:
+      name: callbackId
+      in: path
+      description: |
+        The unique identifier for the merchant callback in the context of a merchant.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+    DomainIdPathParameter:
+      name: domainId
+      in: path
+      description: |
+        The unique identifier for the merchant domain in the context of a merchant.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+    MerchantUserIdPathParameter:
+      name: userId
+      in: path
+      description: |
+        The unique identifier for the merchant user.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
