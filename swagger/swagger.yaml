@@ -21,12 +21,15 @@ tags:
 - name: Merchant Callback
   description: |
     Merchant callback related API service methods.
-- name: Merchant Domain
+- name: Merchant Credentials
   description: |
-    Merchant domain related API service methods.
+    Management of a merchant's credentials for such things as payment gateways and API keys.
 - name: Merchant Configurations
   description: "Management of a merchant's overall configurations including: feature\
     \ toggles,\ndomain registration, integration credentials, etc.\n"
+- name: Merchant Domain
+  description: |
+    Merchant domain related API service methods.
 - name: Merchant User
   description: |
     Merchant users management related API service methods.
@@ -698,15 +701,38 @@ paths:
           type: string
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: pageSize
+        in: query
+        description: |
+          The number of items per page
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          example: 25
+          default: 25
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MerchantUser'
+                $ref: '#/components/schemas/MerchantUserSummariesPagedResponse'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -985,6 +1011,150 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/credentials:
+    get:
+      tags:
+      - Merchant Credential
+      summary: Retrieves List of merchants credentials
+      description: |
+        Retrieves the list of merchant credentials associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: pageSize
+        in: query
+        description: |
+          The number of items per page
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          example: 25
+          default: 25
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantCredentialPagedResponse'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    post:
+      tags:
+      - Merchant Credential
+      summary: Creates merchant credential
+      description: "<br>JWT Required: Merchant\r\n<br>Authorization Policy: IP Address\r\
+        \n<br>Roles: Merchant Partner/Merchant Admin/Developer\r\n<br>CORS Policy:\
+        \ Merchant Portal"
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      requestBody:
+        description: Create merchant credential for one of the GoCart supported credential
+          types.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantCredential'
+      responses:
+        "201":
+          description: "[201] The request succeeded and a new resource was created.\
+            \ The identity for the resource should be included in the response payload\
+            \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/credentials/{credentialId}:
+    get:
+      tags:
+      - Merchant Credential
+      summary: Retrieves a merchant credential information
+      description: "<br>JWT Required: Merchant\r\n<br>Authorization Policy: IP Address\r\
+        \n<br>Roles: Merchant Partner/Merchant Admin/Developer\r\n<br>CORS Policy:\
+        \ Merchant Portal"
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: credentialId
+        in: path
+        description: |
+          The unique identifier for the merchant credential.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "200":
+          description: |
+            Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantCredential'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
 components:
   schemas:
     CallbackType:
@@ -993,15 +1163,6 @@ components:
         Enum of callback types supported by the GoCart platform.
       enum:
       - ShippingAndTax
-    CredentialType:
-      type: string
-      enum:
-      - WPG
-      - EXPRESS
-      - VAP
-      - TMS
-      - API_KEY
-      - RAFT
     ExceptionResponse:
       type: object
       properties:
@@ -1027,18 +1188,22 @@ components:
       properties:
         previousPage:
           type: string
+          format: uri
           nullable: true
           readOnly: true
         nextPage:
           type: string
+          format: uri
           nullable: true
           readOnly: true
         firstPage:
           type: string
+          format: uri
           nullable: true
           readOnly: true
         lastPage:
           type: string
+          format: uri
           nullable: true
           readOnly: true
       additionalProperties: false
@@ -1108,29 +1273,6 @@ components:
           example: dc6310e3-401a-4287-91f0-edb04aa21906
         industry:
           $ref: '#/components/schemas/MerchantIndustry'
-      additionalProperties: false
-    MerchantCredential:
-      required:
-      - credentialType
-      type: object
-      properties:
-        credentialType:
-          $ref: '#/components/schemas/CredentialType'
-        field1:
-          type: string
-          nullable: true
-        field2:
-          type: string
-          nullable: true
-        field3:
-          type: string
-          nullable: true
-        testMode:
-          type: boolean
-          nullable: true
-        externalId:
-          type: string
-          nullable: true
       additionalProperties: false
     MerchantCallbackBase:
       required:
@@ -1258,6 +1400,19 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    MerchantUserSummariesPagedResponse:
+      type: object
+      properties:
+        description:
+          $ref: '#/components/schemas/PaginatedDescription'
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantUser'
+      additionalProperties: false
     MerchantUser:
       type: object
       additionalProperties: false
@@ -1307,6 +1462,51 @@ components:
         industry:
           $ref: '#/components/schemas/MerchantIndustry'
       additionalProperties: false
+    MerchantCredentialPagedResponse:
+      type: object
+      properties:
+        description:
+          $ref: '#/components/schemas/PaginatedDescription'
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantCredential'
+      additionalProperties: false
+    MerchantCredential:
+      type: object
+      description: "Merchant credential represents the credentials for one of the\
+        \ GoCart supported credential types (e.g., payment gateway credentials, api\
+        \ key, etc.)\n"
+      allOf:
+      - $ref: '#/components/schemas/ResourceBase'
+      - $ref: '#/components/schemas/MerchantCredentialBase'
+    MerchantCredentialBase:
+      type: object
+      description: "Container for one of the supported merchant credential types (e.g.,\
+        \ API Key, Payment Gateway Credentials, etc.).\n"
+      oneOf:
+      - $ref: '#/components/schemas/PaymentGatewayCredentials'
+      - $ref: '#/components/schemas/MerchantApiKey'
+    MerchantApiKey:
+      required:
+      - apiKey
+      - credentialType
+      type: object
+      properties:
+        credentialType:
+          type: string
+          example: API_Key
+          enum:
+          - API_Key
+        apiKey:
+          type: string
+          example: acf66a54-04f5-44e2-b43a-2a2d1026be0d
+      description: "API key for GoCart. This key is used to create HMAC hashes, which\
+        \ are necessary for all GoCart B2B integrations.\n\nNote: The credentialType\
+        \ is required and must be set to 'API_Key'\n"
     PaymentGatewayCredentials:
       type: object
       description: |
@@ -1321,8 +1521,14 @@ components:
       - acceptorId
       - accountId
       - accountToken
+      - credentialType
       type: object
       properties:
+        credentialType:
+          type: string
+          example: Express
+          enum:
+          - Express
         acceptorId:
           type: string
           example: "123456789"
@@ -1333,14 +1539,19 @@ components:
           type: string
           example: AAAC11165E88AEEE44DDD0A484FFF707C0D7EEE7053EBF8B8A3ABDBBB1DF456C3231111
       additionalProperties: false
-      description: |
-        Credentials for connecting to the Express payment gateway.
+      description: "Credentials for connecting to the Express payment gateway.\n\n\
+        Note: The credentialType is required and must be set to 'Express'\n"
     PaymentGatewayRaftCredentials:
       required:
+      - credentialType
       - licenseId
-      - merchantId
       type: object
       properties:
+        credentialType:
+          type: string
+          example: RAFT
+          enum:
+          - RAFT
         licenseId:
           type: string
           example: abcdef1234567890abcdef1234567890
@@ -1348,15 +1559,21 @@ components:
           type: string
           example: "1234567891234"
       additionalProperties: false
-      description: |
-        Credentials for connecting to the RAFT payment gateway.
+      description: "Credentials for connecting to the RAFT payment gateway.\n\nNote:\
+        \ The credentialType is required and must be set to 'RAFT'\n"
     PaymentGatewayVapCredentials:
       required:
+      - credentialType
       - merchantId
       - password
       - username
       type: object
       properties:
+        credentialType:
+          type: string
+          example: VAP
+          enum:
+          - VAP
         username:
           type: string
           example: kennypowers
@@ -1367,15 +1584,21 @@ components:
           type: string
           example: "123456789"
       additionalProperties: false
-      description: |
-        Credentials for connecting to the VAP payment gateway.
+      description: "Credentials for connecting to the VAP payment gateway.\n\nNote:\
+        \ The credentialType is required and must be set to 'VAP'\n"
     PaymentGatewayWpgCredentials:
       required:
+      - credentialType
       - merchantCode
       - password
       - username
       type: object
       properties:
+        credentialType:
+          type: string
+          example: WPG
+          enum:
+          - WPG
         username:
           type: string
           example: kennypowers
@@ -1386,8 +1609,8 @@ components:
           type: string
           example: "123456789"
       additionalProperties: false
-      description: |
-        Credentials for connecting to the WPG payment gateway.
+      description: "Credentials for connecting to the WPG payment gateway.\n\nNote:\
+        \ The credentialType is required and must be set to 'WPG'\n"
     ProblemDetails:
       type: object
       properties:
@@ -1435,21 +1658,25 @@ components:
       type: object
       properties:
         totalRecords:
+          minimum: 0
           type: integer
           format: int32
           readOnly: true
           example: 1223
         totalPages:
+          minimum: 0
           type: integer
           format: int32
           readOnly: true
           example: 13
         pageNumber:
+          minimum: 0
           type: integer
           format: int32
           readOnly: true
           example: 4
         pageSize:
+          minimum: 0
           type: integer
           format: int32
           readOnly: true
@@ -1475,6 +1702,7 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+      example: null
   responses:
     OK:
       description: |
@@ -1651,6 +1879,18 @@ components:
         type: string
         format: uuid
         example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+    CredentialIdPathParameter:
+      name: credentialId
+      in: path
+      description: |
+        The unique identifier for the merchant credential.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
     MerchantUserIdPathParameter:
       name: userId
       in: path
