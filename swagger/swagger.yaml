@@ -1602,6 +1602,10 @@ components:
       - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
       - $ref: '#/components/schemas/MerchantSettlementTypeConfig'
       - $ref: '#/components/schemas/MerchantTaxTypeConfig'
+      - $ref: '#/components/schemas/MerchantTippingConfig'
+      - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
+      - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
+      - $ref: '#/components/schemas/MerchantPayByLinkConfig'
     MerchantCoBrandingConfig:
       required:
       - cobranding
@@ -1697,6 +1701,70 @@ components:
         |--------|-----------|
         |Taxable|The merchant charges tax.|
         |NonTaxable|The merchant doesn't charge tax.|
+    MerchantTippingConfig:
+      required:
+      - tippingEnabled
+      type: object
+      properties:
+        tippingEnabled:
+          type: boolean
+          example: true
+          default: false
+      description: |
+        The tipping model the merchant operates under.
+
+        |Type    |Description|
+        |--------|-----------|
+        |true|The merchant offers a tip option on sales.|
+        |false|The merchant doesn't offer a tipping option on sales.|
+    MerchantGoCartCheckoutButtonConfig:
+      required:
+      - checkoutButtonEnabled
+      type: object
+      properties:
+        checkoutButtonEnabled:
+          type: boolean
+          example: true
+          default: false
+      description: |
+        Whether the GoCart checkout button is enabled for the merchant or not.
+
+        |Type    |Description|
+        |--------|-----------|
+        |true|GoCart checkout button enabled.|
+        |false|GoCart checkout button not enabled.|
+    MerchantExpeditedGuestCheckoutConfig:
+      required:
+      - expeditedGuestCheckoutEnabled
+      type: object
+      properties:
+        expeditedGuestCheckoutEnabled:
+          type: boolean
+          example: true
+          default: false
+      description: |
+        Whether the GoCart expedited guest checkout is enabled for the merchant or not.
+
+        |Type    |Description|
+        |--------|-----------|
+        |true|GoCart expedited guest checkout enabled.|
+        |false|GoCart expedited guest checkout not enabled.|
+    MerchantPayByLinkConfig:
+      required:
+      - payByLinkEnabled
+      type: object
+      properties:
+        payByLinkEnabled:
+          type: boolean
+          example: true
+          default: false
+      description: |
+        Whether the GoCart Pay By Link is enabled for the merchant or not.
+
+        |Type    |Description|
+        |--------|-----------|
+        |true|GoCart Pay By Link checkout enabled.|
+        |false|GoCart Pay By Link not enabled.|
     MerchantUserSummariesPagedResponse:
       type: object
       properties:
