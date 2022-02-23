@@ -1311,7 +1311,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     post:
       tags:
-      - MerchantConfig
+      - Merchant Config
       summary: Creates a new merchant configuration
       description: |
         Creates a new merchant configuration for the specified merchant.
@@ -1330,16 +1330,150 @@ paths:
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
       requestBody:
-        description: Create merchant configuration input
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateMerchantConfigInput'
+              $ref: '#/components/schemas/MerchantConfigRequestBody'
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
             \ The identity for the resource should be included in the response payload\
             \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/configs/{configId}:
+    get:
+      tags:
+      - Merchant Config
+      summary: Retrieves a merchant configuration information
+      description: |
+        Retrieves a merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: configId
+        in: path
+        description: |
+          The unique identifier for the merchant config.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantConfig'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    put:
+      tags:
+      - Merchant Config
+      summary: Updates a merchant configuraton
+      description: |
+        Updates an existing merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: configId
+        in: path
+        description: |
+          The unique identifier for the merchant config.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantConfigRequestBody'
+      responses:
+        "200":
+          description: |
+            Successfully processed the request
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    delete:
+      tags:
+      - Merchant Config
+      summary: Removes a merchant configuration
+      description: |
+        Deletes a merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: configId
+        in: path
+        description: |
+          The unique identifier for the merchant config.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      responses:
+        "204":
+          description: "[204] Successfully processed the request. No content to return\
+            \ (typically related to the delete of a resource).\n"
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1606,6 +1740,44 @@ components:
       - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
       - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
       - $ref: '#/components/schemas/MerchantPayByLinkConfig'
+    MerchantConfigRequestBody:
+      type: object
+      additionalProperties: false
+      description: |
+        Request body payload for creating and updating a merchant config.
+      allOf:
+      - $ref: '#/components/schemas/MerchantConfigBase'
+    MerchantConfigBase:
+      type: object
+      additionalProperties: false
+      description: |
+        Base representation of a a single merchant configuration.
+      oneOf:
+      - $ref: '#/components/schemas/MerchantCoBrandingConfig'
+      - $ref: '#/components/schemas/MerchantPaymentProcessorConfig'
+      - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
+      - $ref: '#/components/schemas/MerchantSettlementTypeConfig'
+      - $ref: '#/components/schemas/MerchantTaxTypeConfig'
+      - $ref: '#/components/schemas/MerchantTippingConfig'
+      - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
+      - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
+      - $ref: '#/components/schemas/MerchantPayByLinkConfig'
+    MerchantTippingConfig:
+      required:
+      - tippingEnabled
+      type: object
+      properties:
+        tippingEnabled:
+          type: boolean
+          example: true
+          default: false
+      description: |
+        The tipping model the merchant operates under.
+
+        |Type    |Description|
+        |--------|-----------|
+        |true|The merchant offers a tip option on sales.|
+        |false|The merchant doesn't offer a tipping option on sales.|
     MerchantCoBrandingConfig:
       required:
       - cobranding
@@ -1701,22 +1873,6 @@ components:
         |--------|-----------|
         |Taxable|The merchant charges tax.|
         |NonTaxable|The merchant doesn't charge tax.|
-    MerchantTippingConfig:
-      required:
-      - tippingEnabled
-      type: object
-      properties:
-        tippingEnabled:
-          type: boolean
-          example: true
-          default: false
-      description: |
-        The tipping model the merchant operates under.
-
-        |Type    |Description|
-        |--------|-----------|
-        |true|The merchant offers a tip option on sales.|
-        |false|The merchant doesn't offer a tipping option on sales.|
     MerchantGoCartCheckoutButtonConfig:
       required:
       - checkoutButtonEnabled
@@ -2006,10 +2162,10 @@ components:
         additionalProperties: false
     ResourceBase:
       required:
-      - externalId
+      - id
       type: object
       properties:
-        externalId:
+        id:
           type: string
           description: |
             The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
@@ -2255,6 +2411,18 @@ components:
       in: path
       description: |
         The unique identifier for the merchant credential.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+    ConfigIdPathParameter:
+      name: configId
+      in: path
+      description: |
+        The unique identifier for the merchant config.
       required: true
       style: simple
       explode: false
