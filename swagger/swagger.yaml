@@ -1249,6 +1249,104 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/configs:
+    get:
+      tags:
+      - Merchant Configurations
+      summary: Retrieves list of valid configuration for a merchant
+      description: |
+        Retrieves the list of configurations associated with this merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
+      - name: pageSize
+        in: query
+        description: |
+          The number of items per page
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          example: 25
+          default: 25
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantConfigPagedResponse'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+    post:
+      tags:
+      - MerchantConfig
+      summary: Creates a new merchant configuration
+      description: |
+        Creates a new merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      requestBody:
+        description: Create merchant configuration input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMerchantConfigInput'
+      responses:
+        "201":
+          description: "[201] The request succeeded and a new resource was created.\
+            \ The identity for the resource should be included in the response payload\
+            \ and/or header.\n"
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
 components:
   schemas:
     CallbackType:
@@ -1478,22 +1576,127 @@ components:
       allOf:
       - $ref: '#/components/schemas/MerchantBase'
       - $ref: '#/components/schemas/ResourceBase'
-    MerchantConfig:
-      required:
-      - name
-      - value
+    MerchantConfigPagedResponse:
       type: object
       properties:
-        name:
-          type: string
-        value:
-          type: string
-        isInherited:
-          type: boolean
-        externalId:
-          type: string
-          nullable: true
+        description:
+          $ref: '#/components/schemas/PaginatedDescription'
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantConfig'
       additionalProperties: false
+    MerchantConfig:
+      type: object
+      additionalProperties: false
+      description: |
+        Represents a single merchant configuration.
+      allOf:
+      - $ref: '#/components/schemas/InheritableResourceBase'
+      oneOf:
+      - $ref: '#/components/schemas/MerchantCoBrandingConfig'
+      - $ref: '#/components/schemas/MerchantPaymentProcessorConfig'
+      - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
+      - $ref: '#/components/schemas/MerchantSettlementTypeConfig'
+      - $ref: '#/components/schemas/MerchantTaxTypeConfig'
+    MerchantCoBrandingConfig:
+      required:
+      - cobranding
+      type: object
+      properties:
+        cobranding:
+          $ref: '#/components/schemas/MerchantCoBrandingValueConfig'
+      description: |
+        The co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme' and 'buttonTextTheme'.
+    MerchantCoBrandingValueConfig:
+      type: object
+      properties:
+        logoTheme:
+          type: string
+          example: LIGHT
+          enum:
+          - LIGHT
+          - DARK
+        buttonTextTheme:
+          type: string
+          example: DARK
+          enum:
+          - LIGHT
+          - DARK
+      description: |
+        The co-branding configuation value config. This defines the structure for the value stored for the co-branding configuration.
+    MerchantPaymentProcessorConfig:
+      required:
+      - paymentProcessor
+      type: object
+      properties:
+        paymentProcessor:
+          type: string
+          example: Express
+          enum:
+          - Express
+          - RAFT
+          - VAP
+          - WPG
+      description: |
+        The primary payment processor for the merchant.
+    MerchantFulfillmentTypeConfig:
+      required:
+      - fulfillmentType
+      type: object
+      properties:
+        fulfillmentType:
+          type: string
+          example: Service
+          enum:
+          - Shipping
+          - Service
+      description: |
+        The type of fulfillment the merchant operates under.
+
+        |Type    |Description|
+        |--------|-----------|
+        |Shipping|The merchant ships/delivers their product/offering.|
+        |Service |The merchant is selling a service of some form.    |
+    MerchantSettlementTypeConfig:
+      required:
+      - settlementType
+      type: object
+      properties:
+        settlementType:
+          type: string
+          example: Sale
+          enum:
+          - Sale
+          - AuthCapture
+      description: |
+        The type of settlement the merchant operates under.
+
+        |Type    |Description|
+        |--------|-----------|
+        |Sale|The merchant completes the transfer of funds at time of sale.|
+        |AuthCapture|The merchant will authorize the funds and capture them at a future time.|
+    MerchantTaxTypeConfig:
+      required:
+      - taxType
+      type: object
+      properties:
+        taxType:
+          type: string
+          example: Taxable
+          enum:
+          - Taxable
+          - NonTaxable
+      description: |
+        The tax model the merchant operates under.
+
+        |Type    |Description|
+        |--------|-----------|
+        |Taxable|The merchant charges tax.|
+        |NonTaxable|The merchant doesn't charge tax.|
     MerchantUserSummariesPagedResponse:
       type: object
       properties:
