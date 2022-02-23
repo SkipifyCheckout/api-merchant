@@ -1488,15 +1488,13 @@ components:
     MerchantSummariesPagedResponse:
       type: object
       properties:
-        description: {}
-        links:
-          $ref: '#/components/schemas/Links'
         data:
           type: array
-          readOnly: true
           items:
             $ref: '#/components/schemas/MerchantSummary'
       additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantDetails:
       type: object
       properties:
@@ -1669,16 +1667,14 @@ components:
     MerchantConfigPagedResponse:
       type: object
       properties:
-        description:
-          $ref: '#/components/schemas/PaginatedDescription'
-        links:
-          $ref: '#/components/schemas/Links'
         data:
           type: array
           readOnly: true
           items:
             $ref: '#/components/schemas/MerchantConfig'
       additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantConfig:
       type: object
       additionalProperties: false
@@ -1880,16 +1876,14 @@ components:
     MerchantUserSummariesPagedResponse:
       type: object
       properties:
-        description:
-          $ref: '#/components/schemas/PaginatedDescription'
-        links:
-          $ref: '#/components/schemas/Links'
         data:
           type: array
           readOnly: true
           items:
             $ref: '#/components/schemas/MerchantUser'
       additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantUser:
       type: object
       additionalProperties: false
@@ -1942,16 +1936,14 @@ components:
     MerchantCredentialPagedResponse:
       type: object
       properties:
-        description:
-          $ref: '#/components/schemas/PaginatedDescription'
-        links:
-          $ref: '#/components/schemas/Links'
         data:
           type: array
           readOnly: true
           items:
             $ref: '#/components/schemas/MerchantCredential'
       additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantCredential:
       type: object
       description: "Merchant credential represents the credentials for one of the\
@@ -2103,6 +2095,36 @@ components:
       - MERCHANTADMIN
       - SUPERADMIN
       - MERCHANTPARTNER
+    ExceptionResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    ResourceBase:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: |
+            The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
+          format: uuid
+          example: dbde7ee4-a2bf-4b52-a14a-ac3b48bef9b4
+      additionalProperties: false
+    PaginatedResponseBase:
+      type: object
+      properties:
+        description:
+          $ref: '#/components/schemas/PaginatedDescription'
+        links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+      description: |
+        Base object for all GoCart paginated GET operations.
     PaginatedDescription:
       type: object
       properties:
@@ -2130,26 +2152,6 @@ components:
           format: int32
           readOnly: true
           example: 100
-      additionalProperties: false
-    ExceptionResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          nullable: true
-          readOnly: true
-      additionalProperties: false
-    ResourceBase:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-          description: |
-            The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
-          format: uuid
-          example: dbde7ee4-a2bf-4b52-a14a-ac3b48bef9b4
       additionalProperties: false
     Links:
       type: object
