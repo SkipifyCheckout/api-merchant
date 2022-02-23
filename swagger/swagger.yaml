@@ -60,8 +60,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -73,8 +71,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -706,8 +702,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -719,8 +713,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -1039,8 +1031,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -1052,8 +1042,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -1252,7 +1240,7 @@ paths:
   /merchants/{merchantId}/configs:
     get:
       tags:
-      - Merchant Configurations
+      - Merchant Config
       summary: Retrieves list of valid configuration for a merchant
       description: |
         Retrieves the list of configurations associated with this merchant.
@@ -1270,31 +1258,27 @@ paths:
           type: string
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: pageNumber
-        in: query
-        description: |
-          The page number to fetch
-        required: false
-        style: form
-        explode: true
-        schema:
-          minimum: 1
-          type: integer
-          example: 1
-          default: 1
       - name: pageSize
         in: query
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
           type: integer
           example: 25
           default: 25
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
       responses:
         "200":
           description: Success
@@ -1489,14 +1473,6 @@ components:
         Enum of callback types supported by the GoCart platform.
       enum:
       - ShippingAndTax
-    ExceptionResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          nullable: true
-          readOnly: true
-      additionalProperties: false
     InheritableResourceBase:
       required:
       - isInherited
@@ -1509,35 +1485,10 @@ components:
           example: false
       allOf:
       - $ref: '#/components/schemas/ResourceBase'
-    Links:
-      type: object
-      properties:
-        previousPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-        nextPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-        firstPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-        lastPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-      additionalProperties: false
     MerchantSummariesPagedResponse:
       type: object
       properties:
-        description:
-          $ref: '#/components/schemas/PaginatedDescription'
+        description: {}
         links:
           $ref: '#/components/schemas/Links'
         data:
@@ -1678,6 +1629,11 @@ components:
     MerchantComplexRequestBody:
       type: object
       properties:
+        merchantCredentials:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantCredentialRequestBody'
         merchantDomains:
           type: array
           nullable: true
@@ -1687,7 +1643,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/CreateMerchantConfigInput'
+            $ref: '#/components/schemas/MerchantConfigRequestBody'
         merchantCallbacks:
           type: array
           nullable: true
@@ -1697,7 +1653,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/MerchantComplexRequestBody_merchantUsers'
+            $ref: '#/components/schemas/MerchantUserRequestBody'
       allOf:
       - $ref: '#/components/schemas/MerchantBase'
     MerchantSummary:
@@ -2138,40 +2094,6 @@ components:
       additionalProperties: false
       description: "Credentials for connecting to the WPG payment gateway.\n\nNote:\
         \ The credentialType is required and must be set to 'WPG'\n"
-    ProblemDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          nullable: true
-        title:
-          type: string
-          nullable: true
-        status:
-          type: integer
-          format: int32
-          nullable: true
-        detail:
-          type: string
-          nullable: true
-        instance:
-          type: string
-          nullable: true
-      additionalProperties:
-        type: object
-        additionalProperties: false
-    ResourceBase:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-          description: |
-            The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
-          format: uuid
-          example: dbde7ee4-a2bf-4b52-a14a-ac3b48bef9b4
-      additionalProperties: false
     Role:
       type: string
       description: |
@@ -2209,155 +2131,62 @@ components:
           readOnly: true
           example: 100
       additionalProperties: false
-    CreateMerchantConfigInput:
+    ExceptionResponse:
       type: object
       properties:
-        name:
+        error:
           type: string
           nullable: true
-        value:
-          type: string
-          nullable: true
+          readOnly: true
       additionalProperties: false
-    MerchantComplexRequestBody_merchantUsers:
+    ResourceBase:
+      required:
+      - id
       type: object
       properties:
-        email:
+        id:
           type: string
-          nullable: true
-        role:
-          type: string
-          nullable: true
+          description: |
+            The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
+          format: uuid
+          example: dbde7ee4-a2bf-4b52-a14a-ac3b48bef9b4
       additionalProperties: false
-      example: null
+    Links:
+      type: object
+      properties:
+        previousPage:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+        nextPage:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+        firstPage:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+        lastPage:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+      additionalProperties: false
   responses:
-    OK:
-      description: |
-        Successfully processed the request
     Created:
       description: "[201] The request succeeded and a new resource was created. The\
         \ identity for the resource should be included in the response payload and/or\
         \ header.\n"
+    OK:
+      description: |
+        Successfully processed the request
     NoContent:
       description: "[204] Successfully processed the request. No content to return\
         \ (typically related to the delete of a resource).\n"
-    BadRequest:
-      description: "[400] The server does not understand the request. This is generally\
-        \ due to bad syntax or because the Content-Type header was not correctly set\
-        \ to application/json.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: "[401] The necessary authentication credential were not submitted\
-        \ in the request or are incorrect. The client must be authenticated to view\
-        \ the response.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Forbidden:
-      description: "[403] The client does not have rights to access the resource or\
-        \ content. Unlike 401, the client's identity is known to the server.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: "[404] The server can't locate the requested resource. This could\
-        \ mean the requested resource doesn't exist yet, but may exist in the future.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Conflict:
-      description: "[409] This response is sent when a request conflicts with the\
-        \ current state of the target resource.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    UnprocessableEntity:
-      description: "[422] The request was well-formed but was unable to be processed\
-        \ due to semantic errors. \n\nIn the context of GoCart, a 422 could be returned\
-        \ for such cases as (non-exhaustive list):\n\nIncorrectly formatted input\
-        \ (e.g, email address, phone number, zip code, etc.)\n\nCreating a customer\
-        \ missing email address or phone number\n\nIn cases where a 422 response is\
-        \ returned, there should be a response body that contains secure error level\
-        \ details.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Locked:
-      description: "[423] The requested resource (e.g., customer or merchant) is currently\
-        \ locked. Resources can be locked if they repeatedly exceed their API request\
-        \ limit, or if there is an issue with the account, such as a detected compromise\
-        \ or fraud risk.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ToManyRequests:
-      description: "[429] The user has sent too many requests in a given amount of\
-        \ time (\"rate limiting\").\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    InternalServerError:
-      description: "[500] The server has encountered a situation it doesn't know how\
-        \ to handle.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotImplemented:
-      description: "[501] The request method is not supported by the server and cannot\
-        \ be handled. \n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ServiceNotAvailable:
-      description: "[503] The server is not ready to handle the request. These type\
-        \ of errors should be tracked and reported on GoCarts future status page.\
-        \ Ideally the response should contain details related to when the service\
-        \ could be expected to return (RETRY-AFTER header). This type of response\
-        \ SHOULD NOT be cached.\n"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   parameters:
-    PageNumber:
-      name: pageNumber
-      in: query
-      description: |
-        The page number to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        minimum: 1
-        type: integer
-        example: 1
-        default: 1
-    PageSize:
-      name: pageSize
-      in: query
-      description: |
-        The number of items per page
-      required: false
-      style: form
-      explode: true
-      schema:
-        maximum: 50
-        minimum: 1
-        type: integer
-        example: 25
-        default: 25
     MerchantIdQueryParameter:
       name: merchantId
       in: query
