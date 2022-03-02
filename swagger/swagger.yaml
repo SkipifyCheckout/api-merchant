@@ -1008,7 +1008,7 @@ paths:
   /merchants/{merchantId}/credentials:
     get:
       tags:
-      - Merchant Credential
+      - Merchant Credentials
       summary: Retrieves List of merchants credentials
       description: |
         Retrieves the list of merchant credentials associated with this merchant.
@@ -1063,7 +1063,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     post:
       tags:
-      - Merchant Credential
+      - Merchant Credentials
       summary: Creates merchant credential
       description: |
         Creates a new merchant credential associated with this merchant.
@@ -1103,7 +1103,7 @@ paths:
   /merchants/{merchantId}/credentials/{credentialId}:
     get:
       tags:
-      - Merchant Credential
+      - Merchant Credentials
       summary: Retrieves a merchant credential information
       description: |
         Retrieves a new merchant credential with the specified id.
@@ -1149,7 +1149,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     put:
       tags:
-      - Merchant Credential
+      - Merchant Credentials
       summary: Updates a merchant credential
       description: |
         Updates an existing merchant credential associated with this merchant.
@@ -1197,7 +1197,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     delete:
       tags:
-      - Merchant Credential
+      - Merchant Credentials
       summary: Removes a merchant credential
       description: |
         Deletes a merchant credential associated with this merchant.
@@ -1240,7 +1240,7 @@ paths:
   /merchants/{merchantId}/configs:
     get:
       tags:
-      - Merchant Config
+      - Merchant Configurations
       summary: Retrieves list of valid configuration for a merchant
       description: |
         Retrieves the list of configurations associated with this merchant.
@@ -1295,7 +1295,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     post:
       tags:
-      - Merchant Config
+      - Merchant Configurations
       summary: Creates a new merchant configuration
       description: |
         Creates a new merchant configuration for the specified merchant.
@@ -1333,7 +1333,7 @@ paths:
   /merchants/{merchantId}/configs/{configId}:
     get:
       tags:
-      - Merchant Config
+      - Merchant Configurations
       summary: Retrieves a merchant configuration information
       description: |
         Retrieves a merchant configuration for the specified merchant.
@@ -1378,7 +1378,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     put:
       tags:
-      - Merchant Config
+      - Merchant Configurations
       summary: Updates a merchant configuraton
       description: |
         Updates an existing merchant configuration for the specified merchant.
@@ -1425,7 +1425,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
     delete:
       tags:
-      - Merchant Config
+      - Merchant Configurations
       summary: Removes a merchant configuration
       description: |
         Deletes a merchant configuration for the specified merchant.
@@ -1465,6 +1465,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/configs/logos:
+    post:
+      tags:
+      - Upload
+      summary: Uploads merchant image
+      description: "Uploads an image for the merchant.\n\nA valid **JWT** or **HMAC**\
+        \ is required to access this endpoint.\n\nMust be a SUPERADMIN, MERCHANTPARTNER,\
+        \ or MERCHANTADMIN for the specified merchant.\n"
+      parameters:
+      - name: merchantId
+        in: path
+        description: Merchant Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Merchant Id
+          nullable: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/configs_logos_body'
+            encoding:
+              ContentType:
+                style: form
+              ContentDisposition:
+                style: form
+              Headers:
+                style: form
+              Length:
+                style: form
+              Name:
+                style: form
+              FileName:
+                style: form
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ImageUploadResult'
+        default:
+          description: |
+            Standard error response codes are returned by this service method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
 components:
   schemas:
     CallbackType:
@@ -1473,6 +1524,15 @@ components:
         Enum of callback types supported by the GoCart platform.
       enum:
       - ShippingAndTax
+    ImageUploadResult:
+      type: object
+      properties:
+        fileName:
+          type: string
+          nullable: true
+          readOnly: true
+          example: someFileName.csv
+      additionalProperties: false
     InheritableResourceBase:
       required:
       - isInherited
@@ -1631,7 +1691,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/MerchantCredentialRequestBody'
+            $ref: '#/components/schemas/PaymentGatewayCredentials'
         merchantDomains:
           type: array
           nullable: true
@@ -2177,6 +2237,37 @@ components:
           nullable: true
           readOnly: true
       additionalProperties: false
+    configs_logos_body:
+      type: object
+      properties:
+        ContentType:
+          type: string
+          description: The raw Content-Type header of the uploaded file.
+          nullable: true
+        ContentDisposition:
+          type: string
+          description: The raw Content-Disposition header of the uploaded file.
+          nullable: true
+        Headers:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: The header dictionary of the uploaded file.
+          nullable: true
+        Length:
+          type: integer
+          description: The file length in bytes.
+          format: int64
+        Name:
+          type: string
+          description: The form field name from the Content-Disposition header.
+          nullable: true
+        FileName:
+          type: string
+          description: The file name from the Content-Disposition header.
+          nullable: true
   responses:
     Created:
       description: "[201] The request succeeded and a new resource was created. The\
