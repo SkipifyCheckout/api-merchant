@@ -2049,8 +2049,8 @@ components:
       description: "Container for one of the supported merchant credential types (e.g.,\
         \ API Key, Payment Gateway Credentials, etc.).\n"
       oneOf:
-      - $ref: '#/components/schemas/PaymentGatewayCredentials'
       - $ref: '#/components/schemas/MerchantApiKey'
+      - $ref: '#/components/schemas/PaymentGatewayCredentials'
     MerchantApiKey:
       required:
       - apiKey
