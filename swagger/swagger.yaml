@@ -1743,6 +1743,7 @@ components:
       allOf:
       - $ref: '#/components/schemas/InheritableResourceBase'
       oneOf:
+      - $ref: '#/components/schemas/MerchantPayByLinkCoBrandingConfig'
       - $ref: '#/components/schemas/MerchantCoBrandingConfig'
       - $ref: '#/components/schemas/MerchantPaymentProcessorConfig'
       - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
@@ -1765,6 +1766,7 @@ components:
       description: |
         Base representation of a a single merchant configuration.
       oneOf:
+      - $ref: '#/components/schemas/MerchantPayByLinkCoBrandingConfig'
       - $ref: '#/components/schemas/MerchantCoBrandingConfig'
       - $ref: '#/components/schemas/MerchantPaymentProcessorConfig'
       - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
@@ -1790,6 +1792,30 @@ components:
         |--------|-----------|
         |true|The merchant offers a tip option on sales.|
         |false|The merchant doesn't offer a tipping option on sales.|
+    MerchantPayByLinkCoBrandingConfig:
+      required:
+      - cobranding
+      type: object
+      properties:
+        cobranding:
+          $ref: '#/components/schemas/MerchantPayByLinkCoBrandingValueConfig'
+      description: "The Pay By Link co-branding configuation for the merchant. This\
+        \ is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.\n"
+    MerchantPayByLinkCoBrandingValueConfig:
+      type: object
+      properties:
+        displayName:
+          type: string
+          example: MK Fine Woodworking
+        logoSrc:
+          type: string
+          example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
+        color:
+          type: string
+          format: hex color code
+          example: '#5E6BA3'
+      description: |
+        The Pay By Link co-branding configuation value config. This defines the structure for the value stored for the co-branding configuration.
     MerchantCoBrandingConfig:
       required:
       - cobranding
