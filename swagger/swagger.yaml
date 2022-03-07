@@ -60,6 +60,8 @@ paths:
         description: |
           The number of items per page
         required: false
+        style: form
+        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -71,6 +73,8 @@ paths:
         description: |
           The page number to fetch
         required: false
+        style: form
+        explode: true
         schema:
           minimum: 1
           type: integer
@@ -702,6 +706,8 @@ paths:
         description: |
           The number of items per page
         required: false
+        style: form
+        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -713,6 +719,8 @@ paths:
         description: |
           The page number to fetch
         required: false
+        style: form
+        explode: true
         schema:
           minimum: 1
           type: integer
@@ -1031,6 +1039,8 @@ paths:
         description: |
           The number of items per page
         required: false
+        style: form
+        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -1042,6 +1052,8 @@ paths:
         description: |
           The page number to fetch
         required: false
+        style: form
+        explode: true
         schema:
           minimum: 1
           type: integer
@@ -1263,6 +1275,8 @@ paths:
         description: |
           The number of items per page
         required: false
+        style: form
+        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -1274,6 +1288,8 @@ paths:
         description: |
           The page number to fetch
         required: false
+        style: form
+        explode: true
         schema:
           minimum: 1
           type: integer
