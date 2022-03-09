@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Merchant API
   description: "Merchant API used to manage merchant configurations (configs, users,\
-    \ domains, credentials).\n"
+    \ domains, credentials, and general merchant management).\n"
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
