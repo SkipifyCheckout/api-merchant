@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: readmeio/rdme@6.5.0
         with:
-          rdme: openapi swagger-v1/swagger-v1.yaml --key=${{ secrets.README_IO_API_KEY }} --id=${{ secrets.README_API_MERCHANT_ID }}
+          rdme: openapi swagger-v1/swagger.yaml --key=${{ secrets.README_IO_API_KEY }} --id=${{ secrets.README_API_V1_DEFINITION_ID }}
