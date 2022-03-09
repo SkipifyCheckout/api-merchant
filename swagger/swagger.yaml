@@ -378,7 +378,11 @@ paths:
           example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "200":
-          $ref: '#/components/schemas/MerchantCallback'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantCallback'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -583,7 +587,11 @@ paths:
           example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "200":
-          $ref: '#/components/schemas/MerchantDomain'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantDomain'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1641,7 +1649,7 @@ components:
           $ref: '#/components/schemas/CallbackType'
     MerchantCallback:
       type: object
-      additionalProperties: false
+      description: Details related to a type of merchant callback.
       allOf:
       - $ref: '#/components/schemas/MerchantCallbackBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
@@ -1666,6 +1674,7 @@ components:
       - domain
       type: object
       additionalProperties: false
+      description: Details related to a merchant's domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
