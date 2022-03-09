@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: readmeio/github-readme-sync@v2
+      - uses: readmeio/rdme@6.5.0
         with:
-          readme-oas-key: CUcHsPjdzCF4PUwpROfH8RubjASUdWib:61de07b7822b6c03504b39cb
-          oas-file-path: './swagger/swagger.yaml'
+          rdme: openapi swagger-v1/swagger-v1.yaml --key=${{ secrets.README_IO_API_KEY }} --id=${{ secrets.README_API_MERCHANT_ID }}
