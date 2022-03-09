@@ -26,7 +26,7 @@ tags:
     Management of a merchant's credentials for such things as payment gateways and API keys.
 - name: Merchant Configurations
   description: "Management of a merchant's overall configurations including: feature\
-    \ toggles,\ndomain registration, integration credentials, etc.\n"
+    \ toggles, domain registration integration credentials, etc.\n"
 - name: Merchant Domain
   description: |
     Merchant domain related API service methods.
@@ -113,9 +113,9 @@ paths:
               $ref: '#/components/schemas/MerchantComplexRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+          description: "[201] The request succeeded and a new resource was created.\n\
+            The identity for the resource should be included in the response payload\n\
+            and/or header.\n"
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1495,7 +1495,7 @@ paths:
       - Upload
       summary: Uploads merchant image
       description: "Uploads an image for the merchant.\n\nA valid **JWT** or **HMAC**\
-        \ is required to access this endpoint.\n\nMust be a SUPERADMIN, MERCHANTPARTNER,\
+        \ is required to access this endpoint.\\n\\nMust be a SUPERADMIN, MERCHANTPARTNER,\
         \ or MERCHANTADMIN for the specified merchant.\n"
       parameters:
       - name: merchantId
@@ -2170,7 +2170,7 @@ components:
           type: string
           example: "123456789"
       additionalProperties: false
-      description: "Credentials for connecting to the VAP payment gateway.\n\nNote:\
+      description: "Credentials for connecting to the VAP payment gateway.  \n\nNote:\
         \ The credentialType is required and must be set to 'VAP'\n"
     PaymentGatewayWpgCredentials:
       required:
@@ -2195,7 +2195,7 @@ components:
           type: string
           example: "123456789"
       additionalProperties: false
-      description: "Credentials for connecting to the WPG payment gateway.\n\nNote:\
+      description: "Credentials for connecting to the WPG payment gateway. \n\nNote:\
         \ The credentialType is required and must be set to 'WPG'\n"
     Role:
       type: string
