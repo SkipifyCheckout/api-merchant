@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   title: Merchant API
-  description: "Merchant API used to manage merchant configurations (configs, users,\
-    \ domains, credentials).\n"
+  description: |
+    Merchant API used to manage merchant configurations (configs, users, domains, credentials).
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -25,14 +25,15 @@ tags:
   description: |
     Management of a merchant's credentials for such things as payment gateways and API keys.
 - name: Merchant Configurations
-  description: "Management of a merchant's overall configurations including: feature\
-    \ toggles, domain registration integration credentials, etc.\n"
+  description: |
+    Management of a merchant's overall configurations including: feature toggles, domain registration integration credentials, etc.
 - name: Merchant Domain
   description: |
     Merchant domain related API service methods.
 - name: Merchant User
   description: |
     Merchant users management related API service methods.
+
 paths:
   /merchants:
     get:
@@ -44,38 +45,9 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/HMAC is created under.
       parameters:
-      - name: merchantId
-        in: query
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: pageSize
-        in: query
-        description: |
-          The number of items per page
-        required: false
-        schema:
-          maximum: 50
-          minimum: 1
-          type: integer
-          example: 25
-          default: 25
-      - name: pageNumber
-        in: query
-        description: |
-          The page number to fetch
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          example: 1
-          default: 1
+      - $ref: '#/components/parameters/MerchantIdQueryParameter'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -89,19 +61,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant
       summary: Creates a new merchant
-      description: "Creates a new merchant. On creation of a new merchant there is\
-        \ the opporunity to seed the merchant with configuration, domain, and callback\
-        \ details. There is also the opportunity to provision users with access to\
-        \ the merchant.\n\nIt is not required to provision resources like merchant\
-        \ domains, configurations, and callbacks under the context of the merchant\
-        \ during initial creations. There are individual APIs that enable one to manage\
-        \ the aforementioned resources.\n\nA valid **JWT** or **HMAC** is required\
-        \ to access this endpoint.\n"
+      description: |
+        Creates a new merchant. On creation of a new merchant there is the opporunity to seed the merchant with configuration, domain, and callback details. There is also the opportunity to provision users with access to the merchant.
+        
+        It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
+        
+        A valid **JWT** or **HMAC** is required to access this endpoint.
       requestBody:
         content:
           application/json:
@@ -109,16 +79,17 @@ paths:
               $ref: '#/components/schemas/MerchantComplexRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\n\
-            The identity for the resource should be included in the response payload\n\
-            and/or header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created.
+            The identity for the resource should be included in the response payload
+            and/or header.
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}:
     get:
       tags:
@@ -129,17 +100,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
         "200":
           description: Success
@@ -153,7 +114,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant
@@ -163,17 +124,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -189,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/industry:
     get:
       tags:
@@ -200,17 +151,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
         "200":
           description: Success
@@ -224,7 +165,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/sdk:
     get:
       tags:
@@ -237,17 +178,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
         "200":
           description: |
@@ -265,7 +196,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/callbacks:
     get:
       tags:
@@ -276,17 +207,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
         "200":
           description: Success
@@ -302,7 +223,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Callback
@@ -312,17 +233,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -330,16 +241,15 @@ paths:
               $ref: '#/components/schemas/MerchantCallbackRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource should be included in the response payload and/or header.
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/callbacks/{callbackId}:
     get:
       tags:
@@ -350,28 +260,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: callbackId
-        in: path
-        description: |
-          The unique identifier for the merchant callback in the context of a merchant.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/CallbackIdPathParameter'
       responses:
         "200":
           description: Success
@@ -385,7 +275,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Callback
@@ -395,28 +285,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: callbackId
-        in: path
-        description: |
-          The unique identifier for the merchant callback in the context of a merchant.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/CallbackIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -432,7 +302,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Callback
@@ -442,39 +312,19 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: callbackId
-        in: path
-        description: |
-          The unique identifier for the merchant callback in the context of a merchant.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/CallbackIdPathParameter'
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/domains:
     get:
       tags:
@@ -485,17 +335,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
         "200":
           description: Success
@@ -511,7 +351,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Domain
@@ -521,17 +361,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -539,16 +369,15 @@ paths:
               $ref: '#/components/schemas/MerchantDomainRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource should be included in the response payload and/or header.
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/domains/{domainId}:
     get:
       tags:
@@ -559,28 +388,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: domainId
-        in: path
-        description: |
-          The unique identifier for the merchant domain in the context of a merchant.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/DomainIdPathParameter'
       responses:
         "200":
           description: Success
@@ -594,7 +403,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Domain
@@ -604,28 +413,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: domainId
-        in: path
-        description: |
-          The unique identifier for the merchant domain in the context of a merchant.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/DomainIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -641,7 +430,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Domain
@@ -651,28 +440,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: domainId
-        in: path
-        description: |
-          The unique identifier for the merchant domain in the context of a merchant.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/DomainIdPathParameter'
       responses:
         "204":
           description: "[204] Successfully processed the request. No content to return\
@@ -683,7 +452,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/users:
     get:
       tags:
@@ -694,38 +463,9 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: pageSize
-        in: query
-        description: |
-          The number of items per page
-        required: false
-        schema:
-          maximum: 50
-          minimum: 1
-          type: integer
-          example: 25
-          default: 25
-      - name: pageNumber
-        in: query
-        description: |
-          The page number to fetch
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          example: 1
-          default: 1
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -739,7 +479,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant User
@@ -749,17 +489,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -767,16 +497,15 @@ paths:
               $ref: '#/components/schemas/MerchantUserRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource should be included in the response payload and/or header.
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/users/{userId}:
     get:
       tags:
@@ -787,28 +516,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
       responses:
         "200":
           description: Successfully retrieved the requested user.
@@ -822,7 +531,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant User
@@ -832,28 +541,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -872,7 +561,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant User
@@ -882,39 +571,19 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/users/{userId}/password:
     put:
       tags:
@@ -925,28 +594,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
       requestBody:
         description: Merchant User Password Change data
         content:
@@ -955,14 +604,15 @@ paths:
               $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
       responses:
         "204":
-          description: "[204] Successfully processed the request\n"
+          description: |
+            [204] Successfully processed the request
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/users/{userId}/password-reset:
     post:
       tags:
@@ -973,28 +623,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
       responses:
         "200":
           description: |
@@ -1011,7 +641,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/credentials:
     get:
       tags:
@@ -1022,38 +652,9 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: pageSize
-        in: query
-        description: |
-          The number of items per page
-        required: false
-        schema:
-          maximum: 50
-          minimum: 1
-          type: integer
-          example: 25
-          default: 25
-      - name: pageNumber
-        in: query
-        description: |
-          The page number to fetch
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          example: 1
-          default: 1
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -1067,7 +668,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Credentials
@@ -1077,17 +678,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         description: Create merchant credential for one of the GoCart supported credential
           types.
@@ -1097,16 +688,15 @@ paths:
               $ref: '#/components/schemas/MerchantCredentialRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource should be included in the response payload and/or header.
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/credentials/{credentialId}:
     get:
       tags:
@@ -1117,28 +707,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: credentialId
-        in: path
-        description: |
-          The unique identifier for the merchant credential.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/CredentialIdPathParameter'
       responses:
         "200":
           description: |
@@ -1153,7 +723,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Credentials
@@ -1163,28 +733,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: credentialId
-        in: path
-        description: |
-          The unique identifier for the merchant credential.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/CredentialIdPathParameter'
       requestBody:
         description: Update merchant credential input
         content:
@@ -1201,7 +751,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Credentials
@@ -1211,39 +761,19 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: credentialId
-        in: path
-        description: |
-          The unique identifier for the merchant credential.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/CredentialIdPathParameter'
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/configs:
     get:
       tags:
@@ -1254,38 +784,9 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: pageSize
-        in: query
-        description: |
-          The number of items per page
-        required: false
-        schema:
-          maximum: 50
-          minimum: 1
-          type: integer
-          example: 25
-          default: 25
-      - name: pageNumber
-        in: query
-        description: |
-          The page number to fetch
-        required: false
-        schema:
-          minimum: 1
-          type: integer
-          example: 1
-          default: 1
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -1299,7 +800,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Configurations
@@ -1309,17 +810,7 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -1327,16 +818,15 @@ paths:
               $ref: '#/components/schemas/MerchantConfigRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource should be included in the response payload and/or header.
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/configs/{configId}:
     get:
       tags:
@@ -1347,28 +837,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: configId
-        in: path
-        description: |
-          The unique identifier for the merchant config.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/ConfigIdPathParameter'
       responses:
         "200":
           description: Success
@@ -1382,7 +852,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Configurations
@@ -1392,28 +862,8 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: configId
-        in: path
-        description: |
-          The unique identifier for the merchant config.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/ConfigIdPathParameter'
       requestBody:
         content:
           application/json:
@@ -1429,7 +879,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Configurations
@@ -1439,59 +889,30 @@ paths:
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: configId
-        in: path
-        description: |
-          The unique identifier for the merchant config.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: '#/components/parameters/ConfigIdPathParameter'
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/configs/logos:
     post:
       tags:
       - Upload
       summary: Uploads merchant image
-      description: "Uploads an image for the merchant.\n\nA valid **JWT** or **HMAC**\
-        \ is required to access this endpoint.\\n\\nMust be a SUPERADMIN, MERCHANTPARTNER,\
-        \ or MERCHANTADMIN for the specified merchant.\n"
+      description: |
+        Uploads an image for the merchant.
+        
+        A valid **JWT** or **HMAC** is required to access this endpoint.\n\nMust be a SUPERADMIN, MERCHANTPARTNER, or MERCHANTADMIN for the specified merchant.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           multipart/form-data:
@@ -1523,7 +944,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
 components:
   schemas:
     CallbackType:
@@ -1552,7 +973,7 @@ components:
             Set to true if the callback url is inherited from a partner merchant; false if explicitly managed under the context of this merchant.
           example: false
       allOf:
-      - $ref: '#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
     MerchantSummariesPagedResponse:
       type: object
       properties:
@@ -1562,7 +983,7 @@ components:
             $ref: '#/components/schemas/MerchantSummary'
       additionalProperties: false
       allOf:
-      - $ref: '#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
     MerchantDetails:
       type: object
       properties:
@@ -1605,12 +1026,8 @@ components:
           description: The merchant's name
         partnerMerchantId:
           type: string
-          description: "The merchant this merchant rolls up to. This is common in\
-            \ an ISV setting where a merchant is onboarded into GoCart under the context\
-            \ of an ISV. Child merchants have the ability to inherit configuration\
-            \ details from the partner merchant, which can significantly simplify\
-            \ the management of merchant configurations across a large number of child\
-            \ merchants.\n"
+          description: |
+            The merchant this merchant rolls up to. This is common in an ISV setting where a merchant is onboarded into GoCart under the context of an ISV. Child merchants have the ability to inherit configuration details from the partner merchant, which can significantly simplify the management of merchant configurations across a large number of child merchants.
           format: uuid
           nullable: true
           example: dc6310e3-401a-4287-91f0-edb04aa21906
@@ -1633,7 +1050,7 @@ components:
           $ref: '#/components/schemas/CallbackType'
     MerchantCallback:
       type: object
-      description: Details related to a type of merchant callback.
+      description: "Details related to a type of merchant callback."
       allOf:
       - $ref: '#/components/schemas/MerchantCallbackBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
@@ -1657,8 +1074,8 @@ components:
       required:
       - domain
       type: object
+      description: "Details related to a merchant's domain."
       additionalProperties: false
-      description: Details related to a merchant's domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
@@ -1726,13 +1143,11 @@ components:
     MerchantSummary:
       type: object
       additionalProperties: false
-      description: "Summary of merchant information (no lower level details such as\
-        \ merchant configurations, domains, or callbacks included). For this type\
-        \ of information, either use the lower level merchant APIs and/or use the\
-        \ GET merchants/{merchantId} service method.\n"
+      description: |
+        Summary of merchant information (no lower level details such as merchant configurations, domains, or callbacks included). For this type of information, either use the lower level merchant APIs and/or use the GET merchants/{merchantId} service method.
       allOf:
       - $ref: '#/components/schemas/MerchantBase'
-      - $ref: '#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
     MerchantConfigPagedResponse:
       type: object
       properties:
@@ -1743,7 +1158,7 @@ components:
             $ref: '#/components/schemas/MerchantConfig'
       additionalProperties: false
       allOf:
-      - $ref: '#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
     MerchantConfig:
       type: object
       additionalProperties: false
@@ -1817,8 +1232,8 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
-      description: "The Pay By Link co-branding configuation for the merchant. This\
-        \ is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.\n"
+      description: |
+        The Pay By Link co-branding configuation for the merchant. This is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.
     MerchantCoBrandingConfig:
       required:
       - configType
@@ -1852,9 +1267,8 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
-      description: "The GoCart modal co-branding configuation for the merchant. This\
-        \ is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logoSrc',\
-        \ 'primaryColor' and 'secondaryColor'.\n"
+      description: |
+        The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logoSrc', 'primaryColor' and 'secondaryColor'.
     MerchantPaymentProcessorConfig:
       required:
       - configType
@@ -2024,13 +1438,13 @@ components:
             $ref: '#/components/schemas/MerchantUser'
       additionalProperties: false
       allOf:
-      - $ref: '#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
     MerchantUser:
       type: object
       additionalProperties: false
       allOf:
       - $ref: '#/components/schemas/MerchantUserBase'
-      - $ref: '#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
     MerchantUserBase:
       required:
       - email
@@ -2084,25 +1498,24 @@ components:
             $ref: '#/components/schemas/MerchantCredential'
       additionalProperties: false
       allOf:
-      - $ref: '#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
     MerchantCredential:
       type: object
-      description: "Merchant credential represents the credentials for one of the\
-        \ GoCart supported credential types (e.g., payment gateway credentials, api\
-        \ key, etc.)\n"
+      description: |
+        Merchant credential represents the credentials for one of the GoCart supported credential types (e.g., payment gateway credentials, api key, etc.)
       allOf:
-      - $ref: '#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
       - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialRequestBody:
       type: object
-      description: "Object used to create and update a merchant credential of one\
-        \ of the supported types (e.g., API Key, Payment Gateway Credentials, etc.).\n"
+      description: |
+        Object used to create and update a merchant credential of one of the supported types (e.g., API Key, Payment Gateway Credentials, etc.).
       allOf:
       - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialBase:
       type: object
-      description: "Container for one of the supported merchant credential types (e.g.,\
-        \ API Key, Payment Gateway Credentials, etc.).\n"
+      description: |
+        Container for one of the supported merchant credential types (e.g., API Key, Payment Gateway Credentials, etc.).
       oneOf:
       - $ref: '#/components/schemas/MerchantApiKey'
       - $ref: '#/components/schemas/PaymentGatewayCredentials'
@@ -2120,9 +1533,10 @@ components:
         apiKey:
           type: string
           example: acf66a54-04f5-44e2-b43a-2a2d1026be0d
-      description: "API key for GoCart. This key is used to create HMAC hashes, which\
-        \ are necessary for all GoCart B2B integrations.\n\nNote: The credentialType\
-        \ is required and must be set to 'API_Key'\n"
+      description: |
+        API key for GoCart. This key is used to create HMAC hashes, which are necessary for all GoCart B2B integrations.
+        
+        Note: The credentialType is required and must be set to 'API_Key'
     PaymentGatewayCredentials:
       type: object
       description: |
@@ -2155,8 +1569,10 @@ components:
           type: string
           example: AAAC11165E88AEEE44DDD0A484FFF707C0D7EEE7053EBF8B8A3ABDBBB1DF456C3231111
       additionalProperties: false
-      description: "Credentials for connecting to the Express payment gateway.\n\n\
-        Note: The credentialType is required and must be set to 'Express'\n"
+      description: |
+        Credentials for connecting to the Express payment gateway.
+        
+        Note: The credentialType is required and must be set to 'Express'
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
@@ -2176,8 +1592,10 @@ components:
           type: string
           example: "1234567891234"
       additionalProperties: false
-      description: "Credentials for connecting to the RAFT payment gateway.\n\nNote:\
-        \ The credentialType is required and must be set to 'RAFT'\n"
+      description: |
+        Credentials for connecting to the RAFT payment gateway.
+        
+        Note: The credentialType is required and must be set to 'RAFT'
     PaymentGatewayVapCredentials:
       required:
       - credentialType
@@ -2201,8 +1619,10 @@ components:
           type: string
           example: "123456789"
       additionalProperties: false
-      description: "Credentials for connecting to the VAP payment gateway.  \n\nNote:\
-        \ The credentialType is required and must be set to 'VAP'\n"
+      description: |
+        Credentials for connecting to the VAP payment gateway.  
+        
+        Note: The credentialType is required and must be set to 'VAP'
     PaymentGatewayWpgCredentials:
       required:
       - credentialType
@@ -2226,8 +1646,10 @@ components:
           type: string
           example: "123456789"
       additionalProperties: false
-      description: "Credentials for connecting to the WPG payment gateway. \n\nNote:\
-        \ The credentialType is required and must be set to 'WPG'\n"
+      description: |
+        Credentials for connecting to the WPG payment gateway. 
+        
+        Note: The credentialType is required and must be set to 'WPG'
     Role:
       type: string
       description: |
@@ -2268,99 +1690,16 @@ components:
           type: string
           description: The file name from the Content-Disposition header.
           nullable: true
-    ExceptionResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          nullable: true
-          readOnly: true
-      additionalProperties: false
-    ResourceBase:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-          description: |
-            The unique identifier for the resource. This is the identifier to interact with the resource in the RESTful interface.
-          format: uuid
-          example: dbde7ee4-a2bf-4b52-a14a-ac3b48bef9b4
-      additionalProperties: false
-    PaginatedResponseBase:
-      type: object
-      properties:
-        description:
-          $ref: '#/components/schemas/PaginatedDescription'
-        links:
-          $ref: '#/components/schemas/Links'
-      additionalProperties: false
-      description: |
-        Base object for all GoCart paginated GET operations.
-    PaginatedDescription:
-      type: object
-      properties:
-        totalRecords:
-          minimum: 0
-          type: integer
-          format: int32
-          readOnly: true
-          example: 1223
-        totalPages:
-          minimum: 0
-          type: integer
-          format: int32
-          readOnly: true
-          example: 13
-        pageNumber:
-          minimum: 0
-          type: integer
-          format: int32
-          readOnly: true
-          example: 4
-        pageSize:
-          minimum: 0
-          type: integer
-          format: int32
-          readOnly: true
-          example: 50
-      additionalProperties: false
-    Links:
-      type: object
-      properties:
-        previousPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-        nextPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-        firstPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-        lastPage:
-          type: string
-          format: uri
-          nullable: true
-          readOnly: true
-      additionalProperties: false
   responses:
     Created:
-      description: "[201] The request succeeded and a new resource was created. The\
-        \ identity for the resource should be included in the response payload and/or\
-        \ header.\n"
+      description: |
+        [201] The request succeeded and a new resource was created. The identity for the resource should be included in the response payload and/or header.
     OK:
       description: |
         Successfully processed the request
     NoContent:
-      description: "[204] Successfully processed the request. No content to return\
-        \ (typically related to the delete of a resource).\n"
+      description: |
+        [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
   parameters:
     MerchantIdQueryParameter:
       name: merchantId
