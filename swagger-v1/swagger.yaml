@@ -60,8 +60,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -73,8 +71,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -184,7 +180,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MerchantBase'
       responses:
-        "200":
+        "204":
           description: |
             Successfully processed the request
         default:
@@ -427,7 +423,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MerchantCallbackRequestBody'
       responses:
-        "200":
+        "204":
           description: |
             Successfully processed the request
         default:
@@ -636,7 +632,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MerchantDomainRequestBody'
       responses:
-        "200":
+        "204":
           description: |
             Successfully processed the request
         default:
@@ -714,8 +710,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -727,8 +721,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -868,7 +860,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MerchantUserRequestBody'
       responses:
-        "200":
+        "204":
           description: Successfully updated the user.
           content:
             application/json:
@@ -963,8 +955,7 @@ paths:
               $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: "[204] Successfully processed the request\n"
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1047,8 +1038,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -1060,8 +1049,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -1205,7 +1192,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MerchantCredentialRequestBody'
       responses:
-        "200":
+        "204":
           description: |
             Successfully processed the request
         default:
@@ -1283,8 +1270,6 @@ paths:
         description: |
           The number of items per page
         required: false
-        style: form
-        explode: true
         schema:
           maximum: 50
           minimum: 1
@@ -1296,8 +1281,6 @@ paths:
         description: |
           The page number to fetch
         required: false
-        style: form
-        explode: true
         schema:
           minimum: 1
           type: integer
@@ -1437,7 +1420,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MerchantConfigRequestBody'
       responses:
-        "200":
+        "204":
           description: |
             Successfully processed the request
         default:
@@ -1500,19 +1483,20 @@ paths:
       parameters:
       - name: merchantId
         in: path
-        description: Merchant Id
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
         required: true
         style: simple
         explode: false
         schema:
           type: string
-          description: Merchant Id
-          nullable: true
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
       requestBody:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/configs_logos_body'
+              $ref: '#/components/schemas/ConfigsLogoBody'
             encoding:
               ContentType:
                 style: form
@@ -1767,17 +1751,7 @@ components:
         Represents a single merchant configuration.
       allOf:
       - $ref: '#/components/schemas/InheritableResourceBase'
-      oneOf:
-      - $ref: '#/components/schemas/MerchantPayByLinkCoBrandingConfig'
-      - $ref: '#/components/schemas/MerchantCoBrandingConfig'
-      - $ref: '#/components/schemas/MerchantPaymentProcessorConfig'
-      - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
-      - $ref: '#/components/schemas/MerchantSettlementTypeConfig'
-      - $ref: '#/components/schemas/MerchantTaxTypeConfig'
-      - $ref: '#/components/schemas/MerchantTippingConfig'
-      - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
-      - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
-      - $ref: '#/components/schemas/MerchantPayByLinkConfig'
+      - $ref: '#/components/schemas/MerchantConfigBase'
     MerchantConfigRequestBody:
       type: object
       additionalProperties: false
@@ -1803,10 +1777,16 @@ components:
       - $ref: '#/components/schemas/MerchantPayByLinkConfig'
     MerchantTippingConfig:
       required:
-      - tippingEnabled
+      - configType
+      - enabled
       type: object
       properties:
-        tippingEnabled:
+        configType:
+          type: string
+          example: Tipping
+          enum:
+          - Tipping
+        enabled:
           type: boolean
           example: true
           default: false
@@ -1819,16 +1799,14 @@ components:
         |false|The merchant doesn't offer a tipping option on sales.|
     MerchantPayByLinkCoBrandingConfig:
       required:
-      - cobranding
+      - configType
       type: object
       properties:
-        cobranding:
-          $ref: '#/components/schemas/MerchantPayByLinkCoBrandingValueConfig'
-      description: "The Pay By Link co-branding configuation for the merchant. This\
-        \ is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.\n"
-    MerchantPayByLinkCoBrandingValueConfig:
-      type: object
-      properties:
+        configType:
+          type: string
+          example: PayByLinkCoBranding
+          enum:
+          - PayByLinkCoBranding
         displayName:
           type: string
           example: MK Fine Woodworking
@@ -1839,20 +1817,18 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
-      description: |
-        The Pay By Link co-branding configuation value config. This defines the structure for the value stored for the co-branding configuration.
+      description: "The Pay By Link co-branding configuation for the merchant. This\
+        \ is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.\n"
     MerchantCoBrandingConfig:
       required:
-      - cobranding
+      - configType
       type: object
       properties:
-        cobranding:
-          $ref: '#/components/schemas/MerchantCoBrandingValueConfig'
-      description: |
-        The co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme' and 'buttonTextTheme'.
-    MerchantCoBrandingValueConfig:
-      type: object
-      properties:
+        configType:
+          type: string
+          example: ModalCoBranding
+          enum:
+          - ModalCoBranding
         logoTheme:
           type: string
           example: LIGHT
@@ -1865,13 +1841,31 @@ components:
           enum:
           - LIGHT
           - DARK
-      description: |
-        The co-branding configuation value config. This defines the structure for the value stored for the co-branding configuration.
+        logoSrc:
+          type: string
+          example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
+        primaryColor:
+          type: string
+          format: hex color code
+          example: '#5E6BA3'
+        secondaryColor:
+          type: string
+          format: hex color code
+          example: '#5E6BA3'
+      description: "The GoCart modal co-branding configuation for the merchant. This\
+        \ is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logoSrc',\
+        \ 'primaryColor' and 'secondaryColor'.\n"
     MerchantPaymentProcessorConfig:
       required:
+      - configType
       - paymentProcessor
       type: object
       properties:
+        configType:
+          type: string
+          example: PaymentProcessor
+          enum:
+          - PaymentProcessor
         paymentProcessor:
           type: string
           example: Express
@@ -1884,9 +1878,15 @@ components:
         The primary payment processor for the merchant.
     MerchantFulfillmentTypeConfig:
       required:
+      - configType
       - fulfillmentType
       type: object
       properties:
+        configType:
+          type: string
+          example: FulfillmentType
+          enum:
+          - FulfillmentType
         fulfillmentType:
           type: string
           example: Service
@@ -1902,9 +1902,15 @@ components:
         |Service |The merchant is selling a service of some form.    |
     MerchantSettlementTypeConfig:
       required:
+      - configType
       - settlementType
       type: object
       properties:
+        configType:
+          type: string
+          example: SettlementType
+          enum:
+          - SettlementType
         settlementType:
           type: string
           example: Sale
@@ -1920,9 +1926,15 @@ components:
         |AuthCapture|The merchant will authorize the funds and capture them at a future time.|
     MerchantTaxTypeConfig:
       required:
+      - configType
       - taxType
       type: object
       properties:
+        configType:
+          type: string
+          example: TaxType
+          enum:
+          - TaxType
         taxType:
           type: string
           example: Taxable
@@ -1938,10 +1950,16 @@ components:
         |NonTaxable|The merchant doesn't charge tax.|
     MerchantGoCartCheckoutButtonConfig:
       required:
-      - checkoutButtonEnabled
+      - configType
+      - enabled
       type: object
       properties:
-        checkoutButtonEnabled:
+        configType:
+          type: string
+          example: CheckoutButton
+          enum:
+          - CheckoutButton
+        enabled:
           type: boolean
           example: true
           default: false
@@ -1954,10 +1972,16 @@ components:
         |false|GoCart checkout button not enabled.|
     MerchantExpeditedGuestCheckoutConfig:
       required:
-      - expeditedGuestCheckoutEnabled
+      - configType
+      - enabled
       type: object
       properties:
-        expeditedGuestCheckoutEnabled:
+        configType:
+          type: string
+          example: ExpeditedGuestCheckout
+          enum:
+          - ExpeditedGuestCheckout
+        enabled:
           type: boolean
           example: true
           default: false
@@ -1970,10 +1994,16 @@ components:
         |false|GoCart expedited guest checkout not enabled.|
     MerchantPayByLinkConfig:
       required:
-      - payByLinkEnabled
+      - configType
+      - enabled
       type: object
       properties:
-        payByLinkEnabled:
+        configType:
+          type: string
+          example: PayByLink
+          enum:
+          - PayByLink
+        enabled:
           type: boolean
           example: true
           default: false
@@ -2131,6 +2161,7 @@ components:
       required:
       - credentialType
       - licenseId
+      - merchantId
       type: object
       properties:
         credentialType:
@@ -2206,6 +2237,37 @@ components:
       - MERCHANTADMIN
       - SUPERADMIN
       - MERCHANTPARTNER
+    ConfigsLogoBody:
+      type: object
+      properties:
+        ContentType:
+          type: string
+          description: The raw Content-Type header of the uploaded file.
+          nullable: true
+        ContentDisposition:
+          type: string
+          description: The raw Content-Disposition header of the uploaded file.
+          nullable: true
+        Headers:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: The header dictionary of the uploaded file.
+          nullable: true
+        Length:
+          type: integer
+          description: The file length in bytes.
+          format: int64
+        Name:
+          type: string
+          description: The form field name from the Content-Disposition header.
+          nullable: true
+        FileName:
+          type: string
+          description: The file name from the Content-Disposition header.
+          nullable: true
     ExceptionResponse:
       type: object
       properties:
@@ -2262,7 +2324,7 @@ components:
           type: integer
           format: int32
           readOnly: true
-          example: 100
+          example: 50
       additionalProperties: false
     Links:
       type: object
@@ -2288,37 +2350,6 @@ components:
           nullable: true
           readOnly: true
       additionalProperties: false
-    configs_logos_body:
-      type: object
-      properties:
-        ContentType:
-          type: string
-          description: The raw Content-Type header of the uploaded file.
-          nullable: true
-        ContentDisposition:
-          type: string
-          description: The raw Content-Disposition header of the uploaded file.
-          nullable: true
-        Headers:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: The header dictionary of the uploaded file.
-          nullable: true
-        Length:
-          type: integer
-          description: The file length in bytes.
-          format: int64
-        Name:
-          type: string
-          description: The form field name from the Content-Disposition header.
-          nullable: true
-        FileName:
-          type: string
-          description: The file name from the Content-Disposition header.
-          nullable: true
   responses:
     Created:
       description: "[201] The request succeeded and a new resource was created. The\
