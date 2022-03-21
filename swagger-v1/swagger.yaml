@@ -110,8 +110,11 @@ paths:
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\n\
-            The identity for the resource should be included in the response payload\n\
-            and/or header.\n"
+            The identity for the resource created is included in the response **Location**\
+            \ header.\n"
+          headers:
+            Location:
+              $ref: '#/components/headers/MerchantLocationHeader'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -331,8 +334,11 @@ paths:
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+            \ The identity for the resource created is returned in the **Location**\
+            \ header.\n"
+          headers:
+            Location:
+              $ref: '#/components/headers/MerchantCallbackLocationHeader'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -540,8 +546,11 @@ paths:
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+            \ The identity for the resource created is included in the **Location**\
+            \ response header.\n"
+          headers:
+            Location:
+              $ref: '#/components/headers/MerchantDomainLocationHeader'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -768,8 +777,11 @@ paths:
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+            \ The identity for the resource created is included in the **Location**\
+            \ response header.\n"
+          headers:
+            Location:
+              $ref: '#/components/headers/MerchantUserLocationHeader'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1098,8 +1110,11 @@ paths:
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+            \ The identity for the resource created is included in the **Location**\
+            \ header.\n"
+          headers:
+            Location:
+              $ref: '#/components/headers/MerchantCredentialLocationHeader'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1328,8 +1343,11 @@ paths:
       responses:
         "201":
           description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource should be included in the response payload\
-            \ and/or header.\n"
+            \ The identity for the resource created is included in the response **Location**\
+            \ header.\n"
+          headers:
+            Location:
+              $ref: '#/components/headers/MerchantConfigurationLocationHeader'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1603,6 +1621,7 @@ components:
         name:
           type: string
           description: The merchant's name
+          example: MK Fine Woodworking
         partnerMerchantId:
           type: string
           description: "The merchant this merchant rolls up to. This is common in\
@@ -2446,3 +2465,58 @@ components:
         type: string
         format: uuid
         example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+  headers:
+    MerchantLocationHeader:
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: |
+          The url for the GET location of the resource just created
+        format: url
+        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
+    MerchantCallbackLocationHeader:
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: |
+          The url for the GET location of the resource just created
+        format: url
+        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
+    MerchantCredentialLocationHeader:
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: |
+          The url for the GET location of the resource just created
+        format: url
+        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
+    MerchantConfigurationLocationHeader:
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: |
+          The url for the GET location of the resource just created
+        format: url
+        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
+    MerchantDomainLocationHeader:
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: |
+          The url for the GET location of the resource just created
+        format: url
+        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
+    MerchantUserLocationHeader:
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: |
+          The url for the GET location of the resource just created
+        format: url
+        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
