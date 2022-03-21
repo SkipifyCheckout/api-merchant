@@ -72,6 +72,11 @@ paths:
         It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
         
         A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        **Notes:**
+          * merchantCredentials cannot contain multiple credentials of the same credentialType.
+          * merchantConfigs cannot contain multiple configs of the same configType.
+          * merchantConfigs CheckoutButton, ExpeditedGuestCheckout and PayByLink can only be created on merchant creation.
       requestBody:
         content:
           application/json:
@@ -688,6 +693,8 @@ paths:
         Creates a new merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+            
+        Note: Merchant cannot contain multiple credentials with the same credentialType.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -746,6 +753,8 @@ paths:
         Updates an existing merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+            
+        Note: Cannot update the credentialType of the credential.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CredentialIdPathParameter'
@@ -774,6 +783,8 @@ paths:
         Deletes a merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+            
+        Note: Cannot delete a payment gateway credential if the Merchant's PaymentProcessor config is setup to target that payment gateway.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CredentialIdPathParameter'
@@ -823,6 +834,10 @@ paths:
         Creates a new merchant configuration for the specified merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        **Notes:**
+          * Merchant cannot contain multiple configs with the same configType.
+          * configTypes CheckoutButton, ExpeditedGuestCheckout and PayByLink can only be created on merchant creation.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -878,6 +893,10 @@ paths:
         Updates an existing merchant configuration for the specified merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        **Notes:** 
+        * Cannot update the configType of the config.
+        * Note: configTypes CheckoutButton, ExpeditedGuestCheckout and PayByLink can only be updated by the SUPERADMIN role.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/ConfigIdPathParameter'
@@ -905,6 +924,8 @@ paths:
         Deletes a merchant configuration for the specified merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        Note: configTypes CheckoutButton, ExpeditedGuestCheckout and PayByLink cannot be deleted.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/ConfigIdPathParameter'
@@ -927,27 +948,19 @@ paths:
       description: |
         Uploads an image for the merchant.
         
-        A valid **JWT** or **HMAC** is required to access this endpoint.\n\nMust be a SUPERADMIN, MERCHANTPARTNER, or MERCHANTADMIN for the specified merchant.
+        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ConfigsLogoBody'
-            encoding:
-              ContentType:
-                style: form
-              ContentDisposition:
-                style: form
-              Headers:
-                style: form
-              Length:
-                style: form
-              Name:
-                style: form
-              FileName:
-                style: form
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The uploaded file
       responses:
         "200":
           description: Success
@@ -987,7 +1000,7 @@ components:
         isInherited:
           type: boolean
           description: |
-            Set to true if the callback url is inherited from a partner merchant; false if explicitly managed under the context of this merchant.
+            Set to true if the resource is inherited from a partner merchant; false if explicitly managed under the context of this merchant.
           example: false
       allOf:
       - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
@@ -1070,8 +1083,8 @@ components:
       type: object
       description: "Details related to a type of merchant callback."
       allOf:
-      - $ref: '#/components/schemas/MerchantCallbackBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
+      - $ref: '#/components/schemas/MerchantCallbackBase'
     MerchantCallbackRequestBody:
       type: object
       additionalProperties: false
@@ -1095,8 +1108,8 @@ components:
       description: "Details related to a merchant's domain."
       additionalProperties: false
       allOf:
-      - $ref: '#/components/schemas/MerchantDomainBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
+      - $ref: '#/components/schemas/MerchantDomainBase'
     MerchantDomainRequestBody:
       type: object
       additionalProperties: false
@@ -1183,7 +1196,6 @@ components:
       description: |
         Represents a single merchant configuration.
       allOf:
-      - $ref: '#/components/schemas/InheritableResourceBase'
       - $ref: '#/components/schemas/MerchantConfigBase'
     MerchantConfigRequestBody:
       type: object
@@ -1196,7 +1208,7 @@ components:
       type: object
       additionalProperties: false
       description: |
-        Base representation of a a single merchant configuration.
+        Base representation of a single merchant configuration.
       oneOf:
       - $ref: '#/components/schemas/MerchantPayByLinkCoBrandingConfig'
       - $ref: '#/components/schemas/MerchantCoBrandingConfig'
@@ -1223,6 +1235,9 @@ components:
           type: boolean
           example: true
           default: false
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The tipping model the merchant operates under.
 
@@ -1230,6 +1245,8 @@ components:
         |--------|-----------|
         |true|The merchant offers a tip option on sales.|
         |false|The merchant doesn't offer a tipping option on sales.|
+        
+        Note: The configType is required and must be set to 'Tipping'
     MerchantPayByLinkCoBrandingConfig:
       required:
       - configType
@@ -1250,8 +1267,13 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The Pay By Link co-branding configuation for the merchant. This is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.
+        
+        Note: The configType is required and must be set to 'PayByLinkCoBranding'
     MerchantCoBrandingConfig:
       required:
       - configType
@@ -1285,8 +1307,13 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logoSrc', 'primaryColor' and 'secondaryColor'.
+        
+        Note: The configType is required and must be set to 'ModalCoBranding'
     MerchantPaymentProcessorConfig:
       required:
       - configType
@@ -1306,8 +1333,13 @@ components:
           - RAFT
           - VAP
           - WPG
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The primary payment processor for the merchant.
+        
+        Note: The configType is required and must be set to 'PaymentProcessor'
     MerchantFulfillmentTypeConfig:
       required:
       - configType
@@ -1325,6 +1357,9 @@ components:
           enum:
           - Shipping
           - Service
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The type of fulfillment the merchant operates under.
 
@@ -1332,6 +1367,8 @@ components:
         |--------|-----------|
         |Shipping|The merchant ships/delivers their product/offering.|
         |Service |The merchant is selling a service of some form.    |
+        
+        Note: The configType is required and must be set to 'FulfillmentType'
     MerchantSettlementTypeConfig:
       required:
       - configType
@@ -1349,6 +1386,9 @@ components:
           enum:
           - Sale
           - AuthCapture
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The type of settlement the merchant operates under.
 
@@ -1356,6 +1396,8 @@ components:
         |--------|-----------|
         |Sale|The merchant completes the transfer of funds at time of sale.|
         |AuthCapture|The merchant will authorize the funds and capture them at a future time.|
+        
+        Note: The configType is required and must be set to 'SettlementType'
     MerchantTaxTypeConfig:
       required:
       - configType
@@ -1373,6 +1415,9 @@ components:
           enum:
           - Taxable
           - NonTaxable
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         The tax model the merchant operates under.
 
@@ -1380,6 +1425,8 @@ components:
         |--------|-----------|
         |Taxable|The merchant charges tax.|
         |NonTaxable|The merchant doesn't charge tax.|
+        
+        Note: The configType is required and must be set to 'TaxType'
     MerchantGoCartCheckoutButtonConfig:
       required:
       - configType
@@ -1395,6 +1442,9 @@ components:
           type: boolean
           example: true
           default: false
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         Whether the GoCart checkout button is enabled for the merchant or not.
 
@@ -1402,6 +1452,8 @@ components:
         |--------|-----------|
         |true|GoCart checkout button enabled.|
         |false|GoCart checkout button not enabled.|
+        
+        Note: The configType is required and must be set to 'CheckoutButton'
     MerchantExpeditedGuestCheckoutConfig:
       required:
       - configType
@@ -1417,6 +1469,9 @@ components:
           type: boolean
           example: true
           default: false
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         Whether the GoCart expedited guest checkout is enabled for the merchant or not.
 
@@ -1424,6 +1479,8 @@ components:
         |--------|-----------|
         |true|GoCart expedited guest checkout enabled.|
         |false|GoCart expedited guest checkout not enabled.|
+        
+        Note: The configType is required and must be set to 'ExpeditedGuestCheckout'
     MerchantPayByLinkConfig:
       required:
       - configType
@@ -1439,6 +1496,9 @@ components:
           type: boolean
           example: true
           default: false
+      allOf:
+        - $ref: '#/components/schemas/InheritableResourceBase'
+      additionalProperties: false
       description: |
         Whether the GoCart Pay By Link is enabled for the merchant or not.
 
@@ -1446,6 +1506,8 @@ components:
         |--------|-----------|
         |true|GoCart Pay By Link checkout enabled.|
         |false|GoCart Pay By Link not enabled.|
+        
+        Note: The configType is required and must be set to 'PayByLink'
     MerchantUserSummariesPagedResponse:
       type: object
       properties:
@@ -1461,8 +1523,8 @@ components:
       type: object
       additionalProperties: false
       allOf:
-      - $ref: '#/components/schemas/MerchantUserBase'
       - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      - $ref: '#/components/schemas/MerchantUserBase'
     MerchantUserBase:
       required:
       - email
@@ -1521,9 +1583,9 @@ components:
       type: object
       description: |
         Merchant credential represents the credentials for one of the GoCart supported credential types (e.g., payment gateway credentials, api key, etc.)
-      allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
-      - $ref: '#/components/schemas/MerchantCredentialBase'
+      allOf: 
+        - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+        - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialRequestBody:
       type: object
       description: |
@@ -1551,6 +1613,9 @@ components:
         apiKey:
           type: string
           example: acf66a54-04f5-44e2-b43a-2a2d1026be0d
+      allOf: 
+        - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      additionalProperties: false
       description: |
         API key for GoCart. This key is used to create HMAC hashes, which are necessary for all GoCart B2B integrations.
         
@@ -1594,7 +1659,7 @@ components:
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - licenseId
+      - license
       - merchantId
       type: object
       properties:
@@ -1603,7 +1668,7 @@ components:
           example: RAFT
           enum:
           - RAFT
-        licenseId:
+        license:
           type: string
           example: abcdef1234567890abcdef1234567890
         merchantId:
@@ -1677,37 +1742,6 @@ components:
       - MERCHANTADMIN
       - SUPERADMIN
       - MERCHANTPARTNER
-    ConfigsLogoBody:
-      type: object
-      properties:
-        ContentType:
-          type: string
-          description: The raw Content-Type header of the uploaded file.
-          nullable: true
-        ContentDisposition:
-          type: string
-          description: The raw Content-Disposition header of the uploaded file.
-          nullable: true
-        Headers:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: The header dictionary of the uploaded file.
-          nullable: true
-        Length:
-          type: integer
-          description: The file length in bytes.
-          format: int64
-        Name:
-          type: string
-          description: The form field name from the Content-Disposition header.
-          nullable: true
-        FileName:
-          type: string
-          description: The file name from the Content-Disposition header.
-          nullable: true
   responses:
     Created:
       description: |
