@@ -1586,6 +1586,9 @@ components:
         accountToken:
           type: string
           example: AAAC11165E88AEEE44DDD0A484FFF707C0D7EEE7053EBF8B8A3ABDBBB1DF456C3231111
+        terminalId:
+          type: string
+          example: "0001"
       additionalProperties: false
       description: |
         Credentials for connecting to the Express payment gateway.
@@ -1609,6 +1612,9 @@ components:
         merchantId:
           type: string
           example: "1234567891234"
+        terminalId:
+          type: string
+          example: "0001"
       additionalProperties: false
       description: |
         Credentials for connecting to the RAFT payment gateway.
