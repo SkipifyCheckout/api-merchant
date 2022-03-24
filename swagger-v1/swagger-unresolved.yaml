@@ -961,27 +961,18 @@ paths:
       description: |
         Uploads an image for the merchant.
         
-        A valid **JWT** or **HMAC** is required to access this endpoint.\n\nMust be a SUPERADMIN, MERCHANTPARTNER, or MERCHANTADMIN for the specified merchant.
+        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ConfigsLogoBody'
-            encoding:
-              ContentType:
-                style: form
-              ContentDisposition:
-                style: form
-              Headers:
-                style: form
-              Length:
-                style: form
-              Name:
-                style: form
-              FileName:
-                style: form
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
       responses:
         "200":
           description: Success
@@ -1011,7 +1002,7 @@ components:
           type: string
           nullable: true
           readOnly: true
-          example: someFileName.csv
+          example: someFileName
       additionalProperties: false
     InheritableResourceBase:
       required:
@@ -1717,37 +1708,6 @@ components:
       - MERCHANTADMIN
       - SUPERADMIN
       - MERCHANTPARTNER
-    ConfigsLogoBody:
-      type: object
-      properties:
-        ContentType:
-          type: string
-          description: The raw Content-Type header of the uploaded file.
-          nullable: true
-        ContentDisposition:
-          type: string
-          description: The raw Content-Disposition header of the uploaded file.
-          nullable: true
-        Headers:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: The header dictionary of the uploaded file.
-          nullable: true
-        Length:
-          type: integer
-          description: The file length in bytes.
-          format: int64
-        Name:
-          type: string
-          description: The form field name from the Content-Disposition header.
-          nullable: true
-        FileName:
-          type: string
-          description: The file name from the Content-Disposition header.
-          nullable: true
 
   parameters:
     MerchantIdQueryParameter:
