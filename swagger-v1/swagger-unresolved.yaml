@@ -23,7 +23,7 @@ tags:
     Merchant callback related API service methods.
 - name: Merchant Credentials
   description: |
-    Management of a merchant's credentials for such things as payment gateways and API keys.
+    Management of a merchant's credentials for such things as payment gateways and API keys. Currently the API key is created when a Merchant is created. It cannot be created, updated, or deleted using these APIs.
 - name: Merchant Configurations
   description: |
     Management of a merchant's overall configurations including: feature toggles, domain registration integration credentials, etc.
@@ -72,6 +72,16 @@ paths:
         It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
         
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        MerchantCredentials cannot contain multiple credentials with the same CredentialType.
+        
+        MerchantConfigs cannot contain multiple configs with the same ConfigType.
+        
+        The TaxType config can only be set to Taxable if the request body also has a ShippingAndTax callback set.
+        
+        The FulfillmentType config can only be set to Shipping if the request body also has a ShippingAndTax callback set.
+        
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink can only be set by SUPERADMIN users.
       requestBody:
         content:
           application/json:
@@ -314,6 +324,8 @@ paths:
       summary: Deletes a merchant callback
       description: |
         Delete the specified callback associated with this merchant.
+
+        A ShippingAndTax callback can only be deleted if the merchant's TaxType config is set to NonTaxable and the merchant's FulfillmentType config is set to Service.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
@@ -688,6 +700,8 @@ paths:
         Creates a new merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        A merchant cannot contain two credentials with the same CredentialType.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -746,6 +760,8 @@ paths:
         Updates an existing merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        The CredentialType for a merchant credential cannot be changed when updating.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CredentialIdPathParameter'
@@ -774,6 +790,8 @@ paths:
         Deletes a merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        A payment gateway credential cannot be deleted if the credential being deleted the Merchant's PaymentProcessor config is set to the same CredentialType.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CredentialIdPathParameter'
@@ -823,6 +841,14 @@ paths:
         Creates a new merchant configuration for the specified merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        A merchant cannot contain two configs with the same ConfigType.
+        
+        The TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax callback setup.
+        
+        The FulfillmentType config can only be set to Shipping if the Merchant has a ShippingAndTax callback setup.
+        
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink can only be created by SUPERADMIN users.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -878,6 +904,12 @@ paths:
         Updates an existing merchant configuration for the specified merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        The TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax callback setup.
+        
+        The FulfillmentType config can only be set to Shipping if the Merchant has a ShippingAndTax callback setup.
+        
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink can only be updated by SUPERADMIN users.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/ConfigIdPathParameter'
@@ -905,6 +937,8 @@ paths:
         Deletes a merchant configuration for the specified merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+        
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink cannot be deleted.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/ConfigIdPathParameter'
