@@ -22,8 +22,9 @@ tags:
   description: |
     Merchant callback related API service methods.
 - name: Merchant Credentials
-  description: |
-    Management of a merchant's credentials for such things as payment gateways and API keys.
+  description: "Management of a merchant's credentials for such things as payment\
+    \ gateways and API keys. Currently the API key is created when a Merchant is created.\
+    \ It cannot be created, updated, or deleted using these APIs.\n"
 - name: Merchant Configurations
   description: "Management of a merchant's overall configurations including: feature\
     \ toggles, domain registration integration credentials, etc.\n"
@@ -101,7 +102,13 @@ paths:
         \ domains, configurations, and callbacks under the context of the merchant\
         \ during initial creations. There are individual APIs that enable one to manage\
         \ the aforementioned resources.\n\nA valid **JWT** or **HMAC** is required\
-        \ to access this endpoint.\n"
+        \ to access this endpoint.\n\nMerchantCredentials cannot contain multiple\
+        \ credentials with the same CredentialType.\n\nMerchantConfigs cannot contain\
+        \ multiple configs with the same ConfigType.\n\nThe TaxType config can only\
+        \ be set to Taxable if the request body also has a ShippingAndTax callback\
+        \ set.\n\nThe FulfillmentType config can only be set to Shipping if the request\
+        \ body also has a ShippingAndTax callback set.\n\nConfigTypes CheckoutButton,\
+        \ ExpeditedGuestCheckout, and PayByLink can only be set by SUPERADMIN users.\n"
       requestBody:
         content:
           application/json:
@@ -445,6 +452,8 @@ paths:
       summary: Deletes a merchant callback
       description: |
         Delete the specified callback associated with this merchant.
+
+        A ShippingAndTax callback can only be deleted if the merchant's TaxType config is set to NonTaxable and the merchant's FulfillmentType config is set to Service.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
@@ -1088,6 +1097,8 @@ paths:
         Creates a new merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        A merchant cannot contain two credentials with the same CredentialType.
       parameters:
       - name: merchantId
         in: path
@@ -1177,6 +1188,8 @@ paths:
         Updates an existing merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        The CredentialType for a merchant credential cannot be changed when updating.
       parameters:
       - name: merchantId
         in: path
@@ -1225,6 +1238,8 @@ paths:
         Deletes a merchant credential associated with this merchant.
 
         A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        A payment gateway credential cannot be deleted if the credential being deleted the Merchant's PaymentProcessor config is set to the same CredentialType.
       parameters:
       - name: merchantId
         in: path
@@ -1319,10 +1334,14 @@ paths:
       tags:
       - Merchant Configurations
       summary: Creates a new merchant configuration
-      description: |
-        Creates a new merchant configuration for the specified merchant.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+      description: "Creates a new merchant configuration for the specified merchant.\n\
+        \nA valid **JWT** or **HMAC** is required to access this endpoint.\n\nA merchant\
+        \ cannot contain two configs with the same ConfigType.\n\nThe TaxType config\
+        \ can only be set to Taxable if the Merchant has a ShippingAndTax callback\
+        \ setup.\n\nThe FulfillmentType config can only be set to Shipping if the\
+        \ Merchant has a ShippingAndTax callback setup.\n\nConfigTypes CheckoutButton,\
+        \ ExpeditedGuestCheckout, and PayByLink can only be created by SUPERADMIN\
+        \ users.\n"
       parameters:
       - name: merchantId
         in: path
@@ -1405,10 +1424,13 @@ paths:
       tags:
       - Merchant Configurations
       summary: Updates a merchant configuraton
-      description: |
-        Updates an existing merchant configuration for the specified merchant.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+      description: "Updates an existing merchant configuration for the specified merchant.\n\
+        \nA valid **JWT** or **HMAC** is required to access this endpoint.\n\nThe\
+        \ TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax\
+        \ callback setup.\n\nThe FulfillmentType config can only be set to Shipping\
+        \ if the Merchant has a ShippingAndTax callback setup.\n\nConfigTypes CheckoutButton,\
+        \ ExpeditedGuestCheckout, and PayByLink can only be updated by SUPERADMIN\
+        \ users.\n"
       parameters:
       - name: merchantId
         in: path
@@ -1452,10 +1474,9 @@ paths:
       tags:
       - Merchant Configurations
       summary: Removes a merchant configuration
-      description: |
-        Deletes a merchant configuration for the specified merchant.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+      description: "Deletes a merchant configuration for the specified merchant.\n\
+        \nA valid **JWT** or **HMAC** is required to access this endpoint.\n\nConfigTypes\
+        \ CheckoutButton, ExpeditedGuestCheckout, and PayByLink cannot be deleted.\n"
       parameters:
       - name: merchantId
         in: path
@@ -1860,7 +1881,7 @@ components:
           enum:
           - LIGHT
           - DARK
-        logoSrc:
+        logo:
           type: string
           example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
         primaryColor:
@@ -1872,7 +1893,7 @@ components:
           format: hex color code
           example: '#5E6BA3'
       description: "The GoCart modal co-branding configuation for the merchant. This\
-        \ is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logoSrc',\
+        \ is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo',\
         \ 'primaryColor' and 'secondaryColor'.\n"
     MerchantPaymentProcessorConfig:
       required:
