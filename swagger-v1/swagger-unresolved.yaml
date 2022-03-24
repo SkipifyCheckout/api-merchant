@@ -1274,7 +1274,7 @@ components:
           enum:
           - LIGHT
           - DARK
-        logoSrc:
+        logo:
           type: string
           example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
         primaryColor:
@@ -1286,7 +1286,7 @@ components:
           format: hex color code
           example: '#5E6BA3'
       description: |
-        The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logoSrc', 'primaryColor' and 'secondaryColor'.
+        The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo', 'primaryColor' and 'secondaryColor'.
     MerchantPaymentProcessorConfig:
       required:
       - configType
