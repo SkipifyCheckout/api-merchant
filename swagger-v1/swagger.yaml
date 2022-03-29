@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.1
+  version: 1.0.2
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.1
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.2
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -1620,6 +1620,7 @@ components:
             $ref: '#/components/schemas/MerchantUser'
       additionalProperties: false
       allOf:
+      - $ref: '#/components/schemas/ResourceBase'
       - $ref: '#/components/schemas/MerchantBase'
     MerchantBase:
       required:
@@ -1641,7 +1642,7 @@ components:
             \ merchants.\n"
           format: uuid
           nullable: true
-          example: dc6310e3-401a-4287-91f0-edb04aa21906
+          example: 87285c60-15b3-4d9c-8c27-92ba7873b2ad
         industry:
           $ref: '#/components/schemas/MerchantIndustry'
       additionalProperties: false
