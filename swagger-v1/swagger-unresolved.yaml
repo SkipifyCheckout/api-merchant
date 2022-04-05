@@ -1060,7 +1060,6 @@ components:
       - $ref: '#/components/schemas/MerchantBase'
     MerchantBase:
       required:
-      - industry
       - name
       type: object
       properties:
@@ -1154,6 +1153,8 @@ components:
       - Grocery_CPG
       - B2B_Wholesale
       - Bill_Pay
+      description: |
+            The industry of the merchant. If the merchant is a child merchant, the industry is inherited from the merchant this merchant rolls up to. This field is required when creating an ISV or standalone merchant.
     MerchantComplexRequestBody:
       type: object
       properties:
