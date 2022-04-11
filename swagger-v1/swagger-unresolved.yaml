@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.2
+  version: 1.0.3
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.2
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.3
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -43,7 +43,9 @@ paths:
       description: |
         Retrieves the paginated list of merchants. A merchant will only see their child merchants (assuming they have any child merchants).
 
-        A valid **JWT** or **HMAC** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/HMAC is created under.
+        A valid **JWT** or **HMAC** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/HMAC is created under. MerchantAdmin and Developer users cannot access this API.
+        
+        merchantId query parameter will only be observed when this API is called by a SuperAdmin
       parameters:
       - $ref: '#/components/parameters/MerchantIdQueryParameter'
       - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
@@ -71,7 +73,7 @@ paths:
         
         It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
         
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **HMAC** is required to access this endpoint. MerchantAdmin and Developer users cannot access this API.
         
         MerchantCredentials cannot contain multiple credentials with the same CredentialType.
         
@@ -134,7 +136,7 @@ paths:
       description: |
         Updates the base details for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **HMAC** is required to access this endpoint. Developer users cannot access this API.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -1071,6 +1073,8 @@ components:
           type: string
           description: |
             The merchant this merchant rolls up to. This is common in an ISV setting where a merchant is onboarded into GoCart under the context of an ISV. Child merchants have the ability to inherit configuration details from the partner merchant, which can significantly simplify the management of merchant configurations across a large number of child merchants.
+            
+            Only SuperAdmin users can update the partnerMerchantId.
           format: uuid
           nullable: true
           example: 87285c60-15b3-4d9c-8c27-92ba7873b2ad
