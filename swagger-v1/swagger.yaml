@@ -1842,12 +1842,18 @@ components:
           enum:
           - PayByLinkCoBranding
         displayName:
+          maxLength: 64
+          minLength: 1
           type: string
           example: MK Fine Woodworking
         logoSrc:
+          maxLength: 64
+          minLength: 1
           type: string
           example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
         color:
+          maxLength: 64
+          minLength: 1
           type: string
           format: hex color code
           example: '#5E6BA3'
@@ -1876,13 +1882,19 @@ components:
           - LIGHT
           - DARK
         logo:
+          maxLength: 64
+          minLength: 1
           type: string
           example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
         primaryColor:
+          maxLength: 64
+          minLength: 1
           type: string
           format: hex color code
           example: '#5E6BA3'
         secondaryColor:
+          maxLength: 64
+          minLength: 1
           type: string
           format: hex color code
           example: '#5E6BA3'
