@@ -1273,12 +1273,18 @@ components:
           - PayByLinkCoBranding
         displayName:
           type: string
+          minLength: 1
+          maxLength: 64
           example: MK Fine Woodworking
         logoSrc:
           type: string
+          minLength: 1
+          maxLength: 64
           example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
         color:
           type: string
+          minLength: 1
+          maxLength: 64
           format: hex color code
           example: '#5E6BA3'
       description: |
@@ -1307,13 +1313,19 @@ components:
           - DARK
         logo:
           type: string
+          minLength: 1
+          maxLength: 64
           example: logo_e4ee0316-5e2f-429d-8474-8a4f4dc78fa8
         primaryColor:
           type: string
+          minLength: 1
+          maxLength: 64
           format: hex color code
           example: '#5E6BA3'
         secondaryColor:
           type: string
+          minLength: 1
+          maxLength: 64
           format: hex color code
           example: '#5E6BA3'
       description: |
