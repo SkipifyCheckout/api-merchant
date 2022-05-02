@@ -1365,7 +1365,7 @@ components:
           maxLength: 105
           example: 123 main st. Denver, CO 12345
       description: |
-        Configuration object used to preview purchase details
+        A merchant has the option to include addition details related to a purchase to their orders. Some merchants use this capability to include details like the delivery address, delivery time, or restaurant location to the order. MerchantDemoPurchaseDetails can be configured as a means to provide a preview of what the PurchaseDetails will look like when displayed to a customer viewing an order.
     MerchantPaymentProcessorConfig:
       required:
       - configType
