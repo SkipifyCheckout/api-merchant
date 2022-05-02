@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.3
+  version: 1.0.4
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.3
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.4
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -1239,6 +1239,7 @@ components:
       - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
       - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
       - $ref: '#/components/schemas/MerchantPayByLinkConfig'
+      - $ref: '#/components/schemas/MerchantDemoPurchaseDetails'
     MerchantTippingConfig:
       required:
       - configType
@@ -1330,6 +1331,41 @@ components:
           example: '#5E6BA3'
       description: |
         The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo', 'primaryColor' and 'secondaryColor'.
+    MerchantDemoPurchaseDetails:
+      required:
+      - configType
+      properties:
+        configType:
+          type: string
+          example: DemoPurchaseDetails
+          enum:
+          - DemoPurchaseDetails
+        label1:
+          type: string
+          maxLength: 30
+          example: My Merchant
+        description1:
+          type: string
+          maxLength: 30
+          example: 3 items
+        label2:
+          type: string
+          maxLength: 30
+          example: Pickup
+        description2:
+          type: string
+          maxLength: 30
+          example: 25 minutes
+        label3:
+          type: string
+          maxLength: 30
+          example: Store Address
+        description3:
+          type: string
+          maxLength: 105
+          example: 123 main st. Denver, CO 12345
+      description: |
+        Configuration object used to preview purchase details
     MerchantPaymentProcessorConfig:
       required:
       - configType
