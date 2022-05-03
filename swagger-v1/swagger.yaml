@@ -238,6 +238,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/health:
+    get:
+      tags:
+      - Merchant
+      summary: Retrieves health status of a merchant
+      description: |
+        Checks that the referrer used to hit this endpoint is a valid
+        registered domain for this merchant, that the merchant has payment
+        processor/gateway configurations setup, and that the merchant has
+        credentials configured for that payment processor.
+
+        It does NOT verify that the credentials are correct.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: |
+            All health checks passed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantHealth'
+        "500":
+          description: |
+            One or more health checks failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantHealth'
   /merchants/{merchantId}/sdk:
     get:
       tags:
@@ -1700,6 +1741,27 @@ components:
         Request body payload to create or update a merchant domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
+    MerchantHealth:
+      type: object
+      properties:
+        validDomain:
+          type: boolean
+          nullable: false
+          example: true
+        validPaymentProcessorConfigured:
+          type: boolean
+          nullable: false
+          example: true
+        paymentProcessorCredentialsVerified:
+          type: boolean
+          nullable: false
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: ["No valid payment processor config for merchant: 3f326510-8fb0-4565-9de1-a090aaa49ac2", "Invalid domain: abc.com for merchant: 3f326510-8fb0-4565-9de1-a090aaa49ac2"]
     MerchantIndustry:
       type: string
       description: "The industry of the merchant. If the merchant is a child merchant,\
