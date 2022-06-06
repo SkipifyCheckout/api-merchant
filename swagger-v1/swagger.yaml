@@ -918,14 +918,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MerchantUserRequestBody'
+              $ref: '#/components/schemas/users_userId_body'
       responses:
         "204":
-          description: Successfully updated the user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MerchantUser'
+          description: |
+            Successfully processed the request
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -968,104 +965,6 @@ paths:
         "204":
           description: |
             [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password:
-    put:
-      tags:
-      - Merchant User
-      summary: Updates a merchant user's password
-      description: |
-        Changes a merchant user's password.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
-      requestBody:
-        description: Merchant User Password Change data
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
-      responses:
-        "204":
-          description: |
-            [204] Successfully processed the request
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password-reset:
-    post:
-      tags:
-      - Merchant User
-      summary: Generates a merchant user password reset token
-      description: |
-        Generates a merchant user password reset token.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
-      responses:
-        "200":
-          description: |
-            Successfully processed reset password request.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: |
-                  A password reset email has been sent to the email on record - assuming email is a valid GoCart user's email address.
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -2209,24 +2108,9 @@ components:
       type: object
       additionalProperties: false
       description: |
-        Request body paylod to create or update a merchant user.
+        Request body paylod to create a merchant user.
       allOf:
       - $ref: '#/components/schemas/MerchantUserBase'
-    MerchantUserPasswordChangeRequestBody:
-      required:
-      - password
-      - passwordResetJWT
-      type: object
-      properties:
-        password:
-          type: string
-          example: SomeCr@zyComplexPassword!!
-        passwordResetJWT:
-          type: string
-          description: |
-            A password reset JWT.
-          format: jwt
-      additionalProperties: false
     MerchantIndustryResponse:
       type: object
       properties:
@@ -2488,6 +2372,17 @@ components:
           nullable: true
           readOnly: true
       additionalProperties: false
+    users_userId_body:
+      required:
+      - Role
+      type: object
+      properties:
+        Role:
+          allOf:
+          - $ref: '#/components/schemas/Role'
+      additionalProperties: false
+      description: |
+        Request body paylod to update a merchant user.
     configs_logos_body:
       type: object
       properties:
