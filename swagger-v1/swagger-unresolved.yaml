@@ -611,14 +611,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MerchantUserRequestBody'
+              type: object
+              required:
+              - Role
+              properties:
+                Role:
+                  allOf:
+                    - $ref: '#/components/schemas/Role'
+              additionalProperties: false
+              description: |
+                Request body paylod to update a merchant user.
       responses:
         "204":
-          description: Successfully updated the user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MerchantUser'
+          description: |
+            Successfully processed the request
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -648,64 +654,7 @@ paths:
             application/json:
               schema:
                 $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password:
-    put:
-      tags:
-      - Merchant User
-      summary: Updates a merchant user's password
-      description: |
-        Changes a merchant user's password.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
-      requestBody:
-        description: Merchant User Password Change data
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
-      responses:
-        "204":
-          description: |
-            [204] Successfully processed the request
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password-reset:
-    post:
-      tags:
-      - Merchant User
-      summary: Generates a merchant user password reset token
-      description: |
-        Generates a merchant user password reset token.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
-      responses:
-        "200":
-          description: |
-            Successfully processed reset password request.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: |
-                  A password reset email has been sent to the email on record - assuming email is a valid GoCart user's email address.
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+  
   /merchants/{merchantId}/credentials:
     get:
       tags:
@@ -1636,24 +1585,10 @@ components:
       type: object
       additionalProperties: false
       description: |
-        Request body paylod to create or update a merchant user.
+        Request body paylod to create a merchant user.
       allOf:
       - $ref: '#/components/schemas/MerchantUserBase'
-    MerchantUserPasswordChangeRequestBody:
-      required:
-      - password
-      - passwordResetJWT
-      type: object
-      properties:
-        password:
-          type: string
-          example: SomeCr@zyComplexPassword!!
-        passwordResetJWT:
-          type: string
-          description: |
-            A password reset JWT.
-          format: jwt
-      additionalProperties: false
+    
     MerchantIndustryResponse:
       type: object
       properties:
