@@ -286,8 +286,6 @@ paths:
         Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
 
         This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
@@ -2208,7 +2206,7 @@ components:
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - licenseId
+      - license
       - merchantId
       type: object
       properties:
@@ -2217,7 +2215,7 @@ components:
           example: RAFT
           enum:
           - RAFT
-        licenseId:
+        license:
           type: string
           example: abcdef1234567890abcdef1234567890
         merchantId:
