@@ -193,17 +193,7 @@ paths:
         It does NOT verify that the credentials are correct.
         A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
         "200":
           description: |
@@ -228,8 +218,6 @@ paths:
         Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
 
         This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -1686,7 +1674,7 @@ components:
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - licenseId
+      - license
       - merchantId
       type: object
       properties:
@@ -1695,7 +1683,7 @@ components:
           example: RAFT
           enum:
           - RAFT
-        licenseId:
+        license:
           type: string
           example: abcdef1234567890abcdef1234567890
         merchantId:
