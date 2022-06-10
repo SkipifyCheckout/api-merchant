@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.3
+  version: 1.0.4
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.3
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.4
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -180,6 +180,35 @@ paths:
             application/json:
               schema:
                 $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/health:
+    get:
+      tags:
+      - Merchant
+      summary: Retrieves health status of a merchant
+      description: |
+        Checks that the referrer used to hit this endpoint is a valid
+        registered domain for this merchant, that the merchant has payment
+        processor/gateway configurations setup, and that the merchant has
+        credentials configured for that payment processor.
+        It does NOT verify that the credentials are correct.
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - $ref: '#/components/parameters/MerchantIdPathParameter'
+      responses:
+        "200":
+          description: |
+            All health checks passed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantHealthSuccess'
+        "500":
+          description: |
+            One or more health checks failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantHealthFailure'
   /merchants/{merchantId}/sdk:
     get:
       tags:
@@ -189,8 +218,6 @@ paths:
         Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
 
         This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -572,14 +599,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MerchantUserRequestBody'
+              type: object
+              required:
+              - Role
+              properties:
+                Role:
+                  allOf:
+                    - $ref: '#/components/schemas/Role'
+              additionalProperties: false
+              description: |
+                Request body paylod to update a merchant user.
       responses:
         "204":
-          description: Successfully updated the user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MerchantUser'
+          description: |
+            Successfully processed the request
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -609,64 +642,7 @@ paths:
             application/json:
               schema:
                 $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password:
-    put:
-      tags:
-      - Merchant User
-      summary: Updates a merchant user's password
-      description: |
-        Changes a merchant user's password.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
-      requestBody:
-        description: Merchant User Password Change data
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
-      responses:
-        "204":
-          description: |
-            [204] Successfully processed the request
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password-reset:
-    post:
-      tags:
-      - Merchant User
-      summary: Generates a merchant user password reset token
-      description: |
-        Generates a merchant user password reset token.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: '#/components/parameters/MerchantUserIdPathParameter'
-      responses:
-        "200":
-          description: |
-            Successfully processed reset password request.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: |
-                  A password reset email has been sent to the email on record - assuming email is a valid GoCart user's email address.
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+  
   /merchants/{merchantId}/credentials:
     get:
       tags:
@@ -1133,6 +1109,42 @@ components:
         Request body payload to create or update a merchant domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
+    MerchantHealthFailure:
+      type: object
+      properties:
+        validDomain:
+          type: boolean
+          nullable: false
+          example: false
+        validPaymentProcessorConfigured:
+          type: boolean
+          nullable: false
+          example: false
+        paymentProcessorCredentialsVerified:
+          type: boolean
+          nullable: false
+          example: false
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: ["No valid payment processor config for merchant: 3f326510-8fb0-4565-9de1-a090aaa49ac2", "Invalid domain: abc.com for merchant: 3f326510-8fb0-4565-9de1-a090aaa49ac2"]
+    MerchantHealthSuccess:
+      type: object
+      properties:
+        validDomain:
+          type: boolean
+          nullable: false
+          example: true
+        validPaymentProcessorConfigured:
+          type: boolean
+          nullable: false
+          example: true
+        paymentProcessorCredentialsVerified:
+          type: boolean
+          nullable: false
+          example: true
     MerchantIndustry:
       type: string
       enum:
@@ -1239,6 +1251,7 @@ components:
       - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
       - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
       - $ref: '#/components/schemas/MerchantPayByLinkConfig'
+      - $ref: '#/components/schemas/MerchantDemoPurchaseDetails'
     MerchantTippingConfig:
       required:
       - configType
@@ -1330,6 +1343,41 @@ components:
           example: '#5E6BA3'
       description: |
         The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo', 'primaryColor' and 'secondaryColor'.
+    MerchantDemoPurchaseDetails:
+      required:
+      - configType
+      properties:
+        configType:
+          type: string
+          example: DemoPurchaseDetails
+          enum:
+          - DemoPurchaseDetails
+        label1:
+          type: string
+          maxLength: 30
+          example: My Merchant
+        description1:
+          type: string
+          maxLength: 30
+          example: 3 items
+        label2:
+          type: string
+          maxLength: 30
+          example: Pickup
+        description2:
+          type: string
+          maxLength: 30
+          example: 25 minutes
+        label3:
+          type: string
+          maxLength: 30
+          example: Store Address
+        description3:
+          type: string
+          maxLength: 105
+          example: 123 main st. Denver, CO 12345
+      description: |
+        A merchant has the option to include addition details related to a purchase to their orders. Some merchants use this capability to include details like the delivery address, delivery time, or restaurant location to the order. MerchantDemoPurchaseDetails can be configured as a means to provide a preview of what the PurchaseDetails will look like when displayed to a customer viewing an order.
     MerchantPaymentProcessorConfig:
       required:
       - configType
@@ -1525,24 +1573,10 @@ components:
       type: object
       additionalProperties: false
       description: |
-        Request body paylod to create or update a merchant user.
+        Request body paylod to create a merchant user.
       allOf:
       - $ref: '#/components/schemas/MerchantUserBase'
-    MerchantUserPasswordChangeRequestBody:
-      required:
-      - password
-      - passwordResetJWT
-      type: object
-      properties:
-        password:
-          type: string
-          example: SomeCr@zyComplexPassword!!
-        passwordResetJWT:
-          type: string
-          description: |
-            A password reset JWT.
-          format: jwt
-      additionalProperties: false
+    
     MerchantIndustryResponse:
       type: object
       properties:
@@ -1640,7 +1674,7 @@ components:
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - licenseId
+      - license
       - merchantId
       type: object
       properties:
@@ -1649,7 +1683,7 @@ components:
           example: RAFT
           enum:
           - RAFT
-        licenseId:
+        license:
           type: string
           example: abcdef1234567890abcdef1234567890
         merchantId:

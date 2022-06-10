@@ -1,14 +1,14 @@
 openapi: 3.0.0
 info:
   title: Merchant API
-  description: "Merchant API used to manage merchant configurations (configs, users,\
-    \ domains, credentials).\n"
+  description: |
+    Merchant API used to manage merchant configurations (configs, users, domains, credentials).
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.3
+  version: 1.0.4
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.3
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.4
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -22,12 +22,11 @@ tags:
   description: |
     Merchant callback related API service methods.
 - name: Merchant Credentials
-  description: "Management of a merchant's credentials for such things as payment\
-    \ gateways and API keys. Currently the API key is created when a Merchant is created.\
-    \ It cannot be created, updated, or deleted using these APIs.\n"
+  description: |
+    Management of a merchant's credentials for such things as payment gateways and API keys. Currently the API key is created when a Merchant is created. It cannot be created, updated, or deleted using these APIs.
 - name: Merchant Configurations
-  description: "Management of a merchant's overall configurations including: feature\
-    \ toggles, domain registration integration credentials, etc.\n"
+  description: |
+    Management of a merchant's overall configurations including: feature toggles, domain registration integration credentials, etc.
 - name: Merchant Domain
   description: |
     Merchant domain related API service methods.
@@ -97,21 +96,22 @@ paths:
       tags:
       - Merchant
       summary: Creates a new merchant
-      description: "Creates a new merchant. On creation of a new merchant there is\
-        \ the opporunity to seed the merchant with configuration, domain, and callback\
-        \ details. There is also the opportunity to provision users with access to\
-        \ the merchant.\n\nIt is not required to provision resources like merchant\
-        \ domains, configurations, and callbacks under the context of the merchant\
-        \ during initial creations. There are individual APIs that enable one to manage\
-        \ the aforementioned resources.\n\nA valid **JWT** or **HMAC** is required\
-        \ to access this endpoint. MerchantAdmin and Developer users cannot access\
-        \ this API.\n\nMerchantCredentials cannot contain multiple credentials with\
-        \ the same CredentialType.\n\nMerchantConfigs cannot contain multiple configs\
-        \ with the same ConfigType.\n\nThe TaxType config can only be set to Taxable\
-        \ if the request body also has a ShippingAndTax callback set.\n\nThe FulfillmentType\
-        \ config can only be set to Shipping if the request body also has a ShippingAndTax\
-        \ callback set.\n\nConfigTypes CheckoutButton, ExpeditedGuestCheckout, and\
-        \ PayByLink can only be set by SUPERADMIN users.\n"
+      description: |
+        Creates a new merchant. On creation of a new merchant there is the opporunity to seed the merchant with configuration, domain, and callback details. There is also the opportunity to provision users with access to the merchant.
+
+        It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint. MerchantAdmin and Developer users cannot access this API.
+
+        MerchantCredentials cannot contain multiple credentials with the same CredentialType.
+
+        MerchantConfigs cannot contain multiple configs with the same ConfigType.
+
+        The TaxType config can only be set to Taxable if the request body also has a ShippingAndTax callback set.
+
+        The FulfillmentType config can only be set to Shipping if the request body also has a ShippingAndTax callback set.
+
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink can only be set by SUPERADMIN users.
       requestBody:
         content:
           application/json:
@@ -119,9 +119,9 @@ paths:
               $ref: '#/components/schemas/MerchantComplexRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\n\
-            The identity for the resource created is included in the response **Location**\
-            \ header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created.
+            The identity for the resource created is included in the response **Location** header.
           headers:
             Location:
               $ref: '#/components/headers/MerchantLocationHeader'
@@ -238,6 +238,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
+  /merchants/{merchantId}/health:
+    get:
+      tags:
+      - Merchant
+      summary: Retrieves health status of a merchant
+      description: |
+        Checks that the referrer used to hit this endpoint is a valid
+        registered domain for this merchant, that the merchant has payment
+        processor/gateway configurations setup, and that the merchant has
+        credentials configured for that payment processor.
+        It does NOT verify that the credentials are correct.
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+      parameters:
+      - name: merchantId
+        in: path
+        description: |
+          The unique identifier for the merchant in the context of GoCart.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      responses:
+        "200":
+          description: |
+            All health checks passed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantHealthSuccess'
+        "500":
+          description: |
+            One or more health checks failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantHealthFailure'
   /merchants/{merchantId}/sdk:
     get:
       tags:
@@ -247,8 +286,6 @@ paths:
         Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
 
         This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
@@ -343,9 +380,8 @@ paths:
               $ref: '#/components/schemas/MerchantCallbackRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource created is returned in the **Location**\
-            \ header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource created is returned in the **Location** header.
           headers:
             Location:
               $ref: '#/components/headers/MerchantCallbackLocationHeader'
@@ -484,8 +520,8 @@ paths:
           example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -557,9 +593,8 @@ paths:
               $ref: '#/components/schemas/MerchantDomainRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource created is included in the **Location**\
-            \ response header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource created is included in the **Location** response header.
           headers:
             Location:
               $ref: '#/components/headers/MerchantDomainLocationHeader'
@@ -696,8 +731,8 @@ paths:
           example: f62e04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -788,9 +823,8 @@ paths:
               $ref: '#/components/schemas/MerchantUserRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource created is included in the **Location**\
-            \ response header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource created is included in the **Location** response header.
           headers:
             Location:
               $ref: '#/components/headers/MerchantUserLocationHeader'
@@ -882,14 +916,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MerchantUserRequestBody'
+              $ref: '#/components/schemas/users_userId_body'
       responses:
         "204":
-          description: Successfully updated the user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MerchantUser'
+          description: |
+            Successfully processed the request
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -930,105 +961,8 @@ paths:
           example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
-        default:
           description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password:
-    put:
-      tags:
-      - Merchant User
-      summary: Updates a merchant user's password
-      description: |
-        Changes a merchant user's password.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
-      requestBody:
-        description: Merchant User Password Change data
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MerchantUserPasswordChangeRequestBody'
-      responses:
-        "204":
-          description: "[204] Successfully processed the request\n"
-        default:
-          description: |
-            Standard error response codes are returned by this service method.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExceptionResponse'
-  /merchants/{merchantId}/users/{userId}/password-reset:
-    post:
-      tags:
-      - Merchant User
-      summary: Generates a merchant user password reset token
-      description: |
-        Generates a merchant user password reset token.
-
-        A valid **JWT** or **HMAC** is required to access this endpoint.
-      parameters:
-      - name: merchantId
-        in: path
-        description: |
-          The unique identifier for the merchant in the context of GoCart.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
-      - name: userId
-        in: path
-        description: |
-          The unique identifier for the merchant user.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-          example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
-      responses:
-        "200":
-          description: |
-            Successfully processed reset password request.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: |
-                  A password reset email has been sent to the email on record - assuming email is a valid GoCart user's email address.
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1123,9 +1057,8 @@ paths:
               $ref: '#/components/schemas/MerchantCredentialRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource created is included in the **Location**\
-            \ header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource created is included in the **Location** header.
           headers:
             Location:
               $ref: '#/components/headers/MerchantCredentialLocationHeader'
@@ -1268,8 +1201,8 @@ paths:
           example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1337,14 +1270,18 @@ paths:
       tags:
       - Merchant Configurations
       summary: Creates a new merchant configuration
-      description: "Creates a new merchant configuration for the specified merchant.\n\
-        \nA valid **JWT** or **HMAC** is required to access this endpoint.\n\nA merchant\
-        \ cannot contain two configs with the same ConfigType.\n\nThe TaxType config\
-        \ can only be set to Taxable if the Merchant has a ShippingAndTax callback\
-        \ setup.\n\nThe FulfillmentType config can only be set to Shipping if the\
-        \ Merchant has a ShippingAndTax callback setup.\n\nConfigTypes CheckoutButton,\
-        \ ExpeditedGuestCheckout, and PayByLink can only be created by SUPERADMIN\
-        \ users.\n"
+      description: |
+        Creates a new merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        A merchant cannot contain two configs with the same ConfigType.
+
+        The TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax callback setup.
+
+        The FulfillmentType config can only be set to Shipping if the Merchant has a ShippingAndTax callback setup.
+
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink can only be created by SUPERADMIN users.
       parameters:
       - name: merchantId
         in: path
@@ -1364,9 +1301,8 @@ paths:
               $ref: '#/components/schemas/MerchantConfigRequestBody'
       responses:
         "201":
-          description: "[201] The request succeeded and a new resource was created.\
-            \ The identity for the resource created is included in the response **Location**\
-            \ header.\n"
+          description: |
+            [201] The request succeeded and a new resource was created. The identity for the resource created is included in the response **Location** header.
           headers:
             Location:
               $ref: '#/components/headers/MerchantConfigurationLocationHeader'
@@ -1427,13 +1363,16 @@ paths:
       tags:
       - Merchant Configurations
       summary: Updates a merchant configuraton
-      description: "Updates an existing merchant configuration for the specified merchant.\n\
-        \nA valid **JWT** or **HMAC** is required to access this endpoint.\n\nThe\
-        \ TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax\
-        \ callback setup.\n\nThe FulfillmentType config can only be set to Shipping\
-        \ if the Merchant has a ShippingAndTax callback setup.\n\nConfigTypes CheckoutButton,\
-        \ ExpeditedGuestCheckout, and PayByLink can only be updated by SUPERADMIN\
-        \ users.\n"
+      description: |
+        Updates an existing merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        The TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax callback setup.
+
+        The FulfillmentType config can only be set to Shipping if the Merchant has a ShippingAndTax callback setup.
+
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink can only be updated by SUPERADMIN users.
       parameters:
       - name: merchantId
         in: path
@@ -1477,9 +1416,12 @@ paths:
       tags:
       - Merchant Configurations
       summary: Removes a merchant configuration
-      description: "Deletes a merchant configuration for the specified merchant.\n\
-        \nA valid **JWT** or **HMAC** is required to access this endpoint.\n\nConfigTypes\
-        \ CheckoutButton, ExpeditedGuestCheckout, and PayByLink cannot be deleted.\n"
+      description: |
+        Deletes a merchant configuration for the specified merchant.
+
+        A valid **JWT** or **HMAC** is required to access this endpoint.
+
+        ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink cannot be deleted.
       parameters:
       - name: merchantId
         in: path
@@ -1505,8 +1447,8 @@ paths:
           example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
       responses:
         "204":
-          description: "[204] Successfully processed the request. No content to return\
-            \ (typically related to the delete of a resource).\n"
+          description: |
+            [204] Successfully processed the request. No content to return (typically related to the delete of a resource).
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1636,12 +1578,10 @@ components:
           example: MK Fine Woodworking
         partnerMerchantId:
           type: string
-          description: "The merchant this merchant rolls up to. This is common in\
-            \ an ISV setting where a merchant is onboarded into GoCart under the context\
-            \ of an ISV. Child merchants have the ability to inherit configuration\
-            \ details from the partner merchant, which can significantly simplify\
-            \ the management of merchant configurations across a large number of child\
-            \ merchants.\n\nOnly SuperAdmin users can update the partnerMerchantId.\n"
+          description: |
+            The merchant this merchant rolls up to. This is common in an ISV setting where a merchant is onboarded into GoCart under the context of an ISV. Child merchants have the ability to inherit configuration details from the partner merchant, which can significantly simplify the management of merchant configurations across a large number of child merchants.
+
+            Only SuperAdmin users can update the partnerMerchantId.
           format: uuid
           nullable: true
           example: 87285c60-15b3-4d9c-8c27-92ba7873b2ad
@@ -1700,11 +1640,48 @@ components:
         Request body payload to create or update a merchant domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
+    MerchantHealthFailure:
+      type: object
+      properties:
+        validDomain:
+          type: boolean
+          nullable: false
+          example: false
+        validPaymentProcessorConfigured:
+          type: boolean
+          nullable: false
+          example: false
+        paymentProcessorCredentialsVerified:
+          type: boolean
+          nullable: false
+          example: false
+        errors:
+          type: array
+          nullable: true
+          example:
+          - "No valid payment processor config for merchant: 3f326510-8fb0-4565-9de1-a090aaa49ac2"
+          - "Invalid domain: abc.com for merchant: 3f326510-8fb0-4565-9de1-a090aaa49ac2"
+          items:
+            type: string
+    MerchantHealthSuccess:
+      type: object
+      properties:
+        validDomain:
+          type: boolean
+          nullable: false
+          example: true
+        validPaymentProcessorConfigured:
+          type: boolean
+          nullable: false
+          example: true
+        paymentProcessorCredentialsVerified:
+          type: boolean
+          nullable: false
+          example: true
     MerchantIndustry:
       type: string
-      description: "The industry of the merchant. If the merchant is a child merchant,\
-        \ the industry is inherited from the merchant this merchant rolls up to. This\
-        \ field is required when creating an ISV or standalone merchant.\n"
+      description: |
+        The industry of the merchant. If the merchant is a child merchant, the industry is inherited from the merchant this merchant rolls up to. This field is required when creating an ISV or standalone merchant.
       enum:
       - GoCart_Internal
       - Department_Stores
@@ -1760,10 +1737,8 @@ components:
     MerchantSummary:
       type: object
       additionalProperties: false
-      description: "Summary of merchant information (no lower level details such as\
-        \ merchant configurations, domains, or callbacks included). For this type\
-        \ of information, either use the lower level merchant APIs and/or use the\
-        \ GET merchants/{merchantId} service method.\n"
+      description: |
+        Summary of merchant information (no lower level details such as merchant configurations, domains, or callbacks included). For this type of information, either use the lower level merchant APIs and/or use the GET merchants/{merchantId} service method.
       allOf:
       - $ref: '#/components/schemas/MerchantBase'
       - $ref: '#/components/schemas/ResourceBase'
@@ -1809,6 +1784,7 @@ components:
       - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
       - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
       - $ref: '#/components/schemas/MerchantPayByLinkConfig'
+      - $ref: '#/components/schemas/MerchantDemoPurchaseDetails'
     MerchantTippingConfig:
       required:
       - configType
@@ -1857,8 +1833,8 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
-      description: "The Pay By Link co-branding configuation for the merchant. This\
-        \ is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.\n"
+      description: |
+        The Pay By Link co-branding configuation for the merchant. This is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.
     MerchantCoBrandingConfig:
       required:
       - configType
@@ -1898,9 +1874,43 @@ components:
           type: string
           format: hex color code
           example: '#5E6BA3'
-      description: "The GoCart modal co-branding configuation for the merchant. This\
-        \ is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo',\
-        \ 'primaryColor' and 'secondaryColor'.\n"
+      description: |
+        The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo', 'primaryColor' and 'secondaryColor'.
+    MerchantDemoPurchaseDetails:
+      required:
+      - configType
+      properties:
+        configType:
+          type: string
+          example: DemoPurchaseDetails
+          enum:
+          - DemoPurchaseDetails
+        label1:
+          maxLength: 30
+          type: string
+          example: My Merchant
+        description1:
+          maxLength: 30
+          type: string
+          example: 3 items
+        label2:
+          maxLength: 30
+          type: string
+          example: Pickup
+        description2:
+          maxLength: 30
+          type: string
+          example: 25 minutes
+        label3:
+          maxLength: 30
+          type: string
+          example: Store Address
+        description3:
+          maxLength: 105
+          type: string
+          example: "123 main st. Denver, CO 12345"
+      description: |
+        A merchant has the option to include addition details related to a purchase to their orders. Some merchants use this capability to include details like the delivery address, delivery time, or restaurant location to the order. MerchantDemoPurchaseDetails can be configured as a means to provide a preview of what the PurchaseDetails will look like when displayed to a customer viewing an order.
     MerchantPaymentProcessorConfig:
       required:
       - configType
@@ -2096,24 +2106,9 @@ components:
       type: object
       additionalProperties: false
       description: |
-        Request body paylod to create or update a merchant user.
+        Request body paylod to create a merchant user.
       allOf:
       - $ref: '#/components/schemas/MerchantUserBase'
-    MerchantUserPasswordChangeRequestBody:
-      required:
-      - password
-      - passwordResetJWT
-      type: object
-      properties:
-        password:
-          type: string
-          example: SomeCr@zyComplexPassword!!
-        passwordResetJWT:
-          type: string
-          description: |
-            A password reset JWT.
-          format: jwt
-      additionalProperties: false
     MerchantIndustryResponse:
       type: object
       properties:
@@ -2133,22 +2128,21 @@ components:
       - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantCredential:
       type: object
-      description: "Merchant credential represents the credentials for one of the\
-        \ GoCart supported credential types (e.g., payment gateway credentials, api\
-        \ key, etc.)\n"
+      description: |
+        Merchant credential represents the credentials for one of the GoCart supported credential types (e.g., payment gateway credentials, api key, etc.)
       allOf:
       - $ref: '#/components/schemas/ResourceBase'
       - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialRequestBody:
       type: object
-      description: "Object used to create and update a merchant credential of one\
-        \ of the supported types (e.g., API Key, Payment Gateway Credentials, etc.).\n"
+      description: |
+        Object used to create and update a merchant credential of one of the supported types (e.g., API Key, Payment Gateway Credentials, etc.).
       allOf:
       - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialBase:
       type: object
-      description: "Container for one of the supported merchant credential types (e.g.,\
-        \ API Key, Payment Gateway Credentials, etc.).\n"
+      description: |
+        Container for one of the supported merchant credential types (e.g., API Key, Payment Gateway Credentials, etc.).
       oneOf:
       - $ref: '#/components/schemas/MerchantApiKey'
       - $ref: '#/components/schemas/PaymentGatewayCredentials'
@@ -2166,9 +2160,10 @@ components:
         apiKey:
           type: string
           example: acf66a54-04f5-44e2-b43a-2a2d1026be0d
-      description: "API key for GoCart. This key is used to create HMAC hashes, which\
-        \ are necessary for all GoCart B2B integrations.\n\nNote: The credentialType\
-        \ is required and must be set to 'API_Key'\n"
+      description: |
+        API key for GoCart. This key is used to create HMAC hashes, which are necessary for all GoCart B2B integrations.
+
+        Note: The credentialType is required and must be set to 'API_Key'
     PaymentGatewayCredentials:
       type: object
       description: |
@@ -2204,12 +2199,14 @@ components:
           type: string
           example: "0001"
       additionalProperties: false
-      description: "Credentials for connecting to the Express payment gateway.\n\n\
-        Note: The credentialType is required and must be set to 'Express'\n"
+      description: |
+        Credentials for connecting to the Express payment gateway.
+
+        Note: The credentialType is required and must be set to 'Express'
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - licenseId
+      - license
       - merchantId
       type: object
       properties:
@@ -2218,7 +2215,7 @@ components:
           example: RAFT
           enum:
           - RAFT
-        licenseId:
+        license:
           type: string
           example: abcdef1234567890abcdef1234567890
         merchantId:
@@ -2228,8 +2225,10 @@ components:
           type: string
           example: "0001"
       additionalProperties: false
-      description: "Credentials for connecting to the RAFT payment gateway.\n\nNote:\
-        \ The credentialType is required and must be set to 'RAFT'\n"
+      description: |
+        Credentials for connecting to the RAFT payment gateway.
+
+        Note: The credentialType is required and must be set to 'RAFT'
     PaymentGatewayVapCredentials:
       required:
       - credentialType
@@ -2371,6 +2370,17 @@ components:
           nullable: true
           readOnly: true
       additionalProperties: false
+    users_userId_body:
+      required:
+      - Role
+      type: object
+      properties:
+        Role:
+          allOf:
+          - $ref: '#/components/schemas/Role'
+      additionalProperties: false
+      description: |
+        Request body paylod to update a merchant user.
     configs_logos_body:
       type: object
       properties:
