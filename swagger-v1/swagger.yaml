@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.4
+  version: 1.0.5
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.4
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.5
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
