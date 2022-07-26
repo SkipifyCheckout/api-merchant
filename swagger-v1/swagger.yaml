@@ -1781,6 +1781,7 @@ components:
       - $ref: '#/components/schemas/MerchantSettlementTypeConfig'
       - $ref: '#/components/schemas/MerchantTaxTypeConfig'
       - $ref: '#/components/schemas/MerchantTippingConfig'
+      - $ref: '#/components/schemas/MerchantTippingPercentageConfig'
       - $ref: '#/components/schemas/MerchantGoCartCheckoutButtonConfig'
       - $ref: '#/components/schemas/MerchantExpeditedGuestCheckoutConfig'
       - $ref: '#/components/schemas/MerchantPayByLinkConfig'
@@ -1807,6 +1808,29 @@ components:
         |--------|-----------|
         |true|The merchant offers a tip option on sales.|
         |false|The merchant doesn't offer a tipping option on sales.|
+    MerchantTippingPercentageConfig:
+      required:
+      - configType
+      - percentages
+      type: object
+      properties:
+        configType:
+          type: string
+          example: TippingPercentages
+          enum:
+          - TippingPercentages
+        percentages:
+          maxItems: 3
+          minItems: 3
+          uniqueItems: true
+          type: array
+          items:
+            maximum: 99
+            minimum: 1
+            type: integer
+      description: |
+        A merchant has the option to configure 3 custom tipping percentages to calculate and display alongside the total for a sale.
+        Values passed to the API are a list of 3 integers corresponding to a whole percent value i.e: 10 = 10%
     MerchantPayByLinkCoBrandingConfig:
       required:
       - configType
