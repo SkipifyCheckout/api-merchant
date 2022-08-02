@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.5
+  version: 1.0.6
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.5
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.6
   description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -43,7 +43,7 @@ paths:
       description: |
         Retrieves the paginated list of merchants. A merchant will only see their child merchants (assuming they have any child merchants).
 
-        A valid **JWT** or **HMAC** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/HMAC is created under. MerchantAdmin and Developer users cannot access this API.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/MAC is created under. MerchantAdmin and Developer users cannot access this API.
         
         merchantId query parameter will only be observed when this API is called by a SuperAdmin
       parameters:
@@ -73,7 +73,7 @@ paths:
         
         It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
         
-        A valid **JWT** or **HMAC** is required to access this endpoint. MerchantAdmin and Developer users cannot access this API.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint. MerchantAdmin and Developer users cannot access this API.
         
         MerchantCredentials cannot contain multiple credentials with the same CredentialType.
         
@@ -112,7 +112,7 @@ paths:
       description: |
         Gets the details for the specified merchant. Details are only returned if the caller has the authorization to fetch the merchant's details.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -136,7 +136,7 @@ paths:
       description: |
         Updates the base details for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint. Developer users cannot access this API.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint. Developer users cannot access this API.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -163,7 +163,7 @@ paths:
       description: |
         Helper service that retrieves the merchant's industry.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -191,7 +191,7 @@ paths:
         processor/gateway configurations setup, and that the merchant has
         credentials configured for that payment processor.
         It does NOT verify that the credentials are correct.
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -246,7 +246,7 @@ paths:
       description: |
         Retrieves the list of callbacks associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -272,7 +272,7 @@ paths:
       description: |
         Configures a callback of the specified type associated with the merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -302,7 +302,7 @@ paths:
       description: |
         Retrieves a registered callback associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CallbackIdPathParameter'
@@ -327,7 +327,7 @@ paths:
       description: |
         Updates a previously a registered callback associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CallbackIdPathParameter'
@@ -356,7 +356,7 @@ paths:
 
         A ShippingAndTax callback can only be deleted if the merchant's TaxType config is set to NonTaxable and the merchant's FulfillmentType config is set to Service.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CallbackIdPathParameter'
@@ -379,7 +379,7 @@ paths:
       description: |
         Retrieves the list of domains associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       responses:
@@ -405,7 +405,7 @@ paths:
       description: |
         Configures a domain for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -435,7 +435,7 @@ paths:
       description: |
         Retrieves a registered domain associated with this merchant or it's partner merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/DomainIdPathParameter'
@@ -460,7 +460,7 @@ paths:
       description: |
         Updates a previously a registered domain associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/DomainIdPathParameter'
@@ -487,7 +487,7 @@ paths:
       description: |
         Delete the specified domain associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/DomainIdPathParameter'
@@ -510,7 +510,7 @@ paths:
       description: |
         Gets the users associated with the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
@@ -536,7 +536,7 @@ paths:
       description: |
         Creates a new merchant user associated with the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -566,7 +566,7 @@ paths:
       description: |
         Retrieves a merchant user associated with the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/MerchantUserIdPathParameter'
@@ -591,7 +591,7 @@ paths:
       description: |
         Updates a merchant user associated with the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/MerchantUserIdPathParameter'
@@ -627,7 +627,7 @@ paths:
       description: |
         Deletes a merchant user associated with the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/MerchantUserIdPathParameter'
@@ -651,7 +651,7 @@ paths:
       description: |
         Retrieves the list of merchant credentials associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
@@ -677,7 +677,7 @@ paths:
       description: |
         Creates a new merchant credential associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
         
         A merchant cannot contain two credentials with the same CredentialType.
       parameters:
@@ -711,7 +711,7 @@ paths:
       description: |
         Retrieves a new merchant credential with the specified id.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/CredentialIdPathParameter'
@@ -737,7 +737,7 @@ paths:
       description: |
         Updates an existing merchant credential associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
         
         The CredentialType for a merchant credential cannot be changed when updating.
       parameters:
@@ -767,7 +767,7 @@ paths:
       description: |
         Deletes a merchant credential associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
         
         A payment gateway credential cannot be deleted if the credential being deleted the Merchant's PaymentProcessor config is set to the same CredentialType.
       parameters:
@@ -792,7 +792,7 @@ paths:
       description: |
         Retrieves the list of configurations associated with this merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
@@ -818,7 +818,7 @@ paths:
       description: |
         Creates a new merchant configuration for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
         
         A merchant cannot contain two configs with the same ConfigType.
         
@@ -856,7 +856,7 @@ paths:
       description: |
         Retrieves a merchant configuration for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       - $ref: '#/components/parameters/ConfigIdPathParameter'
@@ -881,7 +881,7 @@ paths:
       description: |
         Updates an existing merchant configuration for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
         
         The TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax callback setup.
         
@@ -914,7 +914,7 @@ paths:
       description: |
         Deletes a merchant configuration for the specified merchant.
 
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
         
         ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink cannot be deleted.
       parameters:
@@ -939,7 +939,7 @@ paths:
       description: |
         Uploads an image for the merchant.
         
-        A valid **JWT** or **HMAC** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-hmac-3)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
       requestBody:
@@ -1324,6 +1324,10 @@ components:
           maxLength: 7
           format: hex color code
           example: '#5E6BA3'
+        useLogoForPurchaseDetails:
+          type: boolean
+          example: true
+          default: false
       description: |
         The Pay By Link co-branding configuation for the merchant. This is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.
     MerchantCoBrandingConfig:
