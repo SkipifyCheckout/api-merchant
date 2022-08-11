@@ -1241,7 +1241,7 @@ components:
       description: |
         Base representation of a a single merchant configuration.
       oneOf:
-      - $ref: '#/components/schemas/MerchantPayByLinkCoBrandingConfig'
+      - $ref: '#/components/schemas/MerchantBrandingConfig'
       - $ref: '#/components/schemas/MerchantCoBrandingConfig'
       - $ref: '#/components/schemas/MerchantPaymentProcessorConfig'
       - $ref: '#/components/schemas/MerchantFulfillmentTypeConfig'
@@ -1298,14 +1298,14 @@ components:
       description: |
         A merchant has the option to configure 3 custom tipping percentages to calculate and display alongside the total for a sale.
         Values passed to the API are a list of 3 integers corresponding to a whole percent value i.e: 10 = 10%
-    MerchantPayByLinkCoBrandingConfig:
+    MerchantBrandingConfig:
       required:
       - configType
       type: object
       properties:
         configType:
           type: string
-          example: PayByLinkCoBranding
+          example: MerchantBrandingConfig
           enum:
           - PayByLinkCoBranding
         displayName:
@@ -1329,7 +1329,7 @@ components:
           example: true
           default: false
       description: |
-        The Pay By Link co-branding configuation for the merchant. This is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.
+        The branding configuation for the merchant. This is a JSON configuration to control the 'displayName', 'logoSrc' and 'color'.
     MerchantCoBrandingConfig:
       required:
       - configType
