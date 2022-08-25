@@ -8,12 +8,14 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.8
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.8
-  description: SwaggerHub API Auto Mocking
 - url: https://api-staging.gocartpay.com
-  description: GoCart Staging Environment
+  description: Staging Environment (see https://docs.gocartpay.com/docs/environments
+    for more info)
 - url: https://api.gocartpay.com/
-  description: GoCart Production Environment
+  description: GoCart Production Environment (see https://docs.gocartpay.com/docs/environments
+    for more info)
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.8
+  description: SwaggerHub's tool for generating a mock response
 tags:
 - name: Merchant
   description: |
