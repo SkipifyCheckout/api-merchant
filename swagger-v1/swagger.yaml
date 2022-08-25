@@ -8,14 +8,12 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.8
 servers:
-- url: https://api-staging.gocartpay.com
-  description: Staging Environment (see https://docs.gocartpay.com/docs/environments
-    for more info)
-- url: https://api.gocartpay.com/
-  description: GoCart Production Environment (see https://docs.gocartpay.com/docs/environments
-    for more info)
 - url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.8
-  description: SwaggerHub's tool for generating a mock response
+  description: SwaggerHub's tool for generating example responses
+- url: https://api-staging.gocartpay.com
+  description: GoCart Staging Environment
+- url: https://api.gocartpay.com/
+  description: GoCart Production Environment
 tags:
 - name: Merchant
   description: |
@@ -42,6 +40,8 @@ paths:
       - Merchant
       summary: Retrieves the paginated list of merchants
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves the paginated list of merchants. A merchant will only see their child merchants (assuming they have any child merchants).
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/MAC is created under. MerchantAdmin and Developer users cannot access this API.
@@ -99,6 +99,8 @@ paths:
       - Merchant
       summary: Creates a new merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Creates a new merchant. On creation of a new merchant there is the opporunity to seed the merchant with configuration, domain, and callback details. There is also the opportunity to provision users with access to the merchant.
 
         It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
@@ -140,6 +142,8 @@ paths:
       - Merchant
       summary: Retrieves a merchant's details
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Gets the details for the specified merchant. Details are only returned if the caller has the authorization to fetch the merchant's details.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -174,6 +178,8 @@ paths:
       - Merchant
       summary: Updates a merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Updates the base details for the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint. Developer users cannot access this API.
@@ -211,6 +217,8 @@ paths:
       - Merchant
       summary: Retrieves industry by merchant id
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Helper service that retrieves the merchant's industry.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -246,6 +254,8 @@ paths:
       - Merchant
       summary: Retrieves health status of a merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Checks that the referrer used to hit this endpoint is a valid
         registered domain for this merchant, that the merchant has payment
         processor/gateway configurations setup, and that the merchant has
@@ -285,6 +295,8 @@ paths:
       - Merchant
       summary: Retrieves the GoCart SDK for a merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
 
         This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
@@ -324,6 +336,8 @@ paths:
       - Merchant Callback
       summary: Retrieves list of registered callbacks for a merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves the list of callbacks associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -379,6 +393,8 @@ paths:
       - Merchant Callback
       summary: Creates a new merchant callback
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Configures a callback of the specified type associated with the merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -419,6 +435,8 @@ paths:
       - Merchant Callback
       summary: Retrieves a merchant callback
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves a registered callback associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -464,6 +482,8 @@ paths:
       - Merchant Callback
       summary: Updates a merchant callback
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Updates a previously a registered callback associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -511,6 +531,8 @@ paths:
       - Merchant Callback
       summary: Deletes a merchant callback
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Delete the specified callback associated with this merchant.
 
         A ShippingAndTax callback can only be deleted if the merchant's TaxType config is set to NonTaxable and the merchant's FulfillmentType config is set to Service.
@@ -556,6 +578,8 @@ paths:
       - Merchant Domain
       summary: Retrieves list of valid domains for a merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves the list of domains associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -611,6 +635,8 @@ paths:
       - Merchant Domain
       summary: Creates a new merchant domain
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Configures a domain for the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -651,6 +677,8 @@ paths:
       - Merchant Domain
       summary: Retrieves a merchant or partner merchant's domain information
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves a registered domain associated with this merchant or it's partner merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -696,6 +724,8 @@ paths:
       - Merchant Domain
       summary: Updates a merchant domain
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Updates a previously a registered domain associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -743,6 +773,8 @@ paths:
       - Merchant Domain
       summary: Removes a merchant domain
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Delete the specified domain associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -786,6 +818,8 @@ paths:
       - Merchant User
       summary: Retrieves list of merchant users
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Gets the users associated with the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -841,6 +875,8 @@ paths:
       - Merchant User
       summary: Creates a new merchant user
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Creates a new merchant user associated with the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -881,6 +917,8 @@ paths:
       - Merchant User
       summary: Retrieves a merchant user
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves a merchant user associated with the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -926,6 +964,8 @@ paths:
       - Merchant User
       summary: Updates a merchant User
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Updates a merchant user associated with the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -973,6 +1013,8 @@ paths:
       - Merchant User
       summary: Removes a merchant User
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Deletes a merchant user associated with the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1016,6 +1058,8 @@ paths:
       - Merchant Credentials
       summary: Retrieves List of merchants credentials
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves the list of merchant credentials associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1071,6 +1115,8 @@ paths:
       - Merchant Credentials
       summary: Creates merchant credential
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Creates a new merchant credential associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1115,6 +1161,8 @@ paths:
       - Merchant Credentials
       summary: Retrieves a merchant credential information
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves a new merchant credential with the specified id.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1161,6 +1209,8 @@ paths:
       - Merchant Credentials
       summary: Updates a merchant credential
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Updates an existing merchant credential associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1211,6 +1261,8 @@ paths:
       - Merchant Credentials
       summary: Removes a merchant credential
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Deletes a merchant credential associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1256,6 +1308,8 @@ paths:
       - Merchant Configurations
       summary: Retrieves list of valid configuration for a merchant
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves the list of configurations associated with this merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1311,6 +1365,8 @@ paths:
       - Merchant Configurations
       summary: Creates a new merchant configuration
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Creates a new merchant configuration for the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1359,6 +1415,8 @@ paths:
       - Merchant Configurations
       summary: Retrieves a merchant configuration information
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Retrieves a merchant configuration for the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1404,6 +1462,8 @@ paths:
       - Merchant Configurations
       summary: Updates a merchant configuraton
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Updates an existing merchant configuration for the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1457,6 +1517,8 @@ paths:
       - Merchant Configurations
       summary: Removes a merchant configuration
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Deletes a merchant configuration for the specified merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -1502,6 +1564,8 @@ paths:
       - Upload
       summary: Uploads merchant image
       description: |
+        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+
         Uploads an image for the merchant.
 
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
@@ -2256,7 +2320,7 @@ components:
           type: string
           example: acf66a54-04f5-44e2-b43a-2a2d1026be0d
       description: |
-        API key for GoCart. This key is used to create HMAC hashes, which are necessary for all GoCart B2B integrations.
+        API key for GoCart. This key is used to create MAC hashes, which are necessary for all GoCart B2B integrations.
 
         Note: The credentialType is required and must be set to 'API_Key'
     PaymentGatewayCredentials:
