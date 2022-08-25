@@ -249,15 +249,15 @@ paths:
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MerchantCallback'
+                $ref: '#/components/schemas/MerchantCallbackPagedResponse'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -382,15 +382,15 @@ paths:
         A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MerchantDomain'
+                $ref: '#/components/schemas/MerchantDomainPagedResponse'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1077,8 +1077,22 @@ components:
       allOf:
       - $ref: '#/components/schemas/MerchantCallbackBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
+    MerchantCallbackPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantCallback'
+      additionalProperties: false
+      allOf:
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
     MerchantCallbackRequestBody:
       type: object
+      required:
+      - callbackType
+      - url
       additionalProperties: false
       description: |
         Request body payload to create or update a merchant callback.
@@ -1103,12 +1117,25 @@ components:
       - $ref: '#/components/schemas/MerchantDomainBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
     MerchantDomainRequestBody:
+      required:
+      - domain
       type: object
       additionalProperties: false
       description: |
         Request body payload to create or update a merchant domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
+    MerchantDomainPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantDomain'
+      additionalProperties: false
+      allOf:
+      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
     MerchantHealthFailure:
       type: object
       properties:
