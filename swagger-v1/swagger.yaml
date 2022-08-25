@@ -339,15 +339,34 @@ paths:
           type: string
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: pageSize
+        in: query
+        description: |
+          The number of items per page
+        required: false
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          example: 25
+          default: 25
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MerchantCallback'
+                $ref: '#/components/schemas/MerchantCallbackPagedResponse'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -552,15 +571,34 @@ paths:
           type: string
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: pageSize
+        in: query
+        description: |
+          The number of items per page
+        required: false
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          example: 25
+          default: 25
+      - name: pageNumber
+        in: query
+        description: |
+          The page number to fetch
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+          default: 1
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MerchantDomain'
+                $ref: '#/components/schemas/MerchantDomainPagedResponse'
         default:
           description: |
             Standard error response codes are returned by this service method.
@@ -1610,7 +1648,21 @@ components:
       allOf:
       - $ref: '#/components/schemas/MerchantCallbackBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
+    MerchantCallbackPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantCallback'
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantCallbackRequestBody:
+      required:
+      - callbackType
+      - url
       type: object
       additionalProperties: false
       description: |
@@ -1636,12 +1688,25 @@ components:
       - $ref: '#/components/schemas/MerchantDomainBase'
       - $ref: '#/components/schemas/InheritableResourceBase'
     MerchantDomainRequestBody:
+      required:
+      - domain
       type: object
       additionalProperties: false
       description: |
         Request body payload to create or update a merchant domain.
       allOf:
       - $ref: '#/components/schemas/MerchantDomainBase'
+    MerchantDomainPagedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/MerchantDomain'
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/PaginatedResponseBase'
     MerchantHealthFailure:
       type: object
       properties:
