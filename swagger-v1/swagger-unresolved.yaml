@@ -1906,7 +1906,6 @@ components:
       explode: true
       schema:
         type: string
-        format: uuid
         example: Fine Woodworking
     MerchantIdPathParameter:
       name: merchantId
