@@ -1906,7 +1906,7 @@ components:
       explode: true
       schema:
         type: string
-        example: Fine Woodworking
+        example: Fine+Woodworking
     MerchantIdPathParameter:
       name: merchantId
       in: path
