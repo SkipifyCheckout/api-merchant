@@ -68,7 +68,7 @@ paths:
         explode: true
         schema:
           type: string
-          format: uuid
+          example: Fine Woodworking
       - name: pageSize
         in: query
         description: |
@@ -2579,7 +2579,7 @@ components:
       explode: true
       schema:
         type: string
-        format: uuid
+        example: Fine Woodworking
     MerchantIdPathParameter:
       name: merchantId
       in: path
