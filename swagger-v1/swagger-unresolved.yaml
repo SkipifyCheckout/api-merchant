@@ -1810,7 +1810,7 @@ components:
           type: string
           example: "003"
           description: "Contains the 3-digit terminal id assigned by Worldpay during boarding."
-        bankId:
+        stpBankId:
           type: string
           example: "1234"
           description: "Contains the 4-digit bank id assigned by Worldpay during boarding."
