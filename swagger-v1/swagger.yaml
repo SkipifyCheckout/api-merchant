@@ -2390,7 +2390,7 @@ components:
           description: Contains the 3-digit terminal id assigned by Worldpay during
             boarding.
           example: "003"
-        bankId:
+        stpBankId:
           type: string
           description: Contains the 4-digit bank id assigned by Worldpay during boarding.
           example: "1234"
