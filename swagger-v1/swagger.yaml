@@ -2374,9 +2374,10 @@ components:
         Note: The credentialType is required and must be set to 'Express'
     PaymentGatewayRaftCredentials:
       required:
+      - bankId
       - credentialType
-      - license
       - merchantId
+      - stpTerminalId
       type: object
       properties:
         credentialType:
@@ -2384,9 +2385,15 @@ components:
           example: RAFT
           enum:
           - RAFT
-        license:
+        stpTerminalId:
           type: string
-          example: abcdef1234567890abcdef1234567890
+          description: Contains the 3-digit terminal id assigned by Worldpay during
+            boarding.
+          example: "003"
+        bankId:
+          type: string
+          description: Contains the 4-digit bank id assigned by Worldpay during boarding.
+          example: "1234"
         merchantId:
           type: string
           example: "1234567891234"
@@ -2652,6 +2659,29 @@ components:
         type: string
         format: uuid
         example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+    PageSize:
+      name: pageSize
+      in: query
+      description: |
+        The number of items per page
+      required: false
+      schema:
+        maximum: 50
+        minimum: 1
+        type: integer
+        example: 25
+        default: 25
+    PageNumber:
+      name: pageNumber
+      in: query
+      description: |
+        The page number to fetch
+      required: false
+      schema:
+        minimum: 1
+        type: integer
+        example: 1
+        default: 1
   headers:
     MerchantLocationHeader:
       style: simple
