@@ -1796,7 +1796,8 @@ components:
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - license
+      - stpTerminalId
+      - bankId
       - merchantId
       type: object
       properties:
@@ -1805,9 +1806,14 @@ components:
           example: RAFT
           enum:
           - RAFT
-        license:
+        stpTerminalId:
           type: string
-          example: abcdef1234567890abcdef1234567890
+          example: "003"
+          description: "Contains the 3-digit terminal id assigned by Worldpay during boarding."
+        bankId:
+          type: string
+          example: "1234"
+          description: "Contains the 4-digit bank id assigned by Worldpay during boarding."
         merchantId:
           type: string
           example: "1234567891234"
