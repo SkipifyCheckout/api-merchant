@@ -2374,9 +2374,9 @@ components:
         Note: The credentialType is required and must be set to 'Express'
     PaymentGatewayRaftCredentials:
       required:
-      - bankId
       - credentialType
       - merchantId
+      - stpBankId
       - stpTerminalId
       type: object
       properties:
