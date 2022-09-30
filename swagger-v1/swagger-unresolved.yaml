@@ -1797,7 +1797,7 @@ components:
       required:
       - credentialType
       - stpTerminalId
-      - bankId
+      - stpBankId
       - merchantId
       type: object
       properties:
