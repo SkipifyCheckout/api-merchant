@@ -6,9 +6,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.8
+  version: 1.0.9
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.8
+- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.9
   description: SwaggerHub's tool for generating example responses
 - url: https://api-staging.gocartpay.com
   description: GoCart Staging Environment
@@ -59,6 +59,16 @@ paths:
           type: string
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+      - name: searchPhrase
+        in: query
+        description: |
+          String to match Merchant Name or Id. Can be entire name/ Id or a partial match.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Fine+Woodworking
       - name: pageSize
         in: query
         description: |
@@ -2365,8 +2375,9 @@ components:
     PaymentGatewayRaftCredentials:
       required:
       - credentialType
-      - license
       - merchantId
+      - stpBankId
+      - stpTerminalId
       type: object
       properties:
         credentialType:
@@ -2374,9 +2385,15 @@ components:
           example: RAFT
           enum:
           - RAFT
-        license:
+        stpTerminalId:
           type: string
-          example: abcdef1234567890abcdef1234567890
+          description: Contains the 3-digit terminal id assigned by Worldpay during
+            boarding.
+          example: "003"
+        stpBankId:
+          type: string
+          description: Contains the 4-digit bank id assigned by Worldpay during boarding.
+          example: "1234"
         merchantId:
           type: string
           example: "1234567891234"
@@ -2559,6 +2576,17 @@ components:
         type: string
         format: uuid
         example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
+    SearchPhraseQueryParameter:
+      name: searchPhrase
+      in: query
+      description: |
+        String to match Merchant Name or Id. Can be entire name/ Id or a partial match.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        example: Fine+Woodworking
     MerchantIdPathParameter:
       name: merchantId
       in: path
@@ -2631,6 +2659,29 @@ components:
         type: string
         format: uuid
         example: abae04d0-fe94-4bc9-a23a-54cd8fc4004c
+    PageSize:
+      name: pageSize
+      in: query
+      description: |
+        The number of items per page
+      required: false
+      schema:
+        maximum: 50
+        minimum: 1
+        type: integer
+        example: 25
+        default: 25
+    PageNumber:
+      name: pageNumber
+      in: query
+      description: |
+        The page number to fetch
+      required: false
+      schema:
+        minimum: 1
+        type: integer
+        example: 1
+        default: 1
   headers:
     MerchantLocationHeader:
       style: simple
