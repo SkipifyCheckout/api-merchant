@@ -8,8 +8,9 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.10
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.10
-  description: SwaggerHub's tool for generating example responses
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/Skipify/merchant-api/1.0.10
 tags:
 - name: Merchant
   description: |
@@ -47,8 +48,8 @@ paths:
       parameters:
       - $ref: '#/components/parameters/MerchantIdQueryParameter'
       - $ref: '#/components/parameters/SearchPhraseQueryParameter'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -62,7 +63,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant
@@ -104,7 +105,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}:
     get:
       tags:
@@ -131,7 +132,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant
@@ -159,7 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/industry:
     get:
       tags:
@@ -186,7 +187,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/health:
     get:
       tags:
@@ -248,7 +249,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/callbacks:
     get:
       tags:
@@ -262,8 +263,8 @@ paths:
         A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -277,7 +278,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Callback
@@ -308,7 +309,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/callbacks/{callbackId}:
     get:
       tags:
@@ -336,7 +337,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Callback
@@ -365,7 +366,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Callback
@@ -391,7 +392,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/domains:
     get:
       tags:
@@ -405,8 +406,8 @@ paths:
         A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -420,7 +421,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Domain
@@ -451,7 +452,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/domains/{domainId}:
     get:
       tags:
@@ -479,7 +480,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Domain
@@ -508,7 +509,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Domain
@@ -532,7 +533,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/users:
     get:
       tags:
@@ -546,8 +547,8 @@ paths:
         A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -561,7 +562,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant User
@@ -592,7 +593,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/users/{userId}:
     get:
       tags:
@@ -620,7 +621,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant User
@@ -658,7 +659,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant User
@@ -682,7 +683,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   
   /merchants/{merchantId}/credentials:
     get:
@@ -697,8 +698,8 @@ paths:
         A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -712,7 +713,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Credentials
@@ -747,7 +748,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/credentials/{credentialId}:
     get:
       tags:
@@ -776,7 +777,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Credentials
@@ -808,7 +809,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Credentials
@@ -834,7 +835,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/configs:
     get:
       tags:
@@ -848,8 +849,8 @@ paths:
         A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - $ref: '#/components/parameters/MerchantIdPathParameter'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageSize'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/parameters/PageNumber'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageSize'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/parameters/PageNumber'
       responses:
         "200":
           description: Success
@@ -863,7 +864,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     post:
       tags:
       - Merchant Configurations
@@ -902,7 +903,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/configs/{configId}:
     get:
       tags:
@@ -930,7 +931,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     put:
       tags:
       - Merchant Configurations
@@ -965,7 +966,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
     delete:
       tags:
       - Merchant Configurations
@@ -991,7 +992,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
   /merchants/{merchantId}/configs/logos:
     post:
       tags:
@@ -1027,7 +1028,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ExceptionResponse'
+                $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ExceptionResponse'
 components:
   schemas:
     CallbackType:
@@ -1056,7 +1057,7 @@ components:
             Set to true if the callback url is inherited from a partner merchant; false if explicitly managed under the context of this merchant.
           example: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ResourceBase'
     MerchantSummariesPagedResponse:
       type: object
       properties:
@@ -1066,7 +1067,7 @@ components:
             $ref: '#/components/schemas/MerchantSummary'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/PaginatedResponseBase'
     MerchantDetails:
       type: object
       properties:
@@ -1097,7 +1098,7 @@ components:
             $ref: '#/components/schemas/MerchantUser'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ResourceBase'
       - $ref: '#/components/schemas/MerchantBase'
     MerchantBase:
       required:
@@ -1150,7 +1151,7 @@ components:
             $ref: '#/components/schemas/MerchantCallback'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/PaginatedResponseBase'
     MerchantCallbackRequestBody:
       type: object
       required:
@@ -1198,7 +1199,7 @@ components:
             $ref: '#/components/schemas/MerchantDomain'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/PaginatedResponseBase'
     MerchantHealthFailure:
       type: object
       properties:
@@ -1298,7 +1299,7 @@ components:
         Summary of merchant information (no lower level details such as merchant configurations, domains, or callbacks included). For this type of information, either use the lower level merchant APIs and/or use the GET merchants/{merchantId} service method.
       allOf:
       - $ref: '#/components/schemas/MerchantBase'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ResourceBase'
     MerchantConfigPagedResponse:
       type: object
       properties:
@@ -1309,7 +1310,7 @@ components:
             $ref: '#/components/schemas/MerchantConfig'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/PaginatedResponseBase'
     MerchantConfig:
       type: object
       additionalProperties: false
@@ -1665,13 +1666,13 @@ components:
             $ref: '#/components/schemas/MerchantUser'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/PaginatedResponseBase'
     MerchantUser:
       type: object
       additionalProperties: false
       allOf:
       - $ref: '#/components/schemas/MerchantUserBase'
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ResourceBase'
     MerchantUserBase:
       required:
       - email
@@ -1711,13 +1712,13 @@ components:
             $ref: '#/components/schemas/MerchantCredential'
       additionalProperties: false
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/PaginatedResponseBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/PaginatedResponseBase'
     MerchantCredential:
       type: object
       description: |
         Merchant credential represents the credentials for one of the Skipify supported credential types (e.g., payment gateway credentials, api key, etc.)
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/GoCartPay/gocart-core-domain/1.0.0#/components/schemas/ResourceBase'
+      - $ref: 'https://api.swaggerhub.com/domains/Skipify/skipify-core-domain/1.0.1#/components/schemas/ResourceBase'
       - $ref: '#/components/schemas/MerchantCredentialBase'
     MerchantCredentialRequestBody:
       type: object
@@ -1988,39 +1989,39 @@ components:
         format: url
         description: |
           The url for the GET location of the resource just created
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
     MerchantCallbackLocationHeader:
       schema:
         type: string
         format: url
         description: |
           The url for the GET location of the resource just created
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantCredentialLocationHeader:
       schema:
         type: string
         format: url
         description: |
           The url for the GET location of the resource just created
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantConfigurationLocationHeader:
       schema:
         type: string
         format: url
         description: |
           The url for the GET location of the resource just created
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantDomainLocationHeader:
       schema:
         type: string
         format: url
         description: |
           The url for the GET location of the resource just created
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantUserLocationHeader:
       schema:
         type: string
         format: url
         description: |
           The url for the GET location of the resource just created
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
