@@ -8,8 +8,8 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.10
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.10
-  description: SwaggerHub's tool for generating example responses
+- url: https://virtserver.swaggerhub.com/Skipify/merchant-api/1.0.10
+  description: SwaggerHub API Auto Mocking
 tags:
 - name: Merchant
   description: |
@@ -2489,7 +2489,7 @@ components:
           $ref: '#/components/schemas/Links'
       additionalProperties: false
       description: |
-        Base object for all GoCart paginated GET operations.
+        Base object for all Skipify paginated GET operations.
     PaginatedDescription:
       type: object
       properties:
@@ -2687,7 +2687,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
     MerchantCallbackLocationHeader:
       style: simple
       explode: false
@@ -2696,7 +2696,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantCredentialLocationHeader:
       style: simple
       explode: false
@@ -2705,7 +2705,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantConfigurationLocationHeader:
       style: simple
       explode: false
@@ -2714,7 +2714,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantDomainLocationHeader:
       style: simple
       explode: false
@@ -2723,7 +2723,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantUserLocationHeader:
       style: simple
       explode: false
@@ -2732,4 +2732,4 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
