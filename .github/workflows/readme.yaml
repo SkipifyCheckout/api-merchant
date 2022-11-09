@@ -2,7 +2,7 @@ name: Sync OAS to ReadMe
 on:
   push:
     branches:
-      - main
+      - skipify-main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: readmeio/rdme@6.5.0
         with:
-          rdme: openapi swagger-v1/swagger.yaml --key=${{ secrets.README_IO_API_KEY }} --id=${{ secrets.README_API_V1_DEFINITION_ID }}
+          rdme: openapi swagger-v1/swagger.yaml --key=${{ secrets.SKIPIFY_README_IO_API_KEY }} --id=${{ secrets.SKIPIFY_README_API_V1_DEFINITION_ID }}
