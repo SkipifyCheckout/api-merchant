@@ -6,14 +6,10 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.9
+  version: 1.0.11
 servers:
-- url: https://virtserver.swaggerhub.com/GoCartPay/gocart-merchant-api/1.0.9
-  description: SwaggerHub's tool for generating example responses
-- url: https://api-staging.gocartpay.com
-  description: GoCart Staging Environment
-- url: https://api.gocartpay.com/
-  description: GoCart Production Environment
+- url: https://virtserver.swaggerhub.com/Skipify/merchant-api/1.0.11
+  description: SwaggerHub API Auto Mocking
 tags:
 - name: Merchant
   description: |
@@ -40,18 +36,18 @@ paths:
       - Merchant
       summary: Retrieves the paginated list of merchants
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves the paginated list of merchants. A merchant will only see their child merchants (assuming they have any child merchants).
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/MAC is created under. MerchantAdmin and Developer users cannot access this API.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint. The list of merchants returned is based on the scope of the merchant the JWT/MAC is created under. MerchantAdmin and Developer users cannot access this API.
 
         merchantId query parameter will only be observed when this API is called by a SuperAdmin
       parameters:
       - name: merchantId
         in: query
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: false
         style: form
         explode: true
@@ -109,13 +105,13 @@ paths:
       - Merchant
       summary: Creates a new merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Creates a new merchant. On creation of a new merchant there is the opporunity to seed the merchant with configuration, domain, and callback details. There is also the opportunity to provision users with access to the merchant.
 
         It is not required to provision resources like merchant domains, configurations, and callbacks under the context of the merchant during initial creations. There are individual APIs that enable one to manage the aforementioned resources.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint. MerchantAdmin and Developer users cannot access this API.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint. MerchantAdmin and Developer users cannot access this API.
 
         MerchantCredentials cannot contain multiple credentials with the same CredentialType.
 
@@ -152,16 +148,16 @@ paths:
       - Merchant
       summary: Retrieves a merchant's details
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Gets the details for the specified merchant. Details are only returned if the caller has the authorization to fetch the merchant's details.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -188,16 +184,16 @@ paths:
       - Merchant
       summary: Updates a merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Updates the base details for the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint. Developer users cannot access this API.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint. Developer users cannot access this API.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -227,16 +223,16 @@ paths:
       - Merchant
       summary: Retrieves industry by merchant id
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Helper service that retrieves the merchant's industry.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -264,19 +260,19 @@ paths:
       - Merchant
       summary: Retrieves health status of a merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Checks that the referrer used to hit this endpoint is a valid
         registered domain for this merchant, that the merchant has payment
         processor/gateway configurations setup, and that the merchant has
         credentials configured for that payment processor.
         It does NOT verify that the credentials are correct.
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -303,18 +299,18 @@ paths:
     get:
       tags:
       - Merchant
-      summary: Retrieves the GoCart SDK for a merchant
+      summary: Retrieves the Skipify SDK for a merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
-        Retrieves the GoCart SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
+        Retrieves the Skipify SDK for the merchant. A merchant SDK is only accessible if the domain they are requesting the SDK from is registered with the merchant.
 
-        This SDK is used by merchants to simplify their integration of GoCart into their checkout web experience.
+        This SDK is used by merchants to simplify their integration of Skipify into their checkout web experience.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -325,13 +321,13 @@ paths:
       responses:
         "200":
           description: |
-            Successful retrieval of the GoCart SDK for the specified merchant.
+            Successful retrieval of the Skipify SDK for the specified merchant.
           content:
             application/javascript:
               schema:
                 type: string
                 description: |
-                  The SDK JavaScript that makes integration with GoCart simple!
+                  The SDK JavaScript that makes integration with Skipify simple!
                 format: binary
         default:
           description: |
@@ -346,16 +342,16 @@ paths:
       - Merchant Callback
       summary: Retrieves list of registered callbacks for a merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves the list of callbacks associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -403,16 +399,16 @@ paths:
       - Merchant Callback
       summary: Creates a new merchant callback
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Configures a callback of the specified type associated with the merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -445,16 +441,16 @@ paths:
       - Merchant Callback
       summary: Retrieves a merchant callback
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves a registered callback associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -492,16 +488,16 @@ paths:
       - Merchant Callback
       summary: Updates a merchant callback
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Updates a previously a registered callback associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -541,18 +537,18 @@ paths:
       - Merchant Callback
       summary: Deletes a merchant callback
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Delete the specified callback associated with this merchant.
 
         A ShippingAndTax callback can only be deleted if the merchant's TaxType config is set to NonTaxable and the merchant's FulfillmentType config is set to Service.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -588,16 +584,16 @@ paths:
       - Merchant Domain
       summary: Retrieves list of valid domains for a merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves the list of domains associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -645,16 +641,16 @@ paths:
       - Merchant Domain
       summary: Creates a new merchant domain
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Configures a domain for the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -687,16 +683,16 @@ paths:
       - Merchant Domain
       summary: Retrieves a merchant or partner merchant's domain information
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves a registered domain associated with this merchant or it's partner merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -734,16 +730,16 @@ paths:
       - Merchant Domain
       summary: Updates a merchant domain
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Updates a previously a registered domain associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -783,16 +779,16 @@ paths:
       - Merchant Domain
       summary: Removes a merchant domain
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Delete the specified domain associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -828,16 +824,16 @@ paths:
       - Merchant User
       summary: Retrieves list of merchant users
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Gets the users associated with the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -885,16 +881,16 @@ paths:
       - Merchant User
       summary: Creates a new merchant user
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Creates a new merchant user associated with the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -927,16 +923,16 @@ paths:
       - Merchant User
       summary: Retrieves a merchant user
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves a merchant user associated with the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -974,16 +970,16 @@ paths:
       - Merchant User
       summary: Updates a merchant User
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Updates a merchant user associated with the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1023,16 +1019,16 @@ paths:
       - Merchant User
       summary: Removes a merchant User
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Deletes a merchant user associated with the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1068,16 +1064,16 @@ paths:
       - Merchant Credentials
       summary: Retrieves List of merchants credentials
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves the list of merchant credentials associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1125,18 +1121,18 @@ paths:
       - Merchant Credentials
       summary: Creates merchant credential
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Creates a new merchant credential associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
 
         A merchant cannot contain two credentials with the same CredentialType.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1145,7 +1141,7 @@ paths:
           format: uuid
           example: 3f326510-8fb0-4565-9de1-a090aaa49ac2
       requestBody:
-        description: Create merchant credential for one of the GoCart supported credential
+        description: Create merchant credential for one of the Skipify supported credential
           types.
         content:
           application/json:
@@ -1171,16 +1167,16 @@ paths:
       - Merchant Credentials
       summary: Retrieves a merchant credential information
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves a new merchant credential with the specified id.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1219,18 +1215,18 @@ paths:
       - Merchant Credentials
       summary: Updates a merchant credential
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Updates an existing merchant credential associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
 
         The CredentialType for a merchant credential cannot be changed when updating.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1271,18 +1267,18 @@ paths:
       - Merchant Credentials
       summary: Removes a merchant credential
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Deletes a merchant credential associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
 
         A payment gateway credential cannot be deleted if the credential being deleted the Merchant's PaymentProcessor config is set to the same CredentialType.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1318,16 +1314,16 @@ paths:
       - Merchant Configurations
       summary: Retrieves list of valid configuration for a merchant
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves the list of configurations associated with this merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1375,11 +1371,11 @@ paths:
       - Merchant Configurations
       summary: Creates a new merchant configuration
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Creates a new merchant configuration for the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
 
         A merchant cannot contain two configs with the same ConfigType.
 
@@ -1392,7 +1388,7 @@ paths:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1425,16 +1421,16 @@ paths:
       - Merchant Configurations
       summary: Retrieves a merchant configuration information
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Retrieves a merchant configuration for the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1472,11 +1468,11 @@ paths:
       - Merchant Configurations
       summary: Updates a merchant configuraton
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Updates an existing merchant configuration for the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
 
         The TaxType config can only be set to Taxable if the Merchant has a ShippingAndTax callback setup.
 
@@ -1487,7 +1483,7 @@ paths:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1527,18 +1523,18 @@ paths:
       - Merchant Configurations
       summary: Removes a merchant configuration
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Deletes a merchant configuration for the specified merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
 
         ConfigTypes CheckoutButton, ExpeditedGuestCheckout, and PayByLink cannot be deleted.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1574,16 +1570,16 @@ paths:
       - Upload
       summary: Uploads merchant image
       description: |
-        *GoCart offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.gocartpay.com/docs/environments) page for more details.*
+        *Skipify offers Staging & Production environments for the different phases of integration. See the [Environments](https://docs.skipify.com/docs/environments) page for more details.*
 
         Uploads an image for the merchant.
 
-        A valid **JWT** or **[MAC](https://docs.gocartpay.com/docs/api-authentication-mac)** is required to access this endpoint.
+        A valid **JWT** or **[MAC](https://docs.skipify.com/docs/api-authentication-mac)** is required to access this endpoint.
       parameters:
       - name: merchantId
         in: path
         description: |
-          The unique identifier for the merchant in the context of GoCart.
+          The unique identifier for the merchant in the context of Skipify.
         required: true
         style: simple
         explode: false
@@ -1615,7 +1611,7 @@ components:
     CallbackType:
       type: string
       description: |
-        Enum of callback types supported by the GoCart platform.
+        Enum of callback types supported by the Skipify platform.
       enum:
       - ShippingAndTax
     ImageUploadResult:
@@ -1693,7 +1689,7 @@ components:
         partnerMerchantId:
           type: string
           description: |
-            The merchant this merchant rolls up to. This is common in an ISV setting where a merchant is onboarded into GoCart under the context of an ISV. Child merchants have the ability to inherit configuration details from the partner merchant, which can significantly simplify the management of merchant configurations across a large number of child merchants.
+            The merchant this merchant rolls up to. This is common in an ISV setting where a merchant is onboarded into Skipify under the context of an ISV. Child merchants have the ability to inherit configuration details from the partner merchant, which can significantly simplify the management of merchant configurations across a large number of child merchants.
 
             Only SuperAdmin users can update the partnerMerchantId.
           format: uuid
@@ -1711,7 +1707,7 @@ components:
         url:
           type: string
           description: |
-            The callback URL that GoCart will make a call to.
+            The callback URL that Skipify will make a call to.
           format: uri
           example: https://www.mkfinewoodworking.com
         callbackType:
@@ -1749,7 +1745,7 @@ components:
         domain:
           type: string
           description: |
-            The domain that GoCart will register with the merchant.
+            The domain that Skipify will register with the merchant.
           example: https://www.mkfinewoodworking.com
       additionalProperties: false
     MerchantDomain:
@@ -1852,7 +1848,9 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/PaymentGatewayCredentials'
+            oneOf:
+            - $ref: '#/components/schemas/PaymentGatewayCredentials'
+            - $ref: '#/components/schemas/WorldpayBilling'
         merchantDomains:
           type: array
           nullable: true
@@ -2044,7 +2042,7 @@ components:
           format: hex color code
           example: '#5E6BA3'
       description: |
-        The GoCart modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo', 'primaryColor' and 'secondaryColor'.
+        The Skipify modal co-branding configuation for the merchant. This is a JSON configuration to control the 'logoTheme', 'buttonTextTheme', 'logo', 'primaryColor' and 'secondaryColor'.
     MerchantDemoPurchaseDetails:
       required:
       - configType
@@ -2189,12 +2187,12 @@ components:
           example: true
           default: false
       description: |
-        Whether the GoCart checkout button is enabled for the merchant or not.
+        Whether the Skipify checkout button is enabled for the merchant or not.
 
         |Type    |Description|
         |--------|-----------|
-        |true|GoCart checkout button enabled.|
-        |false|GoCart checkout button not enabled.|
+        |true|Skipify checkout button enabled.|
+        |false|Skipify checkout button not enabled.|
     MerchantExpeditedGuestCheckoutConfig:
       required:
       - configType
@@ -2211,12 +2209,12 @@ components:
           example: true
           default: false
       description: |
-        Whether the GoCart expedited guest checkout is enabled for the merchant or not.
+        Whether the Skipify expedited guest checkout is enabled for the merchant or not.
 
         |Type    |Description|
         |--------|-----------|
-        |true|GoCart expedited guest checkout enabled.|
-        |false|GoCart expedited guest checkout not enabled.|
+        |true|Skipify expedited guest checkout enabled.|
+        |false|Skipify expedited guest checkout not enabled.|
     MerchantPayByLinkConfig:
       required:
       - configType
@@ -2233,12 +2231,12 @@ components:
           example: true
           default: false
       description: |
-        Whether the GoCart Pay By Link is enabled for the merchant or not.
+        Whether the Skipify Pay By Link is enabled for the merchant or not.
 
         |Type    |Description|
         |--------|-----------|
-        |true|GoCart Pay By Link checkout enabled.|
-        |false|GoCart Pay By Link not enabled.|
+        |true|Skipify Pay By Link checkout enabled.|
+        |false|Skipify Pay By Link not enabled.|
     MerchantUserSummariesPagedResponse:
       type: object
       properties:
@@ -2265,7 +2263,7 @@ components:
         email:
           type: string
           description: |
-            The user's email address. This email address must be unique within the GoCart platform.
+            The user's email address. This email address must be unique within the Skipify platform.
           format: email
           example: kenney.powers@gmail.com
         role:
@@ -2298,7 +2296,7 @@ components:
     MerchantCredential:
       type: object
       description: |
-        Merchant credential represents the credentials for one of the GoCart supported credential types (e.g., payment gateway credentials, api key, etc.)
+        Merchant credential represents the credentials for one of the Skipify supported credential types (e.g., payment gateway credentials, api key, etc.)
       allOf:
       - $ref: '#/components/schemas/ResourceBase'
       - $ref: '#/components/schemas/MerchantCredentialBase'
@@ -2311,10 +2309,11 @@ components:
     MerchantCredentialBase:
       type: object
       description: |
-        Container for one of the supported merchant credential types (e.g., API Key, Payment Gateway Credentials, etc.).
+        Container for one of the supported merchant credential types (e.g., API Key, Payment Gateway Credentials, Worldpay Billing etc.).
       oneOf:
       - $ref: '#/components/schemas/MerchantApiKey'
       - $ref: '#/components/schemas/PaymentGatewayCredentials'
+      - $ref: '#/components/schemas/WorldpayBilling'
     MerchantApiKey:
       required:
       - apiKey
@@ -2330,7 +2329,7 @@ components:
           type: string
           example: acf66a54-04f5-44e2-b43a-2a2d1026be0d
       description: |
-        API key for GoCart. This key is used to create MAC hashes, which are necessary for all GoCart B2B integrations.
+        API key for Skipify. This key is used to create MAC hashes, which are necessary for all Skipify B2B integrations.
 
         Note: The credentialType is required and must be set to 'API_Key'
     PaymentGatewayCredentials:
@@ -2455,6 +2454,28 @@ components:
       additionalProperties: false
       description: "Credentials for connecting to the WPG payment gateway. \n\nNote:\
         \ The credentialType is required and must be set to 'WPG'\n"
+    WorldpayBilling:
+      required:
+      - billingChainId
+      - billingMid
+      - credentialType
+      type: object
+      properties:
+        credentialType:
+          type: string
+          example: Worldpay_Billing
+          enum:
+          - Worldpay_Billing
+        billingChainId:
+          type: string
+          example: 0Y830D
+        billingMid:
+          type: string
+          example: "542929606972720"
+      description: |
+        Credentials for Worldpay billing.
+
+        Note: The credentialType is required and must be set to 'Worldpay_Billing'
     Role:
       type: string
       description: |
@@ -2493,7 +2514,7 @@ components:
           $ref: '#/components/schemas/Links'
       additionalProperties: false
       description: |
-        Base object for all GoCart paginated GET operations.
+        Base object for all Skipify paginated GET operations.
     PaginatedDescription:
       type: object
       properties:
@@ -2568,7 +2589,7 @@ components:
       name: merchantId
       in: query
       description: |
-        The unique identifier for the merchant in the context of GoCart.
+        The unique identifier for the merchant in the context of Skipify.
       required: false
       style: form
       explode: true
@@ -2591,7 +2612,7 @@ components:
       name: merchantId
       in: path
       description: |
-        The unique identifier for the merchant in the context of GoCart.
+        The unique identifier for the merchant in the context of Skipify.
       required: true
       style: simple
       explode: false
@@ -2691,7 +2712,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e
     MerchantCallbackLocationHeader:
       style: simple
       explode: false
@@ -2700,7 +2721,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/callbacks/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantCredentialLocationHeader:
       style: simple
       explode: false
@@ -2709,7 +2730,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/credentials/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantConfigurationLocationHeader:
       style: simple
       explode: false
@@ -2718,7 +2739,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/configs/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantDomainLocationHeader:
       style: simple
       explode: false
@@ -2727,7 +2748,7 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/domains/3a85f12e-63e0-402b-a3fb-113889f38444
     MerchantUserLocationHeader:
       style: simple
       explode: false
@@ -2736,4 +2757,4 @@ components:
         description: |
           The url for the GET location of the resource just created
         format: url
-        example: https://api.gocartpay.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
+        example: https://api.skipify.com/merchants/d373d03c-56b7-449c-aa21-b41555bf075e/users/3a85f12e-63e0-402b-a3fb-113889f38444
